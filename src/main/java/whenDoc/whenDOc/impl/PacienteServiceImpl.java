@@ -1,6 +1,7 @@
 package whenDoc.whenDOc.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergias;
 import whenDoc.whenDOc.entity.Paciente;
+import whenDoc.whenDOc.repository.AlergiasRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.EnderecoService;
 import whenDoc.whenDOc.service.PacienteService;
@@ -17,7 +19,8 @@ public class PacienteServiceImpl implements PacienteService {
 	
 	@Autowired
 	private PacienteRepository pacienteRepository;
-
+	@Autowired
+	private AlergiasRepository repositorioDesgraca;
 	
 
 	@Override
@@ -50,6 +53,7 @@ public class PacienteServiceImpl implements PacienteService {
 			Paciente paciente = new Paciente(newPaciente.getNome(), newPaciente.getCpf(), newPaciente.getEmail(), newPaciente.getEmailSec(),
 					newPaciente.getSenha(), newPaciente.getTelefone(), newPaciente.getTelefoneSec(), newPaciente.getTipoSanguineo(), 
 					newPaciente.isApp());
+		
 			paciente.setEndereco(newPaciente.getEndereco());
 			paciente.setAlergias(newPaciente.getAlergias());
 					
@@ -188,18 +192,23 @@ public class PacienteServiceImpl implements PacienteService {
 
 	@Override
 	public HttpStatus addAlergia(String nomeAlergia, Long id) {
-		try {
-			Paciente paciente = pacienteRepository.getOne(id);
-			System.out.println(nomeAlergia);
+		Optional<Paciente> paciente = pacienteRepository.findById(id);
+		
+		System.out.println(id);
+		System.out.println(nomeAlergia);
+		if(paciente.isPresent()) {
 			Alergias alergia = new Alergias();
 			alergia.setNome_Alergia(nomeAlergia);
-			paciente.getAlergias().add(alergia);
-			pacienteRepository.save(paciente);
+			repositorioDesgraca.save(alergia);
+			paciente.get().getAlergias().add(alergia);
+			pacienteRepository.save(paciente.get());
 			return HttpStatus.OK;
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return HttpStatus.NOT_FOUND;
 		}
+		
+		
+	
+		return HttpStatus.NOT_FOUND;
+		
 		
 		
 	}

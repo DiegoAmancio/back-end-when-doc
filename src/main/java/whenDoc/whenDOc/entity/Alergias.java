@@ -2,6 +2,7 @@ package whenDoc.whenDOc.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,8 +23,8 @@ public class Alergias {
 	@Column
 	private String nomeAlergia;
 	
-	@ManyToOne
-	@JoinColumn(name="paciente_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn	
 	private Paciente paciente;
 	
 	public Alergias() {

@@ -61,7 +61,7 @@ public class Paciente {
 	@Column(name = "tipo_Sanguineo")
 	private String tipoSanguineo;
 	
-	@OneToMany(mappedBy = "paciente")
+	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
 	private Set<Alergias> alergias;
 	
 	@OneToOne(cascade = CascadeType.ALL)
