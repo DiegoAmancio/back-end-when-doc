@@ -35,16 +35,17 @@ public class MedicoController {
 	}
 	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
 	public 	Set<Paciente> getPacientes(@PathVariable("id") String id ) {
-		return medicoService.findByCPF(id).getPacientes();
+		return null;
+		//return medicoService.findByCPF(id).getPacientes();
 		
 	}
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
-	public 	HttpStatus deleteMedico(@RequestBody Long id) {
+	public 	HttpStatus deleteMedico(@RequestBody String id) {
 		return medicoService.delete(id);
 		
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado, Long id) {
+	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado, String id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":

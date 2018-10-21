@@ -14,7 +14,7 @@ public interface MedicoService {
 	 * @param id
 	 * @return
 	 */
-	Medico findById(Long id);
+	Medico findById(String id);
 	
 	/*
 	 * Find Medico by name.
@@ -46,26 +46,26 @@ public interface MedicoService {
 	 */
 	HttpStatus save(Medico newMedico);
 
-	HttpStatus editNome(String nome, Long id);
+	HttpStatus editNome(String nome, String id);
 	
-	HttpStatus editCRM(String crm, Long id);
+	HttpStatus editCRM(String crm, String id);
 	
-	HttpStatus editCPF(String cpf, Long id);
+	HttpStatus editCPF(String cpf, String id);
 	
-	HttpStatus editEspecialidade(String especialidade, Long id);
+	HttpStatus editEspecialidade(String especialidade, String id);
 	
-	HttpStatus editEmail(String email, Long id);
+	HttpStatus editEmail(String email, String id);
 	
-	HttpStatus editSenha(String senha, Long id);
+	HttpStatus editSenha(String senha, String id);
 	
-	HttpStatus editTelefone(String telefone, Long id);
+	HttpStatus editTelefone(String telefone, String id);
 	
 	
 	/*
 	 * Delete Medico by id.
 	 * @param id
 	 */
-	HttpStatus delete(Long id);
+	HttpStatus delete(String id);
 	
 	HttpStatus addPacientMed(Paciente pacient,String idMed);
 

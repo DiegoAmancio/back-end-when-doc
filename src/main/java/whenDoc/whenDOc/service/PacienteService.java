@@ -23,7 +23,7 @@ public interface PacienteService {
 	 * @param cpf
 	 * @return
 	 */
-	Paciente findByCPF(String cpf);
+	Paciente findByCPF(Long cpf);
 	
 	/*
 	 * Find all Paciente 
@@ -40,40 +40,40 @@ public interface PacienteService {
 	 * Edit Paciente name.
 	 * @param nome, id
 	 */
-	HttpStatus editNome(String nome, String id);
+	HttpStatus editNome(String nome, Long id);
 	
 	/*
 	 * Edit Pacient cpf.
 	 * @param cpf, id
 	 */
-	HttpStatus editCPF(String cpf, String id);
+	HttpStatus editCPF(String cpf, Long id);
 	
 	/*
 	 * Edit Paciente senha.
 	 * @param senha, id
 	 */
-	HttpStatus editSenha(String senha, String id);
+	HttpStatus editSenha(String senha, Long id);
 	
-	HttpStatus editEmail(String email, String id);
+	HttpStatus editEmail(String email, Long id);
 	
-	HttpStatus editEmailSec(String emailSec, String id);
+	HttpStatus editEmailSec(String emailSec, Long id);
 	
-	HttpStatus editTelefone(String telefone, String id);
+	HttpStatus editTelefone(String telefone, Long id);
 	
-	HttpStatus editTelefoneSec(String telefoneSec, String id);
+	HttpStatus editTelefoneSec(String telefoneSec, Long id);
 	
 	/*
 	 * Edit Paciente tipoSanguineo.
 	 * @param tipoSanguineo, id
 	 */
-	HttpStatus editTipoSanguineo(String tipoSanguineo, String id);
+	HttpStatus editTipoSanguineo(String tipoSanguineo, Long id);
 	
-	HttpStatus addEndereco(String id); 
-	HttpStatus addAlergia(String nomeAlergia,String id);
+	HttpStatus addEndereco(Long id); 
+	HttpStatus addAlergia(String nomeAlergia,Long id);
 	/*
 	 * Delete Paciente by id.
 	 * @param id
 	 */
-	HttpStatus delete(String id);
+	HttpStatus delete(Long id);
 
 }

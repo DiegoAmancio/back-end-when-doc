@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergias;
-import whenDoc.whenDOc.entity.Endereco;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.EnderecoService;
@@ -18,9 +17,6 @@ public class PacienteServiceImpl implements PacienteService {
 	
 	@Autowired
 	private PacienteRepository pacienteRepository;
-	
-	@Autowired
-	private EnderecoService enderecoService;
 
 	
 
@@ -38,18 +34,9 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public Paciente findByCPF(String cpf) {
-		
-		for (Paciente paciente : pacienteRepository.findAll()) {
-			String cpfPaciente = paciente.getCpf();
-			
-			if (cpfPaciente.equals(cpf)) {
-				return paciente;
-			}
-		}
-		Paciente des = new Paciente(null, null, null, null, null, null, null, null, false);
-		des.setEndereco(new Endereco());
-		return des;
+	public Paciente findByCPF(Long cpf) {
+		return pacienteRepository.getOne(cpf);
+
 	}
 	
 	@Override
@@ -64,7 +51,8 @@ public class PacienteServiceImpl implements PacienteService {
 					newPaciente.getSenha(), newPaciente.getTelefone(), newPaciente.getTelefoneSec(), newPaciente.getTipoSanguineo(), 
 					newPaciente.isApp());
 			paciente.setEndereco(newPaciente.getEndereco());
-			
+			paciente.setAlergias(newPaciente.getAlergias());
+					
 			pacienteRepository.save(paciente);
 			return HttpStatus.OK;
 		} catch (Exception e) {
@@ -74,7 +62,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editNome(String nome, String id) {
+	public HttpStatus editNome(String nome, Long id) {
 		
 		Paciente paciente = findByCPF(id);
 		
@@ -88,12 +76,12 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editCPF(String cpf, String id) {
+	public HttpStatus editCPF(String cpf, Long id) {
 		
 		Paciente paciente = findByCPF(id);
 		
 		if(paciente != null) {
-			paciente.setCpf(cpf);
+			//paciente.setCpf(cpf);
 			pacienteRepository.save(paciente);
 			return HttpStatus.OK;
 		}else {
@@ -102,7 +90,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editSenha(String senha, String id) {
+	public HttpStatus editSenha(String senha, Long id) {
 		
 		Paciente paciente = findByCPF(id);
 		
@@ -117,7 +105,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 	
 	@Override
-	public HttpStatus editEmail(String email, String id) {
+	public HttpStatus editEmail(String email, Long id) {
 		Paciente paciente = findByCPF(id);
 		
 		if(paciente != null) {
@@ -131,7 +119,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 	
 	@Override
-	public HttpStatus editEmailSec(String emailSec, String id) {
+	public HttpStatus editEmailSec(String emailSec, Long id) {
 		Paciente paciente = findByCPF(id);
 		
 		if(paciente != null) {
@@ -145,7 +133,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 	
 	@Override
-	public HttpStatus editTelefone(String telefone, String id) {
+	public HttpStatus editTelefone(String telefone, Long id) {
 		Paciente paciente = findByCPF(id);
 		
 		if(paciente != null) {
@@ -159,7 +147,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 	
 	@Override
-	public HttpStatus editTelefoneSec(String telefoneSec, String id) {
+	public HttpStatus editTelefoneSec(String telefoneSec, Long id) {
 		Paciente paciente = findByCPF(id);
 		
 		if(paciente != null) {
@@ -173,7 +161,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 	
 	@Override
-	public HttpStatus editTipoSanguineo(String tipoSanguineo, String id) {
+	public HttpStatus editTipoSanguineo(String tipoSanguineo, Long id) {
 		
 		Paciente paciente = findByCPF(id);
 		
@@ -186,22 +174,10 @@ public class PacienteServiceImpl implements PacienteService {
 		}
 	}
 
-	@Override
-	public HttpStatus addEndereco(String id) {
-		Endereco endereco = enderecoService.findByIdPacient(id);
-		Paciente paciente = findByCPF(id);
-		
-		if (endereco != null) {
-			paciente.setEndereco(endereco);
-			pacienteRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
+	
 
 	@Override
-	public HttpStatus delete(String id) {
+	public HttpStatus delete(Long id) {
 		if(pacienteRepository.existsById(id)) {
 			pacienteRepository.deleteById(id);
 			return HttpStatus.OK;
@@ -211,17 +187,27 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus addAlergia(String nomeAlergia, String id) {
+	public HttpStatus addAlergia(String nomeAlergia, Long id) {
 		try {
-			Paciente paciente = findByCPF(id);
-			paciente.getAlergias().add(new Alergias(nomeAlergia));
+			Paciente paciente = pacienteRepository.getOne(id);
+			System.out.println(nomeAlergia);
+			Alergias alergia = new Alergias();
+			alergia.setNome_Alergia(nomeAlergia);
+			paciente.getAlergias().add(alergia);
 			pacienteRepository.save(paciente);
 			return HttpStatus.OK;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			return HttpStatus.NOT_FOUND;
 		}
 		
-		return HttpStatus.BAD_GATEWAY;
+		
+	}
+
+	@Override
+	public HttpStatus addEndereco(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

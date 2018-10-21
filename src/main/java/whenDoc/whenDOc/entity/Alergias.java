@@ -1,51 +1,34 @@
 package whenDoc.whenDOc.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "alergias")
-public class Alergias implements Serializable {
-	
+public class Alergias {
 
-	
 	@Id
-	@Column(name = "nome_alergia")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "id_alergia")
+	private Long id;
+	
+	@Column
 	private String nomeAlergia;
 	
-	@OneToMany(mappedBy = "alergias")
-	private Set<Paciente> paciente;
+	@ManyToOne
+	@JoinColumn(name="paciente_id", nullable = false)
+	private Paciente paciente;
 	
 	public Alergias() {
 		
 	}
-
-	
-
-	
-
-
-
-	public Alergias(String nomeAlergia) {
-		super();
-		this.nomeAlergia = nomeAlergia;
-	}
-
-
-
-
-
 
 
 	public String getNome_Alergia() {

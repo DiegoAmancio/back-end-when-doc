@@ -7,6 +7,6 @@ import whenDoc.whenDOc.entity.Alergias;
 
 
 @Repository
-public interface AlergiasRepository extends JpaRepository<Alergias, Long> {
+public interface AlergiasRepository extends JpaRepository<Alergias, String> {
 
 }

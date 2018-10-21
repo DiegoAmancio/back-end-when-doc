@@ -19,7 +19,7 @@ public class MedicoServiceImpl implements MedicoService {
 	private MedicoRepository medicoRepository;
 	
 	@Override
-	public Medico findById(Long id) {
+	public Medico findById(String id) {
 		Optional<Medico> medico = medicoRepository.findById(id);
 		
 		return medico.get();
@@ -81,7 +81,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editNome(String nome, Long id) {
+	public HttpStatus editNome(String nome, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -94,7 +94,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editCRM(String crm, Long id) {
+	public HttpStatus editCRM(String crm, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -107,7 +107,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editCPF(String cpf, Long id) {
+	public HttpStatus editCPF(String cpf, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -121,7 +121,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editEspecialidade(String especialidade, Long id) {
+	public HttpStatus editEspecialidade(String especialidade, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -135,7 +135,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editEmail(String email, Long id) {
+	public HttpStatus editEmail(String email, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -149,7 +149,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editSenha(String senha, Long id) {
+	public HttpStatus editSenha(String senha, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -163,7 +163,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editTelefone(String telefone, Long id) {
+	public HttpStatus editTelefone(String telefone, String id) {
 		Medico medico = findById(id);
 		
 		if (medico != null) {
@@ -177,7 +177,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus delete(Long id) {
+	public HttpStatus delete(String id) {
 		if (medicoRepository.existsById(id)) {
 			medicoRepository.deleteById(id);
 			return HttpStatus.OK;
@@ -190,7 +190,7 @@ public class MedicoServiceImpl implements MedicoService {
 	public HttpStatus addPacientMed(Paciente pacient, String idMed) {
 		Medico medico = findByCPF(idMed);
 		if(medico != null) {
-			medico.add(pacient);
+			//medico.add(pacient);
 			medicoRepository.save(medico);
 			return HttpStatus.OK;
 		}else {

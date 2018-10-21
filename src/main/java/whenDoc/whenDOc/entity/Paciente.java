@@ -1,37 +1,42 @@
 package whenDoc.whenDOc.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "paciente")
 public class Paciente {
 	
-	@Transient 
-	private static final long serialVersionUID = 1L;
+	
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn
-	private Set<Medico> medicos;
+//	 @ManyToMany(fetch = FetchType.LAZY,
+//	            cascade = {
+//	                CascadeType.PERSIST,
+//	                CascadeType.MERGE
+//	            })
+//	    @JoinTable(name = "medicos",
+//	            joinColumns = { @JoinColumn(name = "paciente_id") },
+//	            inverseJoinColumns = { @JoinColumn(name = "medicos_id") })
+//	private Set<Medico> medicos;
 	
 	@NotEmpty()
 	@Column(name = "nome")
 	private String nome;
+	
 	@Id
-	@Column(name = "cpf")
-	private String cpf;
+	@Column
+	private Long cpf;
 	
 	@NotEmpty()
 	@Column(name = "email")
@@ -56,8 +61,7 @@ public class Paciente {
 	@Column(name = "tipo_Sanguineo")
 	private String tipoSanguineo;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn
+	@OneToMany(mappedBy = "paciente")
 	private Set<Alergias> alergias;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -72,11 +76,11 @@ public class Paciente {
 		super();
 	}
 
-	public Paciente(@NotEmpty String nome, @NotEmpty String cpf, @NotEmpty String email,
+	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email,
 			@NotEmpty String emailSec, @NotEmpty String senha, @NotEmpty String telefone, @NotEmpty String telefoneSec,
 			@NotEmpty String tipoSanguineo, boolean app) {
 		super();
-		
+		this.alergias = new HashSet<>();
 		this.nome = nome;
 		this.cpf = cpf;
 		this.email = email;
@@ -96,13 +100,11 @@ public class Paciente {
 		this.nome = nome;
 	}
 
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+	
 	
 	public String getEmail() {
 		return email;
@@ -168,13 +170,13 @@ public class Paciente {
 		this.alergias = alergias;
 	}
 
-	public Set<Medico> getMedicos() {
-		return medicos;
-	}
-
-	public void setMedicos(Set<Medico> medicos) {
-		this.medicos = medicos;
-	}
+//	public Set<Medico> getMedicos() {
+//		return medicos;
+//	}
+//
+//	public void setMedicos(Set<Medico> medicos) {
+//		this.medicos = medicos;
+//	}
 
 	public Endereco getEndereco() {
 		return endereco;
