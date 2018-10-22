@@ -16,43 +16,41 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "medico")
 public class Medico {
 
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "medicos")
-    @JsonBackReference 
- 	private Set<Paciente> pacientes;	
-	
-    @NotEmpty()
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "medicos")
+	@JsonBackReference
+	private Set<Paciente> pacientes;
+
+	@NotEmpty()
 	@Column(name = "nome")
 	private String nome;
-	
+
 	@NotEmpty()
 	@Column(name = "crm")
 	private String crm;
-	
+
 	@NotEmpty()
 	@Column(name = "especialidade")
 	private String especialidade;
-	
+
 	@Id
 	@Column(name = "cpf")
-	private String cpf;
-	
+	private Long cpf;
+
 	@NotEmpty()
 	@Column(name = "email")
 	private String email;
-	
+
 	@NotEmpty()
 	private String senha;
-	
+
 	@NotEmpty()
 	@Column(name = "telefone")
 	private String telefone;
 
-	
-	
-	public Medico(@NotEmpty String nome, @NotEmpty String crm, @NotEmpty String especialidade,
-			@NotEmpty String cpf, @NotEmpty String email, @NotEmpty String senha, @NotEmpty String telefone) {
+	public Medico(@NotEmpty String nome, @NotEmpty String crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
+			@NotEmpty String email, @NotEmpty String senha, @NotEmpty String telefone) {
 		super();
-		
+
 		this.nome = nome;
 		this.crm = crm;
 		this.especialidade = especialidade;
@@ -90,11 +88,11 @@ public class Medico {
 		this.especialidade = especialidade;
 	}
 
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(String cpf) {
+	public void setCpf(Long cpf) {
 		this.cpf = cpf;
 	}
 
@@ -125,6 +123,7 @@ public class Medico {
 	public Set<Paciente> getPacientes() {
 		return pacientes;
 	}
+
 	public void addPaciente(Paciente paciente) {
 		this.pacientes.add(paciente);
 	}

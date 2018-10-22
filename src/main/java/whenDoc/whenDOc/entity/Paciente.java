@@ -18,66 +18,67 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
 @Table(name = "paciente")
 public class Paciente {
 
-	@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "medicos",
-    joinColumns = { @JoinColumn(name = "paciente_id") },
-    inverseJoinColumns = { @JoinColumn(name = "medico_id") })
-	@JsonBackReference 
-	private Set<Medico> medicos;
+	@ManyToMany(fetch = FetchType.LAZY,
+
+			cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	
+	@JoinTable(name = "paciente_medico", joinColumns = { @JoinColumn(name = "paciente_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "medico_id") })
+	@JsonBackReference
+	private Set<Medico> medicos;
+
 	@NotEmpty()
 	@Column(name = "nome")
 	private String nome;
-	
+
 	@Id
 	@Column
 	private Long cpf;
-	
+
 	@NotEmpty()
 	@Column(name = "email")
 	private String email;
-	
+
 	@NotEmpty()
 	@Column(name = "email_Secundario")
 	private String emailSec;
 	@NotEmpty()
 	@Column(name = "Senha")
 	private String senha;
-	
+
 	@NotEmpty()
 	@Column(name = "telefone")
 	private String telefone;
-	
+
 	@NotEmpty()
 	@Column(name = "telefone_Secundario")
 	private String telefoneSec;
-	
+
 	@NotEmpty()
 	@Column(name = "tipo_Sanguineo")
 	private String tipoSanguineo;
-	
+
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
 	private Set<Alergia> alergias;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
-	
-	
+
 	@Column()
 	private boolean app;
 
-	
 	public Paciente() {
 		super();
 	}
 
-	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email,
-			@NotEmpty String emailSec, @NotEmpty String senha, @NotEmpty String telefone, @NotEmpty String telefoneSec,
+	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email, @NotEmpty String emailSec,
+			@NotEmpty String senha, @NotEmpty String telefone, @NotEmpty String telefoneSec,
 			@NotEmpty String tipoSanguineo, boolean app) {
 		super();
 		this.alergias = new HashSet<>();
@@ -104,8 +105,6 @@ public class Paciente {
 		return cpf;
 	}
 
-	
-	
 	public String getEmail() {
 		return email;
 	}
@@ -160,8 +159,8 @@ public class Paciente {
 
 	public void setApp(boolean app) {
 		this.app = app;
-	}	
-	
+	}
+
 	public Set<Alergia> getAlergias() {
 		return alergias;
 	}

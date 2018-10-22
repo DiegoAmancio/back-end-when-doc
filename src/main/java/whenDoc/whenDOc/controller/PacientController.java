@@ -72,7 +72,7 @@ public class PacientController {
 		return operacao;
 	}
 	@RequestMapping(value = "/{id}/addAlergia", method = RequestMethod.POST)
-	public 	HttpStatus addPacient(@RequestBody String alergia,@PathVariable Long id) {
+	public 	HttpStatus addAlergia(@RequestBody String alergia,@PathVariable Long id) {
 		return pacientService.addAlergia(alergia, id);
 		
 	}

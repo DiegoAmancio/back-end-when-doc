@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import whenDoc.whenDOc.entity.Medico;
-import whenDoc.whenDOc.entity.Paciente;
 
 public interface MedicoService {
 	
@@ -14,7 +13,7 @@ public interface MedicoService {
 	 * @param id
 	 * @return
 	 */
-	Medico findById(String id);
+	Medico findById(Long id);
 	
 	/*
 	 * Find Medico by name.
@@ -28,7 +27,7 @@ public interface MedicoService {
 	 * @param cpf
 	 * @return
 	 */
-	Medico findByCPF(String cpf);
+	Medico findByCPF(Long cpf);
 	
 	/*
 	 * Find Medico by crm.
@@ -46,27 +45,27 @@ public interface MedicoService {
 	 */
 	HttpStatus save(Medico newMedico);
 
-	HttpStatus editNome(String nome, String id);
+	HttpStatus editNome(String nome, Long id);
 	
-	HttpStatus editCRM(String crm, String id);
+	HttpStatus editCRM(String crm, Long id);
 	
-	HttpStatus editCPF(String cpf, String id);
+	HttpStatus editCPF(String cpf, Long id);
 	
-	HttpStatus editEspecialidade(String especialidade, String id);
+	HttpStatus editEspecialidade(String especialidade, Long id);
 	
-	HttpStatus editEmail(String email, String id);
+	HttpStatus editEmail(String email, Long id);
 	
-	HttpStatus editSenha(String senha, String id);
+	HttpStatus editSenha(String senha, Long id);
 	
-	HttpStatus editTelefone(String telefone, String id);
+	HttpStatus editTelefone(String telefone, Long id);
 	
 	
 	/*
 	 * Delete Medico by id.
 	 * @param id
 	 */
-	HttpStatus delete(String id);
+	HttpStatus delete(Long id);
 	
-	HttpStatus addPacientMed(Long cpfPaciente,String idMed);
+	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 
 }

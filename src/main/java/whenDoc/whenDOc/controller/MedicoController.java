@@ -28,24 +28,24 @@ public class MedicoController {
 		
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	Medico getMedico(@PathVariable("id") String id ) {
+	public 	Medico getMedico(@PathVariable("id") Long id ) {
 		return medicoService.findByCPF(id);
 
 		
 	}
 	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
-	public 	Set<Paciente> getPacientes(@PathVariable("id") String id ) {
-		return null;
-		//return medicoService.findByCPF(id).getPacientes();
+	public 	Set<Paciente> getPacientes(@PathVariable("id") Long id ) {
+		
+		return medicoService.findByCPF(id).getPacientes();
 		
 	}
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
-	public 	HttpStatus deleteMedico(@RequestBody String id) {
+	public 	HttpStatus deleteMedico(@RequestBody Long id) {
 		return medicoService.delete(id);
 		
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado, String id) {
+	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado, Long id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":
@@ -75,11 +75,12 @@ public class MedicoController {
 		}
 		return operacao;
 	}
-	@RequestMapping(value = "{crm}/addPacient/", method = RequestMethod.POST)
-	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("crm") String crm) {
+	@RequestMapping(value = "/{crm}/addPacient/", method = RequestMethod.POST)
+	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("crm") Long crm) {
 		
 		return medicoService.addPacientMed(cpfPaciente, crm);
 		
  	}
+	
 	
 }
