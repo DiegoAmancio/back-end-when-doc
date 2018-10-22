@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
-import whenDoc.whenDOc.entity.Alergias;
+import whenDoc.whenDOc.entity.Alergia;
 
 
 public interface AlergiasService {
 	
-	Alergias findById(Long id);
+	Alergia findById(Long id);
 	
-	Alergias findByCodPaciente(Long cod_paciente);
+	Alergia findByCodPaciente(Long cod_paciente);
 	
-	List<Alergias> findAll();
+	List<Alergia> findAll();
 	
-	HttpStatus save(Alergias newAlergia);
+	HttpStatus save(Alergia newAlergia);
 	
 	HttpStatus editNomeAlergia(String nomeAlergia, Long id);
 	

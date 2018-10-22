@@ -6,29 +6,29 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "paciente")
 public class Paciente {
-	
-	
 
-//	 @ManyToMany(fetch = FetchType.LAZY,
-//	            cascade = {
-//	                CascadeType.PERSIST,
-//	                CascadeType.MERGE
-//	            })
-//	    @JoinTable(name = "medicos",
-//	            joinColumns = { @JoinColumn(name = "paciente_id") },
-//	            inverseJoinColumns = { @JoinColumn(name = "medicos_id") })
-//	private Set<Medico> medicos;
+	@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "medicos",
+    joinColumns = { @JoinColumn(name = "paciente_id") },
+    inverseJoinColumns = { @JoinColumn(name = "medico_id") })
+	@JsonBackReference 
+	private Set<Medico> medicos;
 	
 	@NotEmpty()
 	@Column(name = "nome")
@@ -62,7 +62,7 @@ public class Paciente {
 	private String tipoSanguineo;
 	
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
-	private Set<Alergias> alergias;
+	private Set<Alergia> alergias;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
@@ -162,21 +162,21 @@ public class Paciente {
 		this.app = app;
 	}	
 	
-	public Set<Alergias> getAlergias() {
+	public Set<Alergia> getAlergias() {
 		return alergias;
 	}
 
-	public void setAlergias(Set<Alergias> alergias) {
+	public void setAlergias(Set<Alergia> alergias) {
 		this.alergias = alergias;
 	}
 
-//	public Set<Medico> getMedicos() {
-//		return medicos;
-//	}
-//
-//	public void setMedicos(Set<Medico> medicos) {
-//		this.medicos = medicos;
-//	}
+	public Set<Medico> getMedicos() {
+		return medicos;
+	}
+
+	public void setMedicos(Set<Medico> medicos) {
+		this.medicos = medicos;
+	}
 
 	public Endereco getEndereco() {
 		return endereco;

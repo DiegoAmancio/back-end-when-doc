@@ -2,7 +2,6 @@ package whenDoc.whenDOc.entity;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,19 +10,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "medico")
 public class Medico {
+
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "medicos")
+    @JsonBackReference 
+ 	private Set<Paciente> pacientes;	
 	
-//
-//
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                CascadeType.PERSIST,
-//                CascadeType.MERGE
-//            },mappedBy = "medicos")
-// 	private Set<Paciente> pacientes;	
-	@NotEmpty()
+    @NotEmpty()
 	@Column(name = "nome")
 	private String nome;
 	
@@ -125,11 +122,11 @@ public class Medico {
 		this.telefone = telefone;
 	}
 
-//	public Set<Paciente> getPacientes() {
-//		return pacientes;
-//	}
-//	public void add(Paciente paciente) {
-//		this.pacientes.add(paciente);
-//	}
+	public Set<Paciente> getPacientes() {
+		return pacientes;
+	}
+	public void addPaciente(Paciente paciente) {
+		this.pacientes.add(paciente);
+	}
 
 }

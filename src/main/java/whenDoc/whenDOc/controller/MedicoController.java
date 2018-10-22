@@ -75,10 +75,10 @@ public class MedicoController {
 		}
 		return operacao;
 	}
-	@RequestMapping(value = "/addPacient/{cpf}", method = RequestMethod.POST)
-	public HttpStatus addPacient(@RequestBody Paciente pacient,@PathVariable("cpf") String cpf) {
+	@RequestMapping(value = "{crm}/addPacient/", method = RequestMethod.POST)
+	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("crm") String crm) {
 		
-		return medicoService.addPacientMed(pacient, cpf);
+		return medicoService.addPacientMed(cpfPaciente, crm);
 		
  	}
 	

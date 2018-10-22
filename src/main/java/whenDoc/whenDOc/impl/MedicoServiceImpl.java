@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.MedicoRepository;
+import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.MedicoService;
 
 @Service
@@ -17,6 +18,8 @@ public class MedicoServiceImpl implements MedicoService {
 	
 	@Autowired
 	private MedicoRepository medicoRepository;
+	@Autowired
+	private PacienteRepository pacienteRepository;
 	
 	@Override
 	public Medico findById(String id) {
@@ -187,11 +190,18 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus addPacientMed(Paciente pacient, String idMed) {
-		Medico medico = findByCPF(idMed);
-		if(medico != null) {
-			//medico.add(pacient);
-			medicoRepository.save(medico);
+	public HttpStatus addPacientMed(Long cpfPaciente, String idMed) {
+		Optional<Medico> medico = medicoRepository.findById(idMed);
+		Optional<Paciente> pacient = pacienteRepository.findById(cpfPaciente);
+		if(medico.isPresent()) {
+			
+			medico.get().addPaciente(pacient.get());
+			
+			
+			pacient.get().getMedicos().add(medico.get());
+			medicoRepository.save(medico.get());
+			pacienteRepository.save(pacient.get());
+			
 			return HttpStatus.OK;
 		}else {
 			return HttpStatus.NOT_FOUND;

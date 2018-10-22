@@ -1,11 +1,11 @@
 package whenDoc.whenDOc.service;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
-
-import java.util.List;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 public interface MedicoService {
 	
@@ -67,6 +67,6 @@ public interface MedicoService {
 	 */
 	HttpStatus delete(String id);
 	
-	HttpStatus addPacientMed(Paciente pacient,String idMed);
+	HttpStatus addPacientMed(Long cpfPaciente,String idMed);
 
 }

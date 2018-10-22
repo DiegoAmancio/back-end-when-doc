@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import whenDoc.whenDOc.entity.Alergias;
+import whenDoc.whenDOc.entity.Alergia;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.AlergiasRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
-import whenDoc.whenDOc.service.EnderecoService;
 import whenDoc.whenDOc.service.PacienteService;
 
 @Service
@@ -20,7 +19,7 @@ public class PacienteServiceImpl implements PacienteService {
 	@Autowired
 	private PacienteRepository pacienteRepository;
 	@Autowired
-	private AlergiasRepository repositorioDesgraca;
+	private AlergiasRepository alergiaRepositorio;
 	
 
 	@Override
@@ -55,7 +54,7 @@ public class PacienteServiceImpl implements PacienteService {
 					newPaciente.isApp());
 		
 			paciente.setEndereco(newPaciente.getEndereco());
-			paciente.setAlergias(newPaciente.getAlergias());
+			
 					
 			pacienteRepository.save(paciente);
 			return HttpStatus.OK;
@@ -194,14 +193,15 @@ public class PacienteServiceImpl implements PacienteService {
 	public HttpStatus addAlergia(String nomeAlergia, Long id) {
 		Optional<Paciente> paciente = pacienteRepository.findById(id);
 		
-		System.out.println(id);
-		System.out.println(nomeAlergia);
 		if(paciente.isPresent()) {
-			Alergias alergia = new Alergias();
+			
+			Alergia alergia = new Alergia();
+			
 			alergia.setNome_Alergia(nomeAlergia);
-			repositorioDesgraca.save(alergia);
-			paciente.get().getAlergias().add(alergia);
-			pacienteRepository.save(paciente.get());
+			alergia.setPaciente(paciente.get());
+			
+			alergiaRepositorio.save(alergia);
+		
 			return HttpStatus.OK;
 		}
 		
