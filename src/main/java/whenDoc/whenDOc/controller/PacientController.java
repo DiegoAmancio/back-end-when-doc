@@ -1,5 +1,7 @@
 package whenDoc.whenDOc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,13 +27,17 @@ public class PacientController {
 		
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	Paciente getPacient(@PathVariable("id") String id ) {
+	public 	Paciente getPacient(@PathVariable("id") Long id ) {
 		return pacientService.findByCPF(id);
 		
 	}
-	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public 	List<Paciente> getPacientes() {
+		return pacientService.findAll();
+		
+	}
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public HttpStatus editInfosPaciente(String tipoDado, String dado, String id) {
+	public HttpStatus editInfosPaciente(String tipoDado, String dado, Long id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":
@@ -66,12 +72,12 @@ public class PacientController {
 		return operacao;
 	}
 	@RequestMapping(value = "/{id}/addAlergia", method = RequestMethod.POST)
-	public 	HttpStatus addPacient(@RequestBody String alergia,@PathVariable String id) {
+	public 	HttpStatus addAlergia(@RequestBody String alergia,@PathVariable Long id) {
 		return pacientService.addAlergia(alergia, id);
 		
 	}
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
-	public 	HttpStatus deletePacient(@RequestBody String id) {
+	public 	HttpStatus deletePacient(@RequestBody Long id) {
 		return pacientService.delete(id);
 		
 	}

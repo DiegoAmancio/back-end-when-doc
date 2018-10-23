@@ -10,27 +10,39 @@ import org.springframework.stereotype.Service;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.MedicoRepository;
+import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.MedicoService;
 
 @Service
 public class MedicoServiceImpl implements MedicoService {
-	
+
 	@Autowired
 	private MedicoRepository medicoRepository;
-	
+	@Autowired
+	private PacienteRepository pacienteRepository;
+
 	@Override
 	public Medico findById(Long id) {
+		
 		Optional<Medico> medico = medicoRepository.findById(id);
 		
-		return medico.get();
+		if(medico.isPresent()) {
+			
+			return medico.get();
 		
+		}else {
+			
+			return new Medico();
+		
+		}
+
 	}
 
 	@Override
 	public Medico findByName(String nome) {
 		for (Medico medico : medicoRepository.findAll()) {
 			String nomeMedico = medico.getNome();
-			
+
 			if (nomeMedico.equals(nome)) {
 				return medico;
 			}
@@ -39,11 +51,11 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Medico findByCPF(String cpf) {
+	public Medico findByCPF(Long cpf) {
 		for (Medico medico : medicoRepository.findAll()) {
-			String cpfMedico = medico.getCpf();
-			
-			if (cpfMedico.equals(cpf)) {
+			Long cpfMedico = medico.getCpf();
+
+			if (cpfMedico == cpf) {
 				return medico;
 			}
 		}
@@ -54,14 +66,14 @@ public class MedicoServiceImpl implements MedicoService {
 	public Medico findByCRM(String crm) {
 		for (Medico medico : medicoRepository.findAll()) {
 			String crmMedico = medico.getCrm();
-			
+
 			if (crmMedico.equals(crm)) {
 				return medico;
 			}
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<Medico> findAll() {
 		return medicoRepository.findAll();
@@ -70,8 +82,8 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus save(Medico newMedico) {
 		try {
-			Medico medico = new Medico(newMedico.getNome(), newMedico.getCrm(), newMedico.getEspecialidade(), newMedico.getCpf(), newMedico.getEmail(),
-							newMedico.getSenha(), newMedico.getTelefone());
+			Medico medico = new Medico(newMedico.getNome(), newMedico.getCrm(), newMedico.getEspecialidade(),
+					newMedico.getCpf(), newMedico.getEmail(), newMedico.getSenha(), newMedico.getTelefone());
 			medicoRepository.save(medico);
 			return HttpStatus.OK;
 		} catch (Exception e) {
@@ -83,7 +95,7 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus editNome(String nome, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
 			medico.setNome(nome);
 			medicoRepository.save(medico);
@@ -96,7 +108,7 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus editCRM(String crm, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
 			medico.setCrm(crm);
 			medicoRepository.save(medico);
@@ -109,9 +121,9 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus editCPF(String cpf, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
-			medico.setCpf(cpf);
+			// medico.setCpf(cpf);
 			medicoRepository.save(medico);
 			return HttpStatus.OK;
 		} else {
@@ -123,7 +135,7 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus editEspecialidade(String especialidade, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
 			medico.setEspecialidade(especialidade);
 			medicoRepository.save(medico);
@@ -131,13 +143,13 @@ public class MedicoServiceImpl implements MedicoService {
 		} else {
 			return HttpStatus.NOT_FOUND;
 		}
-		
+
 	}
 
 	@Override
 	public HttpStatus editEmail(String email, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
 			medico.setEmail(email);
 			medicoRepository.save(medico);
@@ -151,7 +163,7 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus editSenha(String senha, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
 			medico.setSenha(senha);
 			medicoRepository.save(medico);
@@ -165,7 +177,7 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public HttpStatus editTelefone(String telefone, Long id) {
 		Medico medico = findById(id);
-		
+
 		if (medico != null) {
 			medico.setTelefone(telefone);
 			medicoRepository.save(medico);
@@ -187,13 +199,19 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus addPacientMed(Paciente pacient, String idMed) {
-		Medico medico = findByCPF(idMed);
-		if(medico != null) {
-			medico.add(pacient);
-			medicoRepository.save(medico);
+	public HttpStatus addPacientMed(Long cpfPaciente, Long idMed) {
+		Optional<Medico> medico = medicoRepository.findById(idMed);
+		Optional<Paciente> pacient = pacienteRepository.findById(cpfPaciente);
+		if (medico.isPresent()) {
+
+			medico.get().addPaciente(pacient.get());
+
+			pacient.get().getMedicos().add(medico.get());
+			medicoRepository.save(medico.get());
+			pacienteRepository.save(pacient.get());
+
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}

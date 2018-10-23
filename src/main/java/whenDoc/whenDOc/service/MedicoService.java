@@ -1,11 +1,10 @@
 package whenDoc.whenDOc.service;
 
-import whenDoc.whenDOc.entity.Medico;
-import whenDoc.whenDOc.entity.Paciente;
-
 import java.util.List;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+
+import whenDoc.whenDOc.entity.Medico;
 
 public interface MedicoService {
 	
@@ -28,7 +27,7 @@ public interface MedicoService {
 	 * @param cpf
 	 * @return
 	 */
-	Medico findByCPF(String cpf);
+	Medico findByCPF(Long cpf);
 	
 	/*
 	 * Find Medico by crm.
@@ -67,6 +66,6 @@ public interface MedicoService {
 	 */
 	HttpStatus delete(Long id);
 	
-	HttpStatus addPacientMed(Paciente pacient,String idMed);
+	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 
 }
