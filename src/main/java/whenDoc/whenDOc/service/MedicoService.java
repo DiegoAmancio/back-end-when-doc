@@ -47,9 +47,7 @@ public interface MedicoService {
 
 	HttpStatus editNome(String nome, Long id);
 	
-	HttpStatus editCRM(String crm, Long id);
-	
-	HttpStatus editCPF(String cpf, Long id);
+	HttpStatus editCRM(String crm, Long id);	
 	
 	HttpStatus editEspecialidade(String especialidade, Long id);
 	
@@ -58,13 +56,6 @@ public interface MedicoService {
 	HttpStatus editSenha(String senha, Long id);
 	
 	HttpStatus editTelefone(String telefone, Long id);
-	
-	
-	/*
-	 * Delete Medico by id.
-	 * @param id
-	 */
-	HttpStatus delete(Long id);
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 

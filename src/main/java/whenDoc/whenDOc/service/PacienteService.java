@@ -40,11 +40,6 @@ public interface PacienteService {
 	 */
 	HttpStatus editNome(String nome, Long id);
 	
-	/*
-	 * Edit Pacient cpf.
-	 * @param cpf, id
-	 */
-	HttpStatus editCPF(String cpf, Long id);
 	
 	/*
 	 * Edit Paciente senha.
@@ -68,10 +63,5 @@ public interface PacienteService {
 	
 	HttpStatus addEndereco(Long id); 
 	HttpStatus addAlergia(String nomeAlergia,Long id);
-	/*
-	 * Delete Paciente by id.
-	 * @param id
-	 */
-	HttpStatus delete(Long id);
-
+	
 }

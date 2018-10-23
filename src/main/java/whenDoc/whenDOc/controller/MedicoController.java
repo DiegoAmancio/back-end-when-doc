@@ -40,8 +40,8 @@ public class MedicoController {
 		
 	}
 	
-	@RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
-	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado,@PathVariable("id") Long id) {
+	@RequestMapping(value = "/{id}/edit{tipoDado}", method = RequestMethod.PUT)
+	public HttpStatus editInfosMedico(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":
@@ -49,9 +49,6 @@ public class MedicoController {
 				break;
 			case "Crm":
 				operacao = medicoService.editCRM(dado, id);
-				break;
-			case "Cpf":
-				operacao = medicoService.editCPF(dado, id);
 				break;
 			case "Especialidade":
 				operacao = medicoService.editEspecialidade(dado, id);
