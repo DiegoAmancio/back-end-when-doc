@@ -39,13 +39,9 @@ public class MedicoController {
 		return medicoService.findByCPF(id).getPacientes();
 		
 	}
-	@RequestMapping(value = "", method = RequestMethod.DELETE)
-	public 	HttpStatus deleteMedico(@RequestBody Long id) {
-		return medicoService.delete(id);
-		
-	}
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado, Long id) {
+	
+	@RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
+	public HttpStatus editInfosMedico(@RequestBody String tipoDado,String dado,@PathVariable("id") Long id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":
@@ -75,10 +71,10 @@ public class MedicoController {
 		}
 		return operacao;
 	}
-	@RequestMapping(value = "/{crm}/addPacient/", method = RequestMethod.POST)
-	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("crm") Long crm) {
+	@RequestMapping(value = "/{cpf}/addPacient/", method = RequestMethod.POST)
+	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
-		return medicoService.addPacientMed(cpfPaciente, crm);
+		return medicoService.addPacientMed(cpfPaciente, cpf);
 		
  	}
 	

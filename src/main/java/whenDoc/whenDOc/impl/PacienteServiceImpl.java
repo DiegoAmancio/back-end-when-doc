@@ -37,8 +37,13 @@ public class PacienteServiceImpl implements PacienteService {
 
 	@Override
 	public Paciente findByCPF(Long cpf) {
-		return pacienteRepository.getOne(cpf);
-
+		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
+		if(paciente.isPresent()) {
+			return paciente.get();
+		}else {
+			return new Paciente();
+		}
+		
 	}
 	
 	@Override
