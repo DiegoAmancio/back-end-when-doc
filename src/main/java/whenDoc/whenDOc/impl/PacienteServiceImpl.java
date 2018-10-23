@@ -74,7 +74,7 @@ public class PacienteServiceImpl implements PacienteService {
 		
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			paciente.setNome(nome);
 			pacienteRepository.save(paciente);
 			return HttpStatus.OK;
@@ -83,26 +83,13 @@ public class PacienteServiceImpl implements PacienteService {
 		}
 	}
 
-	@Override
-	public HttpStatus editCPF(String cpf, Long id) {
-		
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente != null) {
-			//paciente.setCpf(cpf);
-			pacienteRepository.save(paciente);
-			return HttpStatus.OK;
-		}else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
+	
 	@Override
 	public HttpStatus editSenha(String senha, Long id) {
 		
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			
 			paciente.setSenha(senha);
 			pacienteRepository.save(paciente);
@@ -116,7 +103,7 @@ public class PacienteServiceImpl implements PacienteService {
 	public HttpStatus editEmail(String email, Long id) {
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			
 			paciente.setEmail(email);
 			pacienteRepository.save(paciente);
@@ -130,7 +117,7 @@ public class PacienteServiceImpl implements PacienteService {
 	public HttpStatus editEmailSec(String emailSec, Long id) {
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			
 			paciente.setEmail(emailSec);
 			pacienteRepository.save(paciente);
@@ -144,7 +131,7 @@ public class PacienteServiceImpl implements PacienteService {
 	public HttpStatus editTelefone(String telefone, Long id) {
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			
 			paciente.setEmail(telefone);
 			pacienteRepository.save(paciente);
@@ -158,7 +145,7 @@ public class PacienteServiceImpl implements PacienteService {
 	public HttpStatus editTelefoneSec(String telefoneSec, Long id) {
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			
 			paciente.setEmail(telefoneSec);
 			pacienteRepository.save(paciente);
@@ -173,7 +160,7 @@ public class PacienteServiceImpl implements PacienteService {
 		
 		Paciente paciente = findByCPF(id);
 		
-		if(paciente != null) {
+		if(paciente.getCpf() != null) {
 			paciente.setTipoSanguineo(tipoSanguineo);
 			pacienteRepository.save(paciente);
 			return HttpStatus.OK;
@@ -184,15 +171,7 @@ public class PacienteServiceImpl implements PacienteService {
 
 	
 
-	@Override
-	public HttpStatus delete(Long id) {
-		if(pacienteRepository.existsById(id)) {
-			pacienteRepository.deleteById(id);
-			return HttpStatus.OK;
-		}else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
+	
 
 	@Override
 	public HttpStatus addAlergia(String nomeAlergia, Long id) {

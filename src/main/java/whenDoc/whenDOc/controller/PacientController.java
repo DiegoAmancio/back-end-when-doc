@@ -36,15 +36,12 @@ public class PacientController {
 		return pacientService.findAll();
 		
 	}
-	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public HttpStatus editInfosPaciente(String tipoDado, String dado, Long id) {
+	@RequestMapping(value = "/{id}/edit{tipoDado}", method = RequestMethod.PUT)
+	public HttpStatus editInfosPaciente(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":
 				operacao = pacientService.editNome(dado, id);
-				break;
-			case "Cpf":
-				operacao = pacientService.editCPF(dado, id);
 				break;
 			case "Senha":
 				operacao = pacientService.editSenha(dado, id);
@@ -76,9 +73,5 @@ public class PacientController {
 		return pacientService.addAlergia(alergia, id);
 		
 	}
-	@RequestMapping(value = "", method = RequestMethod.DELETE)
-	public 	HttpStatus deletePacient(@RequestBody Long id) {
-		return pacientService.delete(id);
-		
-	}
+	
 }
