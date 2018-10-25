@@ -65,9 +65,11 @@ public class Paciente {
 	private String tipoSanguineo;
 
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
+	@JsonBackReference
 	private Set<Alergia> alergias;
 	
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
+	@JsonBackReference
 	private Set<Medicamento> medicamentos;
 
 	@OneToOne(cascade = CascadeType.ALL)

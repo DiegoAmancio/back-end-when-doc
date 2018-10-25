@@ -58,7 +58,6 @@ public class Medicamento implements Serializable{
 	private Paciente paciente;
 	
 	
-	@NotEmpty()
 	@Column()
 	private boolean active;
 
@@ -159,4 +158,5 @@ public class Medicamento implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	
 }
