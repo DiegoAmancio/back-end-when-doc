@@ -1,6 +1,7 @@
 package whenDoc.whenDOc.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import whenDoc.whenDOc.entity.Alergia;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.PacienteService;
 
@@ -18,27 +21,71 @@ import whenDoc.whenDOc.service.PacienteService;
 @RestController
 @RequestMapping("/paciente")
 public class PacientController {
+	
 	@Autowired
 	PacienteService pacientService;
 	
-	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public 	HttpStatus registerPacient(@RequestBody Paciente pacient) {
-		return pacientService.save(pacient);
-		
-	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public 	Paciente getPacient(@PathVariable("id") Long id ) {
+		
 		return pacientService.findByCPF(id);
 		
 	}
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public 	List<Paciente> getPacientes() {
+		
 		return pacientService.findAll();
 		
 	}
+	
+	@RequestMapping(value = "{cpf}/medicamento", method = RequestMethod.GET)
+	public 	Set<Medicamento> getMedicamentos(@PathVariable("cpf") Long cpf) {
+		
+		return pacientService.getMedicamentos(cpf);
+		
+	}
+	
+	@RequestMapping(value = "{cpf}/alergia", method = RequestMethod.GET)
+	public 	Set<Alergia> getAlergias(@PathVariable("cpf") Long cpf) {
+		
+		return pacientService.getAlergias(cpf);
+		
+	}
+	
+	
+	@RequestMapping(value = "/{id}/addAlergia", method = RequestMethod.POST)
+	public 	HttpStatus addAlergia(@RequestBody String alergia,@PathVariable Long id) {
+		
+		return pacientService.addAlergia(alergia, id);
+		
+	}
+	
+	@RequestMapping(value = "/{id}/medicamento", method = RequestMethod.POST)
+	public 	HttpStatus addMedicamento(@RequestBody Medicamento medicamento,@PathVariable Long id) {
+		
+		return pacientService.addMedicamento(medicamento, id);
+		
+	}
+	
+	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
+	public 	HttpStatus registerPacient(@RequestBody Paciente pacient) {
+		
+		return pacientService.save(pacient);
+		
+	}
+	
+	@RequestMapping(value = "/{cpf}/medicamento", method = RequestMethod.DELETE)
+	public 	HttpStatus deleteMedicamento(@PathVariable("id") Long id,Long idMedicamento ) {
+		
+		return pacientService.deleteMedicamento(id,idMedicamento);
+		
+	}
+	
 	@RequestMapping(value = "/{id}/edit{tipoDado}", method = RequestMethod.PUT)
 	public HttpStatus editInfosPaciente(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
+		
 		HttpStatus operacao;
+		
 		switch (tipoDado) {
 			case "Nome":
 				operacao = pacientService.editNome(dado, id);
@@ -68,10 +115,6 @@ public class PacientController {
 		}
 		return operacao;
 	}
-	@RequestMapping(value = "/{id}/addAlergia", method = RequestMethod.POST)
-	public 	HttpStatus addAlergia(@RequestBody String alergia,@PathVariable Long id) {
-		return pacientService.addAlergia(alergia, id);
-		
-	}
+	
 	
 }

@@ -66,6 +66,9 @@ public class Paciente {
 
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
 	private Set<Alergia> alergias;
+	
+	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
+	private Set<Medicamento> medicamentos;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
@@ -103,6 +106,14 @@ public class Paciente {
 
 	public Long getCpf() {
 		return cpf;
+	}
+	
+	public Set<Medicamento> getMedicamentos() {
+		return medicamentos;
+	}
+
+	public void setMedicamentos(Set<Medicamento> medicamentos) {
+		this.medicamentos = medicamentos;
 	}
 
 	public String getEmail() {
@@ -184,4 +195,5 @@ public class Paciente {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+	
 }

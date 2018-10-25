@@ -1,15 +1,19 @@
 package whenDoc.whenDOc.impl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergia;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.AlergiasRepository;
+import whenDoc.whenDOc.repository.MedicamentoRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.PacienteService;
 
@@ -20,6 +24,8 @@ public class PacienteServiceImpl implements PacienteService {
 	private PacienteRepository pacienteRepository;
 	@Autowired
 	private AlergiasRepository alergiaRepositorio;
+	@Autowired
+	private MedicamentoRepository medicamentoRepositorio;
 	
 
 	@Override
@@ -201,6 +207,64 @@ public class PacienteServiceImpl implements PacienteService {
 	public HttpStatus addEndereco(Long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public HttpStatus addMedicamento(Medicamento medicamento, Long id) {
+		
+		Optional<Paciente> paciente = pacienteRepository.findById(id);
+		
+		if(paciente.isPresent()) {
+		
+			medicamento.setPaciente(paciente.get());
+			
+			medicamentoRepositorio.save(medicamento);
+		
+			return HttpStatus.OK;
+		}
+		
+		return HttpStatus.NOT_FOUND;
+		
+	}
+
+	@Override
+	public Set<Medicamento> getMedicamentos(Long cpf) {
+		
+		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
+		
+		if(paciente.isPresent()) {
+			
+			return paciente.get().getMedicamentos();
+		
+		}
+		
+		return new HashSet<Medicamento>();
+	}
+
+	@Override
+	public Set<Alergia> getAlergias(Long cpf) {
+		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
+		
+		if(paciente.isPresent()) {
+			
+			return paciente.get().getAlergias();
+		
+		}
+		
+		return new HashSet<Alergia>();
+	}
+
+	@Override
+	public HttpStatus deleteMedicamento(Long id, Long idMedicamento) {
+		Optional<Medicamento> medicamento = medicamentoRepositorio.findById(idMedicamento);
+		Optional<Paciente> paciente = pacienteRepository.findById(id);
+		if(medicamento.isPresent() && 
+				medicamento.get().getPaciente().getCpf().equals(paciente.get().getCpf())) {
+				medicamento.get().setPaciente(null);
+				medicamentoRepositorio.delete(medicamento.get());
+				return HttpStatus.OK;
+		}
+		return HttpStatus.NOT_FOUND;
 	}
 
 }

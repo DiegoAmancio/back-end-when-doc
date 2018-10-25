@@ -1,9 +1,12 @@
 package whenDoc.whenDOc.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 
 import java.io.Serializable;
@@ -50,6 +53,11 @@ public class Medicamento implements Serializable{
 	@Column()
 	private String dosagem;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn	
+	private Paciente paciente;
+	
+	
 	@NotEmpty()
 	@Column()
 	private boolean active;
@@ -82,6 +90,14 @@ public class Medicamento implements Serializable{
 
 	public String getNome() {
 		return nome;
+	}
+	
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 
 	public void setNome(String nome) {
