@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Medico {
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "medicos")
-	@JsonBackReference
+	@JsonBackReference(value = "cpf")
 	private Set<Paciente> pacientes;
 
 	@NotEmpty()
@@ -42,7 +43,10 @@ public class Medico {
 
 	@NotEmpty()
 	private String senha;
-
+	
+	@OneToMany(mappedBy = "medico", orphanRemoval = true)
+	@JsonBackReference(value = "consulta")
+	private Set<Consulta> consulta;
 	@NotEmpty()
 	@Column(name = "telefone")
 	private String telefone;

@@ -81,7 +81,7 @@ public class PacientController {
 		
 	}
 	
-	@RequestMapping(value = "/{id}/edit{tipoDado}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/medicamento/edit{tipoDado}", method = RequestMethod.PUT)
 	public HttpStatus editInfosPaciente(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
 		
 		HttpStatus operacao;
