@@ -9,10 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
+@Table(name = "diagnostico")
 public class Diagnostico implements Serializable{
 	
 	@Transient
@@ -35,10 +37,15 @@ public class Diagnostico implements Serializable{
 	@PrimaryKeyJoinColumn
 	private Consulta consulta;
 
-	public Diagnostico(String nomeDiagnostico, String descricao) {
+	
+
+	public Diagnostico(@NotEmpty String nomeDiagnostico, @NotEmpty String descricao) {
 		super();
 		this.nomeDiagnostico = nomeDiagnostico;
 		this.descricao = descricao;
+	}
+	public Diagnostico() {
+		
 	}
 
 	public String getNomeDiagnostico() {

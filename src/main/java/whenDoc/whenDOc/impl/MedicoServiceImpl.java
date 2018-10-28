@@ -1,5 +1,8 @@
 package whenDoc.whenDOc.impl;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -212,17 +215,38 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Consulta addConsulta(String data,Set<Medicamento> idMedicamentos, Long idMed,Long idPaciente) {
-		Consulta teste = new Consulta(data);
-		teste.setDiagnostico(new Diagnostico("213123", "foda-se a descrição"));
-		Consulta consulta1 = consultaRepository.save(teste);
+	public Consulta addConsulta(Set<Medicamento> idMedicamentos, Long idMed,Long idPaciente) {
+		Date d = new Date(System.currentTimeMillis());
+		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
+		Paciente paciente = pacienteRepository.findById(idPaciente).get();
+		
+		Consulta consulta = new Consulta(data,new Diagnostico("213123", "foda-se a descrição"),paciente);
+		
+		Medico medico = medicoRepository.findById(idMed).get();
+
+		consulta.setMedico(medico);
+		
+		Consulta consulta1 = consultaRepository.save(consulta);
 		
 		for (Medicamento medicamento : idMedicamentos) {
-			medicamento.setPaciente(pacienteRepository.findById(idPaciente).get());
+			medicamento.setPaciente(paciente);
 			medicamento.setConsulta(consulta1);
 			medicamentoRepository.save(medicamento);
 		}
 		return consulta1;
 	}
 
+	@Override
+	public Set<Diagnostico> getDiagnosticos(Long idMed, Long idPaciente) {
+		Set<Diagnostico> diagnosticos = new HashSet<>();
+		Medico medico = medicoRepository.findById(idMed).get();
+		
+		for (Consulta consulta : medico.getConsulta()) {
+			if(consulta.pacienteId() == idPaciente) {
+				diagnosticos.add(consulta.getDiagnostico());
+			}
+		}
+		return diagnosticos;
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 
 import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 
@@ -62,5 +63,7 @@ public interface MedicoService {
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 	
-	Consulta addConsulta(String data,Set<Medicamento> idMedicamentos,Long idMed,Long idPaciente);
+	Consulta addConsulta(Set<Medicamento> idMedicamentos,Long idMed,Long idPaciente);
+	
+	Set<Diagnostico> getDiagnosticos(Long idMed,Long idPaciente);
 }

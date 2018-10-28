@@ -24,7 +24,8 @@ public class Medico {
 	@NotEmpty()
 	@Column(name = "nome")
 	private String nome;
-
+	
+	@Id
 	@NotEmpty()
 	@Column(name = "crm")
 	private String crm;
@@ -33,7 +34,7 @@ public class Medico {
 	@Column(name = "especialidade")
 	private String especialidade;
 
-	@Id
+	
 	@Column(name = "cpf")
 	private Long cpf;
 
@@ -131,5 +132,14 @@ public class Medico {
 	public void addPaciente(Paciente paciente) {
 		this.pacientes.add(paciente);
 	}
+
+	public Set<Consulta> getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Set<Consulta> consulta) {
+		this.consulta = consulta;
+	}
+	
 
 }

@@ -74,6 +74,10 @@ public class Paciente {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
+	
+	@OneToMany(mappedBy = "paciente",cascade = CascadeType.ALL)
+	@JsonBackReference(value = "id_consulta")
+	private Set<Consulta> consulta;
 
 	@Column()
 	private boolean app;
@@ -197,5 +201,14 @@ public class Paciente {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	public Set<Consulta> getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Set<Consulta> consulta) {
+		this.consulta = consulta;
+	}
+	
 	
 }

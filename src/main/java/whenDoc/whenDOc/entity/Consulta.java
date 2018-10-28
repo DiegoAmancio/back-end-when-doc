@@ -35,21 +35,27 @@ public class Consulta implements Serializable {
 	@Column(name = "data",length = 1024)
 	private String data;
 	
-	@NotEmpty()
 	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn	
 	private Diagnostico diagnostico;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn	
 	private Medico medico;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn	
+	private Paciente paciente;
+	
 	@OneToMany(mappedBy = "consulta", orphanRemoval = true)
 	@JsonBackReference(value = "id_medicamento")
 	private Set<Medicamento> medicamentosReceitados;
 
-	public Consulta(String data) {
+	public Consulta(String data,Diagnostico diagnostico,Paciente paciente) {
 		super();
 		this.data = data;
+		this.diagnostico = diagnostico;
+		this.paciente = paciente;
 	}
 	public Consulta() {
 		
@@ -75,6 +81,13 @@ public class Consulta implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public void setMedico(Medico medico2) {
+		this.medico = medico2;
+		
+	}
+	public Long pacienteId() {
+		return this.paciente.getCpf();
 	}
 
 }
