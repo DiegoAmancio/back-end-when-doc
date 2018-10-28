@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +27,24 @@ public class PacientController {
 	PacienteService pacientService;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	Paciente getPacient(@PathVariable("id") Long id ) {
+	public 	ResponseEntity<Paciente> getPacient(@PathVariable("id") Long id ) {
 		
-		return pacientService.findByCPF(id);
+		Paciente paciente = pacientService.findByCPF(id);
+		
+		HttpStatus status;
+		
+		if(paciente.getCpf() != null) {
+			
+			status = HttpStatus.OK;
+		
+		}else {
+			
+			status = HttpStatus.NOT_FOUND;
+		
+		}
+		
+		return new ResponseEntity<>(paciente, status);
+				
 		
 	}
 	@RequestMapping(value = "", method = RequestMethod.GET)
@@ -39,16 +55,47 @@ public class PacientController {
 	}
 	
 	@RequestMapping(value = "{cpf}/medicamento", method = RequestMethod.GET)
-	public 	Set<Medicamento> getMedicamentos(@PathVariable("cpf") Long cpf) {
+	public 	ResponseEntity<Set<Medicamento>> getMedicamentos(@PathVariable("cpf") Long cpf) {
 		
-		return pacientService.getMedicamentos(cpf);
+		Paciente paciente = pacientService.findByCPF(cpf);
 		
+		Set<Medicamento> medicamentos = pacientService.getMedicamentos(cpf);
+		
+		HttpStatus status;
+		
+		if(paciente.getCpf() == null ) {
+			
+			status = HttpStatus.NOT_FOUND;
+		
+		}else{
+			
+			status = HttpStatus.OK;
+		
+		}
+		
+		return new ResponseEntity<>(medicamentos,status);
 	}
 	
 	@RequestMapping(value = "{cpf}/alergia", method = RequestMethod.GET)
-	public 	Set<Alergia> getAlergias(@PathVariable("cpf") Long cpf) {
+	public 	ResponseEntity<Set<Alergia>> getAlergias(@PathVariable("cpf") Long cpf) {
 		
-		return pacientService.getAlergias(cpf);
+		Paciente paciente = pacientService.findByCPF(cpf);
+		
+		Set<Alergia> alergias =  pacientService.getAlergias(cpf);
+		
+		HttpStatus status;
+		
+		if(paciente.getCpf() == null ) {
+			
+			status = HttpStatus.NOT_FOUND;
+		
+		}else{
+			
+			status = HttpStatus.OK;
+		
+		}
+		
+		return new ResponseEntity<>(alergias,status);
 		
 	}
 	
@@ -68,9 +115,22 @@ public class PacientController {
 	}
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public 	HttpStatus registerPacient(@RequestBody Paciente pacient) {
+	public 	ResponseEntity<Paciente> registerPacient(@RequestBody Paciente pacient) {
+		Paciente paciente =  pacientService.save(pacient);
+
+		HttpStatus status;
 		
-		return pacientService.save(pacient);
+		if(paciente.getCpf() != null) {
+			
+			status = HttpStatus.CREATED;
+		
+		}else {
+			
+			status = HttpStatus.NOT_ACCEPTABLE;
+		
+		}
+		
+		return new ResponseEntity<>(paciente, status);
 		
 	}
 	

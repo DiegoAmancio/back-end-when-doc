@@ -162,5 +162,13 @@ public class Medicamento implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	public Consulta getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
+	}
 	
 }

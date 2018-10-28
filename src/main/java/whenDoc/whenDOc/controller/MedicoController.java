@@ -1,9 +1,11 @@
 package whenDoc.whenDOc.controller;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.MedicoService;
@@ -23,15 +27,29 @@ public class MedicoController {
 	MedicoService medicoService;
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public 	HttpStatus registerMedico(@RequestBody Medico medico) {
-		return medicoService.save(medico);
+	public 	ResponseEntity<Medico> registerMedico(@RequestBody Medico medico) {
+				
+		HttpStatus status = medicoService.save(medico);;
+		
+		
+		return new ResponseEntity<>(medico, status);
 		
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	Medico getMedico(@PathVariable("id") Long id ) {
-		return medicoService.findByCPF(id);
-
+	public 	ResponseEntity<Medico> getMedico(@PathVariable("id") Long id ) {
+		Medico medico = medicoService.findByCPF(id);
+		HttpStatus status;
 		
+		if(medico.getCpf() != null) {
+		
+			status = HttpStatus.FOUND;
+		
+		}else {
+		
+			status = HttpStatus.NOT_FOUND;
+		
+		}
+		return new ResponseEntity<>(medico,status);
 	}
 	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
 	public 	Set<Paciente> getPacientes(@PathVariable("id") Long id ) {
@@ -72,6 +90,12 @@ public class MedicoController {
 	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.addPacientMed(cpfPaciente, cpf);
+		
+ 	}
+	@RequestMapping(value = "/{cpf}/addConsulta/", method = RequestMethod.POST)
+	public Consulta addConsulta(@RequestBody String consulta,HashSet<Medicamento> medicamentos,Long idPaciente,@PathVariable("cpf") Long cpf) {
+		
+		return medicoService.addConsulta(consulta, medicamentos, cpf, idPaciente);
 		
  	}
 	

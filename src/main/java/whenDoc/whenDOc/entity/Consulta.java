@@ -32,9 +32,10 @@ public class Consulta implements Serializable {
 	private Long id;
 	
 	@NotEmpty()
-	@Column()
+	@Column(name = "data",length = 1024)
 	private String data;
 	
+	@NotEmpty()
 	@OneToOne(cascade = CascadeType.ALL)
 	private Diagnostico diagnostico;
 	
@@ -46,12 +47,20 @@ public class Consulta implements Serializable {
 	@JsonBackReference(value = "id_medicamento")
 	private Set<Medicamento> medicamentosReceitados;
 
-	public Consulta(String data, Long id_consulta, Long cod_paciente,
-			Long cod_medico) {
+	public Consulta(String data) {
 		super();
 		this.data = data;
 	}
+	public Consulta() {
+		
+	}
 
+	public Diagnostico getDiagnostico() {
+		return diagnostico;
+	}
+	public void setDiagnostico(Diagnostico diagnostico) {
+		this.diagnostico = diagnostico;
+	}
 	public String getData() {
 		return data;
 	}

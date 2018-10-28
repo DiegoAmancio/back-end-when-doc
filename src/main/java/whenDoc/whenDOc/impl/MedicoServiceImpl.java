@@ -2,13 +2,19 @@ package whenDoc.whenDOc.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Diagnostico;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
+import whenDoc.whenDOc.repository.ConsultaRepository;
+import whenDoc.whenDOc.repository.MedicamentoRepository;
 import whenDoc.whenDOc.repository.MedicoRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.MedicoService;
@@ -20,6 +26,12 @@ public class MedicoServiceImpl implements MedicoService {
 	private MedicoRepository medicoRepository;
 	@Autowired
 	private PacienteRepository pacienteRepository;
+	
+	@Autowired
+	private MedicamentoRepository medicamentoRepository;
+	
+	@Autowired
+	private ConsultaRepository consultaRepository;
 
 	@Override
 	public Medico findById(Long id) {
@@ -88,9 +100,9 @@ public class MedicoServiceImpl implements MedicoService {
 			Medico medico = new Medico(newMedico.getNome(), newMedico.getCrm(), newMedico.getEspecialidade(),
 					newMedico.getCpf(), newMedico.getEmail(), newMedico.getSenha(), newMedico.getTelefone());
 			medicoRepository.save(medico);
-			return HttpStatus.OK;
+			return HttpStatus.CREATED;
 		} catch (Exception e) {
-			return HttpStatus.BAD_REQUEST;
+			return HttpStatus.NOT_ACCEPTABLE;
 		}
 
 	}
@@ -197,6 +209,20 @@ public class MedicoServiceImpl implements MedicoService {
 		} else {
 			return HttpStatus.NOT_FOUND;
 		}
+	}
+
+	@Override
+	public Consulta addConsulta(String data,Set<Medicamento> idMedicamentos, Long idMed,Long idPaciente) {
+		Consulta teste = new Consulta(data);
+		teste.setDiagnostico(new Diagnostico("213123", "foda-se a descrição"));
+		Consulta consulta1 = consultaRepository.save(teste);
+		
+		for (Medicamento medicamento : idMedicamentos) {
+			medicamento.setPaciente(pacienteRepository.findById(idPaciente).get());
+			medicamento.setConsulta(consulta1);
+			medicamentoRepository.save(medicamento);
+		}
+		return consulta1;
 	}
 
 }

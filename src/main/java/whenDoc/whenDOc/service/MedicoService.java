@@ -1,9 +1,12 @@
 package whenDoc.whenDOc.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 
+import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 
 public interface MedicoService {
@@ -58,5 +61,6 @@ public interface MedicoService {
 	HttpStatus editTelefone(String telefone, Long id);
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
-
+	
+	Consulta addConsulta(String data,Set<Medicamento> idMedicamentos,Long idMed,Long idPaciente);
 }

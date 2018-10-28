@@ -35,7 +35,7 @@ public interface PacienteService {
 	 * Save Paciente into database.
 	 * @param paciente
 	 */
-	HttpStatus save(Paciente newPaciente);
+	Paciente save(Paciente newPaciente);
 	
 	/*
 	 * Edit Paciente name.

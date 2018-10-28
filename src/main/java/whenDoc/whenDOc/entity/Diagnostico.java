@@ -35,7 +35,7 @@ public class Diagnostico implements Serializable{
 	@PrimaryKeyJoinColumn
 	private Consulta consulta;
 
-	public Diagnostico(String nomeDiagnostico, String descricao, Long id_consulta) {
+	public Diagnostico(String nomeDiagnostico, String descricao) {
 		super();
 		this.nomeDiagnostico = nomeDiagnostico;
 		this.descricao = descricao;
