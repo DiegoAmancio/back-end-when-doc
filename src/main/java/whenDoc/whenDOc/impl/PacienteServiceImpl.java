@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergia;
+import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.AlergiasRepository;
@@ -58,7 +59,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus save(Paciente newPaciente) {
+	public Paciente save(Paciente newPaciente) {
 		try {
 			Paciente paciente = new Paciente(newPaciente.getNome(), newPaciente.getCpf(), newPaciente.getEmail(), newPaciente.getEmailSec(),
 					newPaciente.getSenha(), newPaciente.getTelefone(), newPaciente.getTelefoneSec(), newPaciente.getTipoSanguineo(), 
@@ -68,10 +69,11 @@ public class PacienteServiceImpl implements PacienteService {
 			
 					
 			pacienteRepository.save(paciente);
-			return HttpStatus.OK;
+			return paciente;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return HttpStatus.BAD_REQUEST;
+
+			return new Paciente();
+		
 		}
 	}
 
@@ -256,8 +258,10 @@ public class PacienteServiceImpl implements PacienteService {
 
 	@Override
 	public HttpStatus deleteMedicamento(Long id, Long idMedicamento) {
+		
 		Optional<Medicamento> medicamento = medicamentoRepositorio.findById(idMedicamento);
 		Optional<Paciente> paciente = pacienteRepository.findById(id);
+		
 		if(medicamento.isPresent() && 
 				medicamento.get().getPaciente().getCpf().equals(paciente.get().getCpf())) {
 				medicamento.get().setPaciente(null);
@@ -265,6 +269,19 @@ public class PacienteServiceImpl implements PacienteService {
 				return HttpStatus.OK;
 		}
 		return HttpStatus.NOT_FOUND;
+	}
+
+	@Override
+	public Set<String> getDiagnosticos(Long cpf) {
+		
+		HashSet<String> diagnosticos = new HashSet<>();
+		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
+		
+		for (Consulta consulta : paciente.get().getConsulta()) {
+			diagnosticos.add(consulta.getDiagnostico().getDescricao());
+		}
+
+		return diagnosticos;
 	}
 
 }

@@ -1,9 +1,13 @@
 package whenDoc.whenDOc.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 
+import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Diagnostico;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 
 public interface MedicoService {
@@ -29,13 +33,7 @@ public interface MedicoService {
 	 */
 	Medico findByCPF(Long cpf);
 	
-	/*
-	 * Find Medico by crm.
-	 * @param crm
-	 * @return
-	 */
-	Medico findByCRM(String crm);
-	
+
 	List<Medico> findAll();
 	
 	/*
@@ -47,7 +45,6 @@ public interface MedicoService {
 
 	HttpStatus editNome(String nome, Long id);
 	
-	HttpStatus editCRM(String crm, Long id);	
 	
 	HttpStatus editEspecialidade(String especialidade, Long id);
 	
@@ -58,5 +55,8 @@ public interface MedicoService {
 	HttpStatus editTelefone(String telefone, Long id);
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
-
+	
+	Consulta addConsulta(String descricao,Long idMed,Long idPaciente);
+	
+	Set<Diagnostico> getDiagnosticos(Long idMed,Long idPaciente);
 }

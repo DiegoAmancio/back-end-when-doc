@@ -3,8 +3,8 @@ package whenDoc.whenDOc.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Medicamento;
@@ -47,8 +47,7 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 	public HttpStatus save(Medicamento newMedicamento) {
 		try {
 			Medicamento medicamento = new Medicamento(newMedicamento.getNome(), newMedicamento.getQuantidade(), newMedicamento.getHorario(),
-					newMedicamento.getIntervalo(), newMedicamento.getDataInicial(), newMedicamento.getDataFinal(), newMedicamento.getDosagem(),
-					newMedicamento.isActive());
+					newMedicamento.getIntervalo(), newMedicamento.getDataInicial(), newMedicamento.getDataFinal(), newMedicamento.getDosagem());
 			medicamentoRepository.save(medicamento);
 			return HttpStatus.OK;
 		} catch (Exception e) {
@@ -58,11 +57,10 @@ public class MedicamentoServiceImpl implements MedicamentoService {
 
 	@Override
 	public HttpStatus editNome(String nome, Long id) {
-		Medicamento medicamento = findById(id);
-		
-		if (medicamento != null) {
-			medicamento.setNome(nome);
-			medicamentoRepository.save(medicamento);
+		Optional<Medicamento> medicamento = medicamentoRepository.findById(id);
+		if (medicamento.isPresent()) {
+			medicamento.get().setNome(nome);
+			medicamentoRepository.save(medicamento.get());
 			return HttpStatus.OK;
 		} else {
 			return HttpStatus.NOT_FOUND;

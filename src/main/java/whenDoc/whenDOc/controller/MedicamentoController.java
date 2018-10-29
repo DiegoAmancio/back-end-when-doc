@@ -30,8 +30,8 @@ public class MedicamentoController {
 		
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public HttpStatus editMedicine(String tipoDado, String dado, Long id) {
+	@RequestMapping(value = "{id}/edit{tipoDado}", method = RequestMethod.PUT)
+	public HttpStatus editInfosMedicamento(@RequestBody String dado,@PathVariable("tipoDado")String tipoDado,@PathVariable("id") Long id) {
 		HttpStatus operacao;
 		switch(tipoDado) {
 			case "Nome":

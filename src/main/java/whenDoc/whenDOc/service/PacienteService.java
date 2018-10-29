@@ -35,7 +35,7 @@ public interface PacienteService {
 	 * Save Paciente into database.
 	 * @param paciente
 	 */
-	HttpStatus save(Paciente newPaciente);
+	Paciente save(Paciente newPaciente);
 	
 	/*
 	 * Edit Paciente name.
@@ -112,5 +112,7 @@ public interface PacienteService {
 	 * @return
 	 */
 	HttpStatus deleteMedicamento(Long id, Long idMedicamento);
+
+	Set<String> getDiagnosticos(Long cpf);
 	
 }

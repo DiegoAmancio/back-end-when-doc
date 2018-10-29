@@ -65,13 +65,19 @@ public class Paciente {
 	private String tipoSanguineo;
 
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
+	@JsonBackReference(value = "id_alergia")
 	private Set<Alergia> alergias;
 	
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
+	@JsonBackReference(value = "crm")
 	private Set<Medicamento> medicamentos;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
+	
+	@OneToMany(mappedBy = "paciente",cascade = CascadeType.ALL)
+	@JsonBackReference(value = "id_consulta")
+	private Set<Consulta> consulta;
 
 	@Column()
 	private boolean app;
@@ -195,5 +201,14 @@ public class Paciente {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	public Set<Consulta> getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Set<Consulta> consulta) {
+		this.consulta = consulta;
+	}
+	
 	
 }

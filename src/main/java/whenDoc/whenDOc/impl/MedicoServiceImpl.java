@@ -1,14 +1,23 @@
 package whenDoc.whenDOc.impl;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Diagnostico;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
+import whenDoc.whenDOc.repository.ConsultaRepository;
+import whenDoc.whenDOc.repository.MedicamentoRepository;
 import whenDoc.whenDOc.repository.MedicoRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.MedicoService;
@@ -20,6 +29,12 @@ public class MedicoServiceImpl implements MedicoService {
 	private MedicoRepository medicoRepository;
 	@Autowired
 	private PacienteRepository pacienteRepository;
+	
+	@Autowired
+	private MedicamentoRepository medicamentoRepository;
+	
+	@Autowired
+	private ConsultaRepository consultaRepository;
 
 	@Override
 	public Medico findById(Long id) {
@@ -65,17 +80,7 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 	}
 
-	@Override
-	public Medico findByCRM(String crm) {
-		for (Medico medico : medicoRepository.findAll()) {
-			String crmMedico = medico.getCrm();
-
-			if (crmMedico.equals(crm)) {
-				return medico;
-			}
-		}
-		return null;
-	}
+	
 
 	@Override
 	public List<Medico> findAll() {
@@ -88,9 +93,9 @@ public class MedicoServiceImpl implements MedicoService {
 			Medico medico = new Medico(newMedico.getNome(), newMedico.getCrm(), newMedico.getEspecialidade(),
 					newMedico.getCpf(), newMedico.getEmail(), newMedico.getSenha(), newMedico.getTelefone());
 			medicoRepository.save(medico);
-			return HttpStatus.OK;
+			return HttpStatus.CREATED;
 		} catch (Exception e) {
-			return HttpStatus.BAD_REQUEST;
+			return HttpStatus.NOT_ACCEPTABLE;
 		}
 
 	}
@@ -108,18 +113,7 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 	}
 
-	@Override
-	public HttpStatus editCRM(String crm, Long id) {
-		Medico medico = findById(id);
-
-		if (medico.getCpf() != null) {
-			medico.setCrm(crm);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
+	
 
 	
 
@@ -199,4 +193,34 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 	}
 
+	@Override
+	public Consulta addConsulta(String descricao, Long idMed,Long idPaciente) {
+		Date d = new Date(System.currentTimeMillis());
+		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
+		Paciente paciente = pacienteRepository.findById(idPaciente).get();
+		
+		Consulta consulta = new Consulta(data,new Diagnostico("213123", descricao),paciente);
+		
+		Medico medico = medicoRepository.findById(idMed).get();
+
+		consulta.setMedico(medico);
+		
+		Consulta consulta1 = consultaRepository.save(consulta);
+		
+		
+		return consulta1;
+	}
+
+	@Override
+	public Set<Diagnostico> getDiagnosticos(Long idMed, Long idPaciente) {
+		Set<Diagnostico> diagnosticos = new HashSet<>();
+		Set<Consulta> consultas = consultaRepository.findDiagnosticoParaMedico(idMed);
+		for (Consulta consulta : consultas) {
+			if(consulta.pacienteId() == idPaciente) {
+				diagnosticos.add(consulta.getDiagnostico());
+			}
+		}
+		return diagnosticos;
+	}
+	
 }

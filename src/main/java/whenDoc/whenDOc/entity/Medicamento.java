@@ -57,14 +57,17 @@ public class Medicamento implements Serializable{
 	@PrimaryKeyJoinColumn	
 	private Paciente paciente;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn	
+	private Consulta consulta;
 	
-	@NotEmpty()
+	
 	@Column()
 	private boolean active;
 
 	public Medicamento(String nome, String quantidade, String horario,
 			 String intervalo, String dataInicial, String dataFinal,
-			 String dosagem, boolean active) {
+			 String dosagem) {
 		super();
 		this.nome = nome;
 		this.quantidade = quantidade;
@@ -73,7 +76,7 @@ public class Medicamento implements Serializable{
 		this.dataInicial = dataInicial;
 		this.dataFinal = dataFinal;
 		this.dosagem = dosagem;
-		this.active = active;
+		this.active = true;
 	}
 
 	public Medicamento() {
@@ -159,4 +162,13 @@ public class Medicamento implements Serializable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	public Consulta getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
+	}
+	
 }

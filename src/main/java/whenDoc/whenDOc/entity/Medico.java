@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -17,22 +18,22 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Medico {
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "medicos")
-	@JsonBackReference
+	@JsonBackReference(value = "cpf")
 	private Set<Paciente> pacientes;
 
 	@NotEmpty()
 	@Column(name = "nome")
 	private String nome;
-
-	@NotEmpty()
+	
+	@Id
 	@Column(name = "crm")
-	private String crm;
+	private Long crm;
 
 	@NotEmpty()
 	@Column(name = "especialidade")
 	private String especialidade;
 
-	@Id
+	
 	@Column(name = "cpf")
 	private Long cpf;
 
@@ -42,12 +43,15 @@ public class Medico {
 
 	@NotEmpty()
 	private String senha;
-
+	
+	@OneToMany(mappedBy = "medico", orphanRemoval = true)
+	@JsonBackReference(value = "consulta")
+	private Set<Consulta> consulta;
 	@NotEmpty()
 	@Column(name = "telefone")
 	private String telefone;
 
-	public Medico(@NotEmpty String nome, @NotEmpty String crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
+	public Medico(@NotEmpty String nome, @NotEmpty Long crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
 			@NotEmpty String email, @NotEmpty String senha, @NotEmpty String telefone) {
 		super();
 
@@ -61,7 +65,6 @@ public class Medico {
 	}
 
 	public Medico() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getNome() {
@@ -72,11 +75,11 @@ public class Medico {
 		this.nome = nome;
 	}
 
-	public String getCrm() {
+	public Long getCrm() {
 		return crm;
 	}
 
-	public void setCrm(String crm) {
+	public void setCrm(Long crm) {
 		this.crm = crm;
 	}
 
@@ -127,5 +130,14 @@ public class Medico {
 	public void addPaciente(Paciente paciente) {
 		this.pacientes.add(paciente);
 	}
+
+	public Set<Consulta> getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Set<Consulta> consulta) {
+		this.consulta = consulta;
+	}
+	
 
 }

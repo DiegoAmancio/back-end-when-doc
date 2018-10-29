@@ -1,14 +1,23 @@
 package whenDoc.whenDOc.entity;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Consulta implements Serializable {
@@ -23,26 +32,41 @@ public class Consulta implements Serializable {
 	private Long id;
 	
 	@NotEmpty()
-	@Column()
+	@Column(name = "data",length = 1024)
 	private String data;
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn	
+	private Diagnostico diagnostico;
 	
-	@NotEmpty()
-	@Column()
-	private Long cod_paciente;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn	
+	private Medico medico;
 	
-	@NotEmpty()
-	@Column()
-	private Long cod_medico;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn	
+	private Paciente paciente;
+	
+	@OneToMany(mappedBy = "consulta", orphanRemoval = true)
+	@JsonBackReference(value = "id_medicamento")
+	private Set<Medicamento> medicamentosReceitados;
 
-	public Consulta(String data, Long id_consulta, Long cod_paciente,
-			Long cod_medico) {
+	public Consulta(String data,Diagnostico diagnostico,Paciente paciente) {
 		super();
 		this.data = data;
-		this.cod_paciente = cod_paciente;
-		this.cod_medico = cod_medico;
+		this.diagnostico = diagnostico;
+		this.paciente = paciente;
+	}
+	public Consulta() {
+		
 	}
 
+	public Diagnostico getDiagnostico() {
+		return diagnostico;
+	}
+	public void setDiagnostico(Diagnostico diagnostico) {
+		this.diagnostico = diagnostico;
+	}
 	public String getData() {
 		return data;
 	}
@@ -51,10 +75,6 @@ public class Consulta implements Serializable {
 		this.data = data;
 	}
 
-	public Long getCod_paciente() {
-		return cod_paciente;
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -62,16 +82,12 @@ public class Consulta implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public void setCod_paciente(Long cod_paciente) {
-		this.cod_paciente = cod_paciente;
+	public void setMedico(Medico medico2) {
+		this.medico = medico2;
+		
+	}
+	public Long pacienteId() {
+		return this.paciente.getCpf();
 	}
 
-	public Long getCod_medico() {
-		return cod_medico;
-	}
-
-	public void setCod_medico(Long cod_medico) {
-		this.cod_medico = cod_medico;
-	}	
 }

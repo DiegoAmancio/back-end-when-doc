@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.MedicoService;
 
-@CrossOrigin({"*"})
+@CrossOrigin
 @RestController
 @RequestMapping("/medico")
 public class MedicoController {
@@ -23,15 +26,29 @@ public class MedicoController {
 	MedicoService medicoService;
 	
 	@RequestMapping(value = "/cadastrar", method = RequestMethod.POST)
-	public 	HttpStatus registerMedico(@RequestBody Medico medico) {
-		return medicoService.save(medico);
+	public 	ResponseEntity<Medico> registerMedico(@RequestBody Medico medico) {
+				
+		HttpStatus status = medicoService.save(medico);;
+		
+		
+		return new ResponseEntity<>(medico, status);
 		
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	Medico getMedico(@PathVariable("id") Long id ) {
-		return medicoService.findByCPF(id);
-
+	public 	ResponseEntity<Medico> getMedico(@PathVariable("id") Long id ) {
+		Medico medico = medicoService.findById(id);
+		HttpStatus status;
 		
+		if(medico.getCpf() != null) {
+		
+			status = HttpStatus.FOUND;
+		
+		}else {
+		
+			status = HttpStatus.NOT_FOUND;
+		
+		}
+		return new ResponseEntity<>(medico,status);
 	}
 	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
 	public 	Set<Paciente> getPacientes(@PathVariable("id") Long id ) {
@@ -47,9 +64,7 @@ public class MedicoController {
 			case "Nome":
 				operacao = medicoService.editNome(dado, id);
 				break;
-			case "Crm":
-				operacao = medicoService.editCRM(dado, id);
-				break;
+			
 			case "Especialidade":
 				operacao = medicoService.editEspecialidade(dado, id);
 				break;
@@ -74,6 +89,20 @@ public class MedicoController {
 		return medicoService.addPacientMed(cpfPaciente, cpf);
 		
  	}
+	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
+	public Consulta addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
+		
+		return medicoService.addConsulta(descricao, cpf, idPaciente);
+		
+ 	}
+	@RequestMapping(value = "/{cpf}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)
+	public Set<Diagnostico> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+		
+		return medicoService.getDiagnosticos(cpf,cpfPaciente);
+		
+ 	}
+	
+	
 	
 	
 }
