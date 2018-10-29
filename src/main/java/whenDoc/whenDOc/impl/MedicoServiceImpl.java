@@ -80,17 +80,7 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 	}
 
-	@Override
-	public Medico findByCRM(String crm) {
-		for (Medico medico : medicoRepository.findAll()) {
-			String crmMedico = medico.getCrm();
-
-			if (crmMedico.equals(crm)) {
-				return medico;
-			}
-		}
-		return null;
-	}
+	
 
 	@Override
 	public List<Medico> findAll() {
@@ -123,18 +113,7 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 	}
 
-	@Override
-	public HttpStatus editCRM(String crm, Long id) {
-		Medico medico = findById(id);
-
-		if (medico.getCpf() != null) {
-			medico.setCrm(crm);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
+	
 
 	
 
@@ -215,12 +194,12 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Consulta addConsulta(Set<Medicamento> idMedicamentos, Long idMed,Long idPaciente) {
+	public Consulta addConsulta(String descricao, Long idMed,Long idPaciente) {
 		Date d = new Date(System.currentTimeMillis());
 		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
 		Paciente paciente = pacienteRepository.findById(idPaciente).get();
 		
-		Consulta consulta = new Consulta(data,new Diagnostico("213123", "foda-se a descrição"),paciente);
+		Consulta consulta = new Consulta(data,new Diagnostico("213123", descricao),paciente);
 		
 		Medico medico = medicoRepository.findById(idMed).get();
 
@@ -228,20 +207,15 @@ public class MedicoServiceImpl implements MedicoService {
 		
 		Consulta consulta1 = consultaRepository.save(consulta);
 		
-		for (Medicamento medicamento : idMedicamentos) {
-			medicamento.setPaciente(paciente);
-			medicamento.setConsulta(consulta1);
-			medicamentoRepository.save(medicamento);
-		}
+		
 		return consulta1;
 	}
 
 	@Override
 	public Set<Diagnostico> getDiagnosticos(Long idMed, Long idPaciente) {
 		Set<Diagnostico> diagnosticos = new HashSet<>();
-		Medico medico = medicoRepository.findById(idMed).get();
-		
-		for (Consulta consulta : medico.getConsulta()) {
+		Set<Consulta> consultas = consultaRepository.findDiagnosticoParaMedico(idMed);
+		for (Consulta consulta : consultas) {
 			if(consulta.pacienteId() == idPaciente) {
 				diagnosticos.add(consulta.getDiagnostico());
 			}

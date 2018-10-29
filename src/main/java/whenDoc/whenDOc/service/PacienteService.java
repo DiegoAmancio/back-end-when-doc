@@ -112,5 +112,7 @@ public interface PacienteService {
 	 * @return
 	 */
 	HttpStatus deleteMedicamento(Long id, Long idMedicamento);
+
+	Set<String> getDiagnosticos(Long cpf);
 	
 }

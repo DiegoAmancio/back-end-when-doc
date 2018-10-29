@@ -1,8 +1,5 @@
 package whenDoc.whenDOc.controller;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.MedicoService;
@@ -68,9 +64,7 @@ public class MedicoController {
 			case "Nome":
 				operacao = medicoService.editNome(dado, id);
 				break;
-			case "Crm":
-				operacao = medicoService.editCRM(dado, id);
-				break;
+			
 			case "Especialidade":
 				operacao = medicoService.editEspecialidade(dado, id);
 				break;
@@ -96,17 +90,18 @@ public class MedicoController {
 		
  	}
 	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
-	public Consulta addConsulta(@RequestBody HashSet<Medicamento> medicamentos,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
+	public Consulta addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
 		
-		return medicoService.addConsulta(medicamentos, cpf, idPaciente);
+		return medicoService.addConsulta(descricao, cpf, idPaciente);
 		
  	}
-	@RequestMapping(value = "/{cpf}/disgnosticos/{cpfPaciente}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{cpf}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)
 	public Set<Diagnostico> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.getDiagnosticos(cpf,cpfPaciente);
 		
  	}
+	
 	
 	
 	

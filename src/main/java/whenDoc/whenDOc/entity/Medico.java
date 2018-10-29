@@ -26,9 +26,8 @@ public class Medico {
 	private String nome;
 	
 	@Id
-	@NotEmpty()
 	@Column(name = "crm")
-	private String crm;
+	private Long crm;
 
 	@NotEmpty()
 	@Column(name = "especialidade")
@@ -52,7 +51,7 @@ public class Medico {
 	@Column(name = "telefone")
 	private String telefone;
 
-	public Medico(@NotEmpty String nome, @NotEmpty String crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
+	public Medico(@NotEmpty String nome, @NotEmpty Long crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
 			@NotEmpty String email, @NotEmpty String senha, @NotEmpty String telefone) {
 		super();
 
@@ -66,7 +65,6 @@ public class Medico {
 	}
 
 	public Medico() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getNome() {
@@ -77,11 +75,11 @@ public class Medico {
 		this.nome = nome;
 	}
 
-	public String getCrm() {
+	public Long getCrm() {
 		return crm;
 	}
 
-	public void setCrm(String crm) {
+	public void setCrm(Long crm) {
 		this.crm = crm;
 	}
 

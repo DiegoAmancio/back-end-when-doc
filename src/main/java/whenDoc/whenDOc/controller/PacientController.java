@@ -140,7 +140,12 @@ public class PacientController {
 		return pacientService.deleteMedicamento(cpf,idMedicamento);
 		
 	}
-	
+	@RequestMapping(value = "/{cpf}/diagnosticos", method = RequestMethod.GET)
+	public 	Set<String> getHistoricoDiagnosticos(@PathVariable("cpf") Long cpf) {
+		
+		return pacientService.getDiagnosticos(cpf);
+		
+	}
 	@RequestMapping(value = "/{id}/medicamento/edit{tipoDado}", method = RequestMethod.PUT)
 	public HttpStatus editInfosPaciente(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
 		

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergia;
+import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.AlergiasRepository;
@@ -268,6 +269,19 @@ public class PacienteServiceImpl implements PacienteService {
 				return HttpStatus.OK;
 		}
 		return HttpStatus.NOT_FOUND;
+	}
+
+	@Override
+	public Set<String> getDiagnosticos(Long cpf) {
+		
+		HashSet<String> diagnosticos = new HashSet<>();
+		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
+		
+		for (Consulta consulta : paciente.get().getConsulta()) {
+			diagnosticos.add(consulta.getDiagnostico().getDescricao());
+		}
+
+		return diagnosticos;
 	}
 
 }
