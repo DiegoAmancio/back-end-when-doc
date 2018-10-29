@@ -18,7 +18,7 @@ import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.PacienteService;
 
-@CrossOrigin({"*"})
+@CrossOrigin
 @RestController
 @RequestMapping("/paciente")
 public class PacientController {
