@@ -1,5 +1,6 @@
 package whenDoc.whenDOc.controller;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
+import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.MedicoService;
@@ -101,7 +103,24 @@ public class MedicoController {
 		return medicoService.getDiagnosticos(cpf,cpfPaciente);
 		
  	}
-	
+	@RequestMapping(value = "/{cpf}/medicamento/{cpfPaciente}", method = RequestMethod.GET)
+	public ResponseEntity<Set<Medicamento>> getMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+		
+		return medicoService.getMedicamentos(cpf,cpfPaciente);
+		
+ 	}
+	@RequestMapping(value = "/{cpf}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
+	public ResponseEntity<Set<Medicamento>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medicamento> medicamentos) {
+		
+		return medicoService.addMedicamentos(cpf,cpfPaciente,medicamentos);
+		
+ 	}
+	@RequestMapping(value = "/{cpf}/paciente/{cpfPaciente}", method = RequestMethod.GET)
+	public ResponseEntity<Paciente> getPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+		
+		return medicoService.getPaciente(cpf,cpfPaciente);
+		
+ 	}
 	
 	
 	
