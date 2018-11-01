@@ -100,7 +100,7 @@ public class PacientController {
 	}
 	
 	
-	@RequestMapping(value = "/{id}/addAlergia", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}/alergia", method = RequestMethod.POST)
 	public 	HttpStatus addAlergia(@RequestBody String alergia,@PathVariable Long id) {
 		
 		return pacientService.addAlergia(alergia, id);
