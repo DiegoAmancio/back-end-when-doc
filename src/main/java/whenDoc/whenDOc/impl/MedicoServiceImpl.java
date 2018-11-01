@@ -2,6 +2,7 @@ package whenDoc.whenDOc.impl;
 
 import java.sql.Date;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Consulta;
@@ -21,6 +23,7 @@ import whenDoc.whenDOc.repository.MedicamentoRepository;
 import whenDoc.whenDOc.repository.MedicoRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.MedicoService;
+import whenDoc.whenDOc.service.PacienteService;
 
 @Service
 public class MedicoServiceImpl implements MedicoService {
@@ -32,7 +35,6 @@ public class MedicoServiceImpl implements MedicoService {
 	
 	@Autowired
 	private MedicamentoRepository medicamentoRepository;
-	
 	@Autowired
 	private ConsultaRepository consultaRepository;
 
@@ -216,11 +218,51 @@ public class MedicoServiceImpl implements MedicoService {
 		Set<Diagnostico> diagnosticos = new HashSet<>();
 		Set<Consulta> consultas = consultaRepository.findDiagnosticoParaMedico(idMed);
 		for (Consulta consulta : consultas) {
-			if(consulta.pacienteId() == idPaciente) {
 				diagnosticos.add(consulta.getDiagnostico());
 			}
-		}
 		return diagnosticos;
 	}
+
+	@Override
+	public ResponseEntity<Set<Medicamento>> getMedicamentos(Long cpf, Long cpfPaciente) {
+		
+		Medico medico = medicoRepository.findById(cpf).get();
+		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
+		
+		if(medico.getPacientes().contains(paciente)) {
+			return new ResponseEntity<>(paciente.getMedicamentos(),HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(new HashSet<>(),HttpStatus.NOT_FOUND);
+	
+	}
+
+	@Override
+	public ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente) {
+		Medico medico = medicoRepository.findById(cpf).get();
+		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
+		
+		if(medico.getPacientes().contains(paciente)) {
+			return new ResponseEntity<>(paciente,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(new Paciente(),HttpStatus.NOT_FOUND);
+	}
+
+	@Override
+	public ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente,
+			ArrayList<Medicamento> medicamentos) {
+		Medico medico = medicoRepository.findById(cpf).get();
+		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
+		
+		if(medico.getPacientes().contains(paciente)) {
+			for (int i = 0; i < medicamentos.size(); i++) {
+				Medicamento medicamento = medicamentos.get(i);
+				medicamento.setPaciente(paciente);
+				medicamentoRepository.save(medicamento);
+			}
+			return new ResponseEntity<>(paciente.getMedicamentos(),HttpStatus.OK);
+		}
+		return new ResponseEntity<>(new HashSet<>(),HttpStatus.BAD_REQUEST);	}
 	
 }

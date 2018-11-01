@@ -1,14 +1,17 @@
 package whenDoc.whenDOc.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
+import whenDoc.whenDOc.entity.Paciente;
 
 public interface MedicoService {
 	
@@ -59,4 +62,10 @@ public interface MedicoService {
 	Consulta addConsulta(String descricao,Long idMed,Long idPaciente);
 	
 	Set<Diagnostico> getDiagnosticos(Long idMed,Long idPaciente);
+
+	ResponseEntity<Set<Medicamento>> getMedicamentos(Long cpf, Long cpfPaciente);
+
+	ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente);
+
+	ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente, ArrayList<Medicamento> medicamentos);
 }
