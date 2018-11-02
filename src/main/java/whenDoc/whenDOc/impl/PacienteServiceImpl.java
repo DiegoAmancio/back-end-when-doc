@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergia;
 import whenDoc.whenDOc.entity.Consulta;
+import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.AlergiasRepository;
+import whenDoc.whenDOc.repository.ConsultaRepository;
 import whenDoc.whenDOc.repository.MedicamentoRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
 import whenDoc.whenDOc.service.PacienteService;
@@ -27,8 +29,9 @@ public class PacienteServiceImpl implements PacienteService {
 	private AlergiasRepository alergiaRepositorio;
 	@Autowired
 	private MedicamentoRepository medicamentoRepositorio;
+	@Autowired
+	private ConsultaRepository consultaRepository;
 	
-
 	@Override
 	public Paciente findByName(String nome) {
 		
@@ -272,15 +275,17 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public Set<String> getDiagnosticos(Long cpf) {
+	public Set<Diagnostico> getDiagnosticos(Long cpf) {
 		
-		HashSet<String> diagnosticos = new HashSet<>();
-		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
-		
-		for (Consulta consulta : paciente.get().getConsulta()) {
-			diagnosticos.add(consulta.getDiagnostico().getDescricao());
+		Set<Diagnostico> diagnosticos = new HashSet<>();
+		Paciente paciente = pacienteRepository.findById(cpf).get();
+		List<Consulta> consultas = consultaRepository.findAll();
+		for (int i = 0; i < consultas.size(); i++) {
+			Consulta consulta = consultas.get(i);
+			if(consulta.getPaciente().equals(paciente)) {
+				diagnosticos.add(consulta.getDiagnostico());
+			}
 		}
-
 		return diagnosticos;
 	}
 

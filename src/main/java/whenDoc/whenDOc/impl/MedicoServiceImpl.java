@@ -19,6 +19,7 @@ import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.ConsultaRepository;
+import whenDoc.whenDOc.repository.DiagnosticoRepository;
 import whenDoc.whenDOc.repository.MedicamentoRepository;
 import whenDoc.whenDOc.repository.MedicoRepository;
 import whenDoc.whenDOc.repository.PacienteRepository;
@@ -37,7 +38,10 @@ public class MedicoServiceImpl implements MedicoService {
 	private MedicamentoRepository medicamentoRepository;
 	@Autowired
 	private ConsultaRepository consultaRepository;
-
+	@Autowired
+	PacienteService pacientService;
+	
+	
 	@Override
 	public Medico findById(Long id) {
 		
@@ -200,9 +204,9 @@ public class MedicoServiceImpl implements MedicoService {
 		Date d = new Date(System.currentTimeMillis());
 		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
 		Paciente paciente = pacienteRepository.findById(idPaciente).get();
+		Diagnostico diagnostico = new Diagnostico("213123", descricao);
 		
-		Consulta consulta = new Consulta(data,new Diagnostico("213123", descricao),paciente);
-		
+		Consulta consulta = new Consulta(data,diagnostico,paciente);
 		Medico medico = medicoRepository.findById(idMed).get();
 
 		consulta.setMedico(medico);
@@ -216,10 +220,11 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public Set<Diagnostico> getDiagnosticos(Long idMed, Long idPaciente) {
 		Set<Diagnostico> diagnosticos = new HashSet<>();
-		Set<Consulta> consultas = consultaRepository.findDiagnosticoParaMedico(idMed);
-		for (Consulta consulta : consultas) {
-				diagnosticos.add(consulta.getDiagnostico());
-			}
+		Medico medico = medicoRepository.findById(idMed).get();
+		Paciente paciente = pacienteRepository.findById(idPaciente).get();
+		if(medico.getPacientes().contains(paciente)) {
+			diagnosticos = pacientService.getDiagnosticos(idPaciente);
+		}
 		return diagnosticos;
 	}
 
@@ -250,14 +255,16 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente,
+	public ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf,Long idConsulta, Long cpfPaciente,
 			ArrayList<Medicamento> medicamentos) {
 		Medico medico = medicoRepository.findById(cpf).get();
 		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
+		Consulta consulta  = consultaRepository.findById(idConsulta).get();
 		
 		if(medico.getPacientes().contains(paciente)) {
 			for (int i = 0; i < medicamentos.size(); i++) {
 				Medicamento medicamento = medicamentos.get(i);
+				medicamento.setConsulta(consulta);
 				medicamento.setPaciente(paciente);
 				medicamentoRepository.save(medicamento);
 			}

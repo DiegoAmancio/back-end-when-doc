@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 
 import whenDoc.whenDOc.entity.Alergia;
+import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 
@@ -113,6 +114,6 @@ public interface PacienteService {
 	 */
 	HttpStatus deleteMedicamento(Long id, Long idMedicamento);
 
-	Set<String> getDiagnosticos(Long cpf);
+	Set<Diagnostico> getDiagnosticos(Long cpf);
 	
 }
