@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import whenDoc.whenDOc.entity.Alergia;
+import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medicamento;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.PacienteService;
@@ -141,7 +142,7 @@ public class PacientController {
 		
 	}
 	@RequestMapping(value = "/{cpf}/diagnosticos", method = RequestMethod.GET)
-	public 	Set<String> getHistoricoDiagnosticos(@PathVariable("cpf") Long cpf) {
+	public 	Set<Diagnostico> getHistoricoDiagnosticos(@PathVariable("cpf") Long cpf) {
 		
 		return pacientService.getDiagnosticos(cpf);
 		

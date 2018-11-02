@@ -13,8 +13,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "diagnostico")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Diagnostico implements Serializable{
 	
 	@Transient
@@ -63,5 +66,20 @@ public class Diagnostico implements Serializable{
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Consulta getConsulta() {
+		return consulta;
+	}
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 }

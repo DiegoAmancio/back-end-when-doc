@@ -67,5 +67,5 @@ public interface MedicoService {
 
 	ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente);
 
-	ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente, ArrayList<Medicamento> medicamentos);
+	ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente, Long cpfPaciente2, ArrayList<Medicamento> medicamentos);
 }

@@ -109,10 +109,10 @@ public class MedicoController {
 		return medicoService.getMedicamentos(cpf,cpfPaciente);
 		
  	}
-	@RequestMapping(value = "/{cpf}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
-	public ResponseEntity<Set<Medicamento>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medicamento> medicamentos) {
+	@RequestMapping(value = "/{cpf}/{idConsulta}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
+	public ResponseEntity<Set<Medicamento>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("idConsulta") Long idConsulta,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medicamento> medicamentos) {
 		
-		return medicoService.addMedicamentos(cpf,cpfPaciente,medicamentos);
+		return medicoService.addMedicamentos(cpf,idConsulta,cpfPaciente,medicamentos);
 		
  	}
 	@RequestMapping(value = "/{cpf}/paciente/{cpfPaciente}", method = RequestMethod.GET)

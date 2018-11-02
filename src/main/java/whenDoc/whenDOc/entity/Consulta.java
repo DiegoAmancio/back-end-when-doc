@@ -18,8 +18,10 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})	
 public class Consulta implements Serializable {
 	
 	@Transient
@@ -36,7 +38,6 @@ public class Consulta implements Serializable {
 	private String data;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn	
 	private Diagnostico diagnostico;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -88,6 +89,24 @@ public class Consulta implements Serializable {
 	}
 	public Long pacienteId() {
 		return this.paciente.getCpf();
+	}
+	public Paciente getPaciente() {
+		return paciente;
+	}
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+	public Set<Medicamento> getMedicamentosReceitados() {
+		return medicamentosReceitados;
+	}
+	public void setMedicamentosReceitados(Set<Medicamento> medicamentosReceitados) {
+		this.medicamentosReceitados = medicamentosReceitados;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public Medico getMedico() {
+		return medico;
 	}
 
 }
