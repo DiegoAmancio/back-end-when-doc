@@ -50,7 +50,7 @@ public class Consulta implements Serializable {
 	
 	@OneToMany(mappedBy = "consulta", orphanRemoval = true)
 	@JsonBackReference(value = "id_medicamento")
-	private Set<Medicamento> medicamentosReceitados;
+	private Set<Medication> medicamentosReceitados;
 
 	public Consulta(String data,Diagnostico diagnostico,Paciente paciente) {
 		super();
@@ -96,10 +96,10 @@ public class Consulta implements Serializable {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
-	public Set<Medicamento> getMedicamentosReceitados() {
+	public Set<Medication> getMedicamentosReceitados() {
 		return medicamentosReceitados;
 	}
-	public void setMedicamentosReceitados(Set<Medicamento> medicamentosReceitados) {
+	public void setMedicamentosReceitados(Set<Medication> medicamentosReceitados) {
 		this.medicamentosReceitados = medicamentosReceitados;
 	}
 	public static long getSerialversionuid() {

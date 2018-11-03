@@ -15,14 +15,14 @@ import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
-import whenDoc.whenDOc.repository.ConsultaRepository;
+import whenDoc.whenDOc.repository.QueryRepository;
 import whenDoc.whenDOc.repository.DiagnosticoRepository;
-import whenDoc.whenDOc.repository.MedicamentoRepository;
-import whenDoc.whenDOc.repository.MedicoRepository;
-import whenDoc.whenDOc.repository.PacienteRepository;
+import whenDoc.whenDOc.repository.MedicationRepository;
+import whenDoc.whenDOc.repository.MedicRepository;
+import whenDoc.whenDOc.repository.PatientRepository;
 import whenDoc.whenDOc.service.MedicoService;
 import whenDoc.whenDOc.service.PacienteService;
 
@@ -30,14 +30,14 @@ import whenDoc.whenDOc.service.PacienteService;
 public class MedicoServiceImpl implements MedicoService {
 
 	@Autowired
-	private MedicoRepository medicoRepository;
+	private MedicRepository medicoRepository;
 	@Autowired
-	private PacienteRepository pacienteRepository;
+	private PatientRepository pacienteRepository;
 	
 	@Autowired
-	private MedicamentoRepository medicamentoRepository;
+	private MedicationRepository medicamentoRepository;
 	@Autowired
-	private ConsultaRepository consultaRepository;
+	private QueryRepository consultaRepository;
 	@Autowired
 	PacienteService pacientService;
 	
@@ -229,7 +229,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Medicamento>> getMedicamentos(Long cpf, Long cpfPaciente) {
+	public ResponseEntity<Set<Medication>> getMedicamentos(Long cpf, Long cpfPaciente) {
 		
 		Medico medico = medicoRepository.findById(cpf).get();
 		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
@@ -255,15 +255,15 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf,Long idConsulta, Long cpfPaciente,
-			ArrayList<Medicamento> medicamentos) {
+	public ResponseEntity<Set<Medication>> addMedicamentos(Long cpf,Long idConsulta, Long cpfPaciente,
+			ArrayList<Medication> medicamentos) {
 		Medico medico = medicoRepository.findById(cpf).get();
 		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
 		Consulta consulta  = consultaRepository.findById(idConsulta).get();
 		
 		if(medico.getPacientes().contains(paciente)) {
 			for (int i = 0; i < medicamentos.size(); i++) {
-				Medicamento medicamento = medicamentos.get(i);
+				Medication medicamento = medicamentos.get(i);
 				medicamento.setConsulta(consulta);
 				medicamento.setPaciente(paciente);
 				medicamentoRepository.save(medicamento);

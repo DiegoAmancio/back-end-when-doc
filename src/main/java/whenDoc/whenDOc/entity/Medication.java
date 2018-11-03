@@ -15,7 +15,7 @@ import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Medicamento implements Serializable{
+public class Medication implements Serializable{
 	
 	@Transient
 	private static final long serialVersionUID= 1L;
@@ -65,7 +65,7 @@ public class Medicamento implements Serializable{
 	@Column()
 	private boolean active;
 
-	public Medicamento(String nome, String quantidade, String horario,
+	public Medication(String nome, String quantidade, String horario,
 			 String intervalo, String dataInicial, String dataFinal,
 			 String dosagem) {
 		super();
@@ -79,7 +79,7 @@ public class Medicamento implements Serializable{
 		this.active = true;
 	}
 
-	public Medicamento() {
+	public Medication() {
 		// TODO Auto-generated constructor stub
 	}
 

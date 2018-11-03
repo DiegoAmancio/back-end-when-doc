@@ -70,7 +70,7 @@ public class Paciente {
 	
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
 	@JsonBackReference(value = "crm")
-	private Set<Medicamento> medicamentos;
+	private Set<Medication> medicamentos;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
@@ -114,11 +114,11 @@ public class Paciente {
 		return cpf;
 	}
 	
-	public Set<Medicamento> getMedicamentos() {
+	public Set<Medication> getMedicamentos() {
 		return medicamentos;
 	}
 
-	public void setMedicamentos(Set<Medicamento> medicamentos) {
+	public void setMedicamentos(Set<Medication> medicamentos) {
 		this.medicamentos = medicamentos;
 	}
 

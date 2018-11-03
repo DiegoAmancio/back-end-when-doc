@@ -4,28 +4,21 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import whenDoc.whenDOc.entity.Alergia;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Paciente;
 
 public interface PacienteService {
-	
-	
-	/*
-	 * Find Paciente by name.
-	 * @param nome
-	 * @return
-	 */
-	Paciente findByName(String nome);
-	
+
 	/*
 	 * Find Paciente by cpf.
 	 * @param cpf
 	 * @return
 	 */
-	Paciente findByCPF(Long cpf);
+	ResponseEntity<Paciente> findByCPF(Long cpf);
 	
 	/*
 	 * Find all Paciente 
@@ -36,20 +29,20 @@ public interface PacienteService {
 	 * Save Paciente into database.
 	 * @param paciente
 	 */
-	Paciente save(Paciente newPaciente);
+	ResponseEntity<Paciente> save(Paciente newPaciente);
 	
 	/*
 	 * Edit Paciente name.
 	 * @param nome, id
 	 */
-	HttpStatus editNome(String nome, Long id);
+	HttpStatus editName(String nome, Long id);
 	
 	
 	/*
 	 * Edit Paciente senha.
 	 * @param senha, id
 	 */
-	HttpStatus editSenha(String senha, Long id);
+	HttpStatus editPassword(String senha, Long id);
 	/**
 	 * 
 	 * @param email
@@ -89,23 +82,29 @@ public interface PacienteService {
 	 * @param id
 	 * @return
 	 */
-	HttpStatus addEndereco(Long id); 
-	HttpStatus addAlergia(String nomeAlergia,Long id);
+	HttpStatus addEndereco(Long id);
 	/**
-	 * 
+	 * add patient's allergy in system
+	 * @param allergysName
+	 * @param patientCpf
+	 * @return http status ACCEPTED or NOT_FOUND
+	 */
+	HttpStatus addAllergy(String allergysName,Long patientCpf);
+	/**
+	 * add patient's medication in system
 	 * @param medicamento
 	 * @param id
 	 * @return
 	 */
-	HttpStatus addMedicamento(Medicamento medicamento, Long id);
+	HttpStatus addMedication(Medication medicamento, Long id);
 	/**
 	 * 
 	 * @param cpf
 	 * @return
 	 */
-	Set<Medicamento> getMedicamentos(Long cpf);
+	ResponseEntity<Set<Medication>> getMedicamentos(Long cpf);
 
-	Set<Alergia> getAlergias(Long cpf);
+	ResponseEntity<Set<Alergia>> getAlergias(Long cpf);
 	/**
 	 * 
 	 * @param id

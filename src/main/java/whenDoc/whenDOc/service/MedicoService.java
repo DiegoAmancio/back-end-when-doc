@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 
@@ -63,9 +63,9 @@ public interface MedicoService {
 	
 	Set<Diagnostico> getDiagnosticos(Long idMed,Long idPaciente);
 
-	ResponseEntity<Set<Medicamento>> getMedicamentos(Long cpf, Long cpfPaciente);
+	ResponseEntity<Set<Medication>> getMedicamentos(Long cpf, Long cpfPaciente);
 
 	ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente);
 
-	ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente, Long cpfPaciente2, ArrayList<Medicamento> medicamentos);
+	ResponseEntity<Set<Medication>> addMedicamentos(Long cpf, Long cpfPaciente, Long cpfPaciente2, ArrayList<Medication> medicamentos);
 }

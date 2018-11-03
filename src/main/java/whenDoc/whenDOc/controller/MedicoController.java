@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.service.MedicoService;
@@ -104,13 +104,13 @@ public class MedicoController {
 		
  	}
 	@RequestMapping(value = "/{cpf}/medicamento/{cpfPaciente}", method = RequestMethod.GET)
-	public ResponseEntity<Set<Medicamento>> getMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+	public ResponseEntity<Set<Medication>> getMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.getMedicamentos(cpf,cpfPaciente);
 		
  	}
 	@RequestMapping(value = "/{cpf}/{idConsulta}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
-	public ResponseEntity<Set<Medicamento>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("idConsulta") Long idConsulta,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medicamento> medicamentos) {
+	public ResponseEntity<Set<Medication>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("idConsulta") Long idConsulta,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medication> medicamentos) {
 		
 		return medicoService.addMedicamentos(cpf,idConsulta,cpfPaciente,medicamentos);
 		

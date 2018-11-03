@@ -3,9 +3,9 @@ package whenDoc.whenDOc.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import whenDoc.whenDOc.entity.Medico;
+import whenDoc.whenDOc.entity.Paciente;
 
 @Repository
-public interface MedicoRepository extends JpaRepository<Medico, Long> {
+public interface PatientRepository extends JpaRepository<Paciente, Long> {
 	
 }
