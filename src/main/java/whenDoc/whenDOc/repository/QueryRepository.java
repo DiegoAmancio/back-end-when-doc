@@ -10,7 +10,7 @@ import whenDoc.whenDOc.entity.Consulta;
 
 
 @Repository
-public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
+public interface QueryRepository extends JpaRepository<Consulta, Long> {
 	
 	@Query("select u from Consulta u where u.paciente = ?1")
 	Set<Consulta> findDiagnosticoPaciente(Long cpf);

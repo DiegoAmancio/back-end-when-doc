@@ -38,8 +38,7 @@ public class Paciente {
 	private String nome;
 
 	@Id
-	@Column
-	private Long cpf;
+	private String cpf;
 
 	@NotEmpty()
 	@Column(name = "email")
@@ -70,7 +69,7 @@ public class Paciente {
 	
 	@OneToMany(mappedBy = "paciente", orphanRemoval = true)
 	@JsonBackReference(value = "crm")
-	private Set<Medicamento> medicamentos;
+	private Set<Medication> medicamentos;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Endereco endereco;
@@ -86,7 +85,7 @@ public class Paciente {
 		super();
 	}
 
-	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email, @NotEmpty String emailSec,
+	public Paciente(@NotEmpty String nome, @NotEmpty String cpf, @NotEmpty String email, @NotEmpty String emailSec,
 			@NotEmpty String senha, @NotEmpty String telefone, @NotEmpty String telefoneSec,
 			@NotEmpty String tipoSanguineo, boolean app) {
 		super();
@@ -110,15 +109,15 @@ public class Paciente {
 		this.nome = nome;
 	}
 
-	public Long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 	
-	public Set<Medicamento> getMedicamentos() {
+	public Set<Medication> getMedicamentos() {
 		return medicamentos;
 	}
 
-	public void setMedicamentos(Set<Medicamento> medicamentos) {
+	public void setMedicamentos(Set<Medication> medicamentos) {
 		this.medicamentos = medicamentos;
 	}
 

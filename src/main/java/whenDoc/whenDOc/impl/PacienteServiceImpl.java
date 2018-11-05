@@ -1,5 +1,6 @@
 package whenDoc.whenDOc.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -7,286 +8,281 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import whenDoc.whenDOc.entity.Alergia;
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Paciente;
-import whenDoc.whenDOc.repository.AlergiasRepository;
-import whenDoc.whenDOc.repository.ConsultaRepository;
-import whenDoc.whenDOc.repository.MedicamentoRepository;
-import whenDoc.whenDOc.repository.PacienteRepository;
+import whenDoc.whenDOc.repository.AllergysRepository;
+import whenDoc.whenDOc.repository.QueryRepository;
+import whenDoc.whenDOc.repository.MedicationRepository;
+import whenDoc.whenDOc.repository.PatientRepository;
 import whenDoc.whenDOc.service.PacienteService;
 
+/**
+ * 
+ * @author diegoap
+ *
+ */
 @Service
 public class PacienteServiceImpl implements PacienteService {
-	
+
 	@Autowired
-	private PacienteRepository pacienteRepository;
+	private PatientRepository patientRepository;
 	@Autowired
-	private AlergiasRepository alergiaRepositorio;
+	private AllergysRepository allergyRepository;
 	@Autowired
-	private MedicamentoRepository medicamentoRepositorio;
+	private MedicationRepository medicationRepository;
 	@Autowired
-	private ConsultaRepository consultaRepository;
-	
-	@Override
-	public Paciente findByName(String nome) {
-		
-		for (Paciente paciente : pacienteRepository.findAll()) {
-			String nomePaciente = paciente.getNome();
-			
-			if (nomePaciente.equals(nome)) {
-				return paciente;
-			}
-		}
-		return null;
-	}
+	private QueryRepository queryRepository;
 
 	@Override
-	public Paciente findByCPF(Long cpf) {
-		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
-		if(paciente.isPresent()) {
-			return paciente.get();
-		}else {
-			return new Paciente();
+	public ResponseEntity<Paciente> findByCPF(String cpf) {
+
+		Optional<Paciente> paciente = patientRepository.findById(cpf);
+
+		if (paciente.isPresent()) {
+			return new ResponseEntity<>(paciente.get(), HttpStatus.FOUND);
+		} else {
+			return new ResponseEntity<>(new Paciente(), HttpStatus.NOT_FOUND);
 		}
-		
+
 	}
-	
+
 	@Override
 	public List<Paciente> findAll() {
-		return pacienteRepository.findAll();
+		return patientRepository.findAll();
 	}
 
 	@Override
-	public Paciente save(Paciente newPaciente) {
+	public ResponseEntity<Paciente> save(Paciente newPaciente) {
 		try {
-			Paciente paciente = new Paciente(newPaciente.getNome(), newPaciente.getCpf(), newPaciente.getEmail(), newPaciente.getEmailSec(),
-					newPaciente.getSenha(), newPaciente.getTelefone(), newPaciente.getTelefoneSec(), newPaciente.getTipoSanguineo(), 
-					newPaciente.isApp());
-		
+			Paciente paciente = new Paciente(newPaciente.getNome(), newPaciente.getCpf(), newPaciente.getEmail(),
+					newPaciente.getEmailSec(), newPaciente.getSenha(), newPaciente.getTelefone(),
+					newPaciente.getTelefoneSec(), newPaciente.getTipoSanguineo(), newPaciente.isApp());
+
 			paciente.setEndereco(newPaciente.getEndereco());
-			
-					
-			pacienteRepository.save(paciente);
-			return paciente;
+
+			patientRepository.save(paciente);
+			return new ResponseEntity<>(paciente, HttpStatus.CREATED);
 		} catch (Exception e) {
 
-			return new Paciente();
-		
+			return new ResponseEntity<>(new Paciente(), HttpStatus.NOT_ACCEPTABLE);
+
 		}
 	}
 
 	@Override
-	public HttpStatus editNome(String nome, Long id) {
-		
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
+	public HttpStatus editName(String nome, String id) {
+
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
 			paciente.setNome(nome);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
 
-	
 	@Override
-	public HttpStatus editSenha(String senha, Long id) {
-		
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
-			
+	public HttpStatus editPassword(String senha, String id) {
+
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
+
 			paciente.setSenha(senha);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
-	
+
 	@Override
-	public HttpStatus editEmail(String email, Long id) {
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
-			
+	public HttpStatus editEmail(String email, String id) {
+
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
+
 			paciente.setEmail(email);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
-	
+
 	@Override
-	public HttpStatus editEmailSec(String emailSec, Long id) {
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
-			
+	public HttpStatus editEmailSec(String emailSec, String id) {
+
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
+
 			paciente.setEmail(emailSec);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
-	
+
 	@Override
-	public HttpStatus editTelefone(String telefone, Long id) {
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
-			
+	public HttpStatus editTelefone(String telefone, String id) {
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
+
 			paciente.setEmail(telefone);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
-	
+
 	@Override
-	public HttpStatus editTelefoneSec(String telefoneSec, Long id) {
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
-			
+	public HttpStatus editTelefoneSec(String telefoneSec, String id) {
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
+
 			paciente.setEmail(telefoneSec);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
-	
+
 	@Override
-	public HttpStatus editTipoSanguineo(String tipoSanguineo, Long id) {
-		
-		Paciente paciente = findByCPF(id);
-		
-		if(paciente.getCpf() != null) {
+	public HttpStatus editTipoSanguineo(String tipoSanguineo, String id) {
+
+		Paciente paciente = patientRepository.findById(id).get();
+
+		if (paciente.getCpf() != null) {
 			paciente.setTipoSanguineo(tipoSanguineo);
-			pacienteRepository.save(paciente);
+			patientRepository.save(paciente);
 			return HttpStatus.OK;
-		}else {
+		} else {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
 
-	
-
-	
-
 	@Override
-	public HttpStatus addAlergia(String nomeAlergia, Long id) {
-		Optional<Paciente> paciente = pacienteRepository.findById(id);
-		
-		if(paciente.isPresent()) {
-			
+	public HttpStatus addAllergy(String nomeAlergia, String id) {
+
+		Optional<Paciente> paciente = patientRepository.findById(id);
+
+		if (paciente.isPresent()) {
+
 			Alergia alergia = new Alergia();
-			
+
 			alergia.setNome_Alergia(nomeAlergia);
 			alergia.setPaciente(paciente.get());
-			
-			alergiaRepositorio.save(alergia);
-		
-			return HttpStatus.OK;
+
+			allergyRepository.save(alergia);
+
+			return HttpStatus.ACCEPTED;
 		}
-		
-		
-	
+
 		return HttpStatus.NOT_FOUND;
-		
-		
-		
+
 	}
 
+
 	@Override
-	public HttpStatus addEndereco(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public HttpStatus addMedicamento(Medicamento medicamento, Long id) {
-		
-		Optional<Paciente> paciente = pacienteRepository.findById(id);
-		
-		if(paciente.isPresent()) {
-		
+	public HttpStatus addMedication(Medication medicamento, String id) {
+
+		Optional<Paciente> paciente = patientRepository.findById(id);
+
+		if (paciente.isPresent()) {
+
 			medicamento.setPaciente(paciente.get());
-			
-			medicamentoRepositorio.save(medicamento);
-		
+
+			medicationRepository.save(medicamento);
+
+			return HttpStatus.ACCEPTED;
+		}
+
+		return HttpStatus.NOT_FOUND;
+
+	}
+
+	@Override
+	public ResponseEntity<Set<Medication>> getMedicamentos(String cpf) {
+
+		Optional<Paciente> paciente = patientRepository.findById(cpf);
+
+		if (paciente.isPresent()) {
+
+			return new ResponseEntity<>(paciente.get().getMedicamentos(), HttpStatus.FOUND);
+
+		}
+
+		return new ResponseEntity<>(new HashSet<Medication>(), HttpStatus.NOT_FOUND);
+	}
+
+	@Override
+	public ResponseEntity<Set<Alergia>> getAlergias(String cpf) {
+		Optional<Paciente> paciente = patientRepository.findById(cpf);
+
+		if (paciente.isPresent()) {
+
+			return new ResponseEntity<>(paciente.get().getAlergias(), HttpStatus.FOUND);
+		}
+
+		return new ResponseEntity<>(new HashSet<Alergia>(), HttpStatus.NOT_FOUND);
+	}
+
+	@Override
+	public HttpStatus deleteMedicamento(String id, Long idMedicamento) {
+
+		Optional<Medication> medicamento = medicationRepository.findById(idMedicamento);
+		Optional<Paciente> paciente = patientRepository.findById(id);
+
+		if (medicamento.isPresent() && medicamento.get().getPaciente().getCpf().equals(paciente.get().getCpf())) {
+			medicamento.get().setPaciente(null);
+			medicationRepository.delete(medicamento.get());
 			return HttpStatus.OK;
 		}
-		
-		return HttpStatus.NOT_FOUND;
-		
-	}
-
-	@Override
-	public Set<Medicamento> getMedicamentos(Long cpf) {
-		
-		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
-		
-		if(paciente.isPresent()) {
-			
-			return paciente.get().getMedicamentos();
-		
-		}
-		
-		return new HashSet<Medicamento>();
-	}
-
-	@Override
-	public Set<Alergia> getAlergias(Long cpf) {
-		Optional<Paciente> paciente = pacienteRepository.findById(cpf);
-		
-		if(paciente.isPresent()) {
-			
-			return paciente.get().getAlergias();
-		
-		}
-		
-		return new HashSet<Alergia>();
-	}
-
-	@Override
-	public HttpStatus deleteMedicamento(Long id, Long idMedicamento) {
-		
-		Optional<Medicamento> medicamento = medicamentoRepositorio.findById(idMedicamento);
-		Optional<Paciente> paciente = pacienteRepository.findById(id);
-		
-		if(medicamento.isPresent() && 
-				medicamento.get().getPaciente().getCpf().equals(paciente.get().getCpf())) {
-				medicamento.get().setPaciente(null);
-				medicamentoRepositorio.delete(medicamento.get());
-				return HttpStatus.OK;
-		}
 		return HttpStatus.NOT_FOUND;
 	}
 
 	@Override
-	public Set<Diagnostico> getDiagnosticos(Long cpf) {
-		
+	public Set<Diagnostico> getDiagnosticos(String cpf) {
+
 		Set<Diagnostico> diagnosticos = new HashSet<>();
-		Paciente paciente = pacienteRepository.findById(cpf).get();
-		List<Consulta> consultas = consultaRepository.findAll();
+		Paciente paciente = patientRepository.findById(cpf).get();
+		List<Consulta> consultas = queryRepository.findAll();
 		for (int i = 0; i < consultas.size(); i++) {
 			Consulta consulta = consultas.get(i);
-			if(consulta.getPaciente().equals(paciente)) {
+			if (consulta.getPaciente().equals(paciente)) {
 				diagnosticos.add(consulta.getDiagnostico());
 			}
 		}
 		return diagnosticos;
+	}
+
+	@Override
+	public ResponseEntity<Paciente> loginPaciente(String email, String senha) {
+		List<Paciente> patients = patientRepository.findAll();
+//		for (Paciente patient : patients) {
+//			if(patient.getEmail().equals(email) && patient.getSenha().equals(senha)) {
+//				return new ResponseEntity<Paciente>(patient, HttpStatus.FOUND);
+//			}
+//		}
+		
+			
+		
+		return new ResponseEntity<Paciente>(new Paciente(), HttpStatus.NOT_FOUND);
 	}
 
 }

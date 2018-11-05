@@ -4,28 +4,21 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import whenDoc.whenDOc.entity.Alergia;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Paciente;
 
 public interface PacienteService {
-	
-	
-	/*
-	 * Find Paciente by name.
-	 * @param nome
-	 * @return
-	 */
-	Paciente findByName(String nome);
-	
+
 	/*
 	 * Find Paciente by cpf.
 	 * @param cpf
 	 * @return
 	 */
-	Paciente findByCPF(Long cpf);
+	ResponseEntity<Paciente> findByCPF(String cpf);
 	
 	/*
 	 * Find all Paciente 
@@ -36,84 +29,86 @@ public interface PacienteService {
 	 * Save Paciente into database.
 	 * @param paciente
 	 */
-	Paciente save(Paciente newPaciente);
+	ResponseEntity<Paciente> save(Paciente newPaciente);
 	
 	/*
 	 * Edit Paciente name.
 	 * @param nome, id
 	 */
-	HttpStatus editNome(String nome, Long id);
+	HttpStatus editName(String nome, String id);
 	
 	
 	/*
 	 * Edit Paciente senha.
 	 * @param senha, id
 	 */
-	HttpStatus editSenha(String senha, Long id);
+	HttpStatus editPassword(String senha, String id);
 	/**
 	 * 
 	 * @param email
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editEmail(String email, Long id);
+	HttpStatus editEmail(String email, String id);
 	/**
 	 * 
 	 * @param emailSec
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editEmailSec(String emailSec, Long id);
+	HttpStatus editEmailSec(String emailSec, String id);
 	/**
 	 * 
 	 * @param telefone
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editTelefone(String telefone, Long id);
+	HttpStatus editTelefone(String telefone, String id);
 	/**
 	 * 
 	 * @param telefoneSec
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editTelefoneSec(String telefoneSec, Long id);
+	HttpStatus editTelefoneSec(String telefoneSec, String id);
 	
 	/*
 	 * Edit Paciente tipoSanguineo.
 	 * @param tipoSanguineo, id
 	 */
-	HttpStatus editTipoSanguineo(String tipoSanguineo, Long id);
+	HttpStatus editTipoSanguineo(String tipoSanguineo, String id);
 	/**
-	 * 
-	 * @param id
-	 * @return
+	 * add patient's allergy in system
+	 * @param allergysName
+	 * @param patientCpf
+	 * @return http status ACCEPTED or NOT_FOUND
 	 */
-	HttpStatus addEndereco(Long id); 
-	HttpStatus addAlergia(String nomeAlergia,Long id);
+	HttpStatus addAllergy(String allergysName,String patientCpf);
 	/**
-	 * 
+	 * add patient's medication in system
 	 * @param medicamento
 	 * @param id
 	 * @return
 	 */
-	HttpStatus addMedicamento(Medicamento medicamento, Long id);
+	HttpStatus addMedication(Medication medicamento, String id);
 	/**
 	 * 
 	 * @param cpf
 	 * @return
 	 */
-	Set<Medicamento> getMedicamentos(Long cpf);
+	ResponseEntity<Set<Medication>> getMedicamentos(String cpf);
 
-	Set<Alergia> getAlergias(Long cpf);
+	ResponseEntity<Set<Alergia>> getAlergias(String cpf);
 	/**
 	 * 
 	 * @param id
 	 * @param idMedicamento
 	 * @return
 	 */
-	HttpStatus deleteMedicamento(Long id, Long idMedicamento);
+	HttpStatus deleteMedicamento(String id, Long idMedicamento);
 
-	Set<Diagnostico> getDiagnosticos(Long cpf);
+	Set<Diagnostico> getDiagnosticos(String cpf);
+	
+	ResponseEntity<Paciente> loginPaciente(String endereco,String senha);
 	
 }

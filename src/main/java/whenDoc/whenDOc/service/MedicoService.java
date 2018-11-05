@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 import whenDoc.whenDOc.entity.Consulta;
 import whenDoc.whenDOc.entity.Diagnostico;
-import whenDoc.whenDOc.entity.Medicamento;
+import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 
@@ -20,7 +20,7 @@ public interface MedicoService {
 	 * @param id
 	 * @return
 	 */
-	Medico findById(Long id);
+	Medico findById(String id);
 	
 	/*
 	 * Find Medico by name.
@@ -34,7 +34,7 @@ public interface MedicoService {
 	 * @param cpf
 	 * @return
 	 */
-	Medico findByCPF(Long cpf);
+	Medico findByCPF(String cpf);
 	
 
 	List<Medico> findAll();
@@ -46,26 +46,26 @@ public interface MedicoService {
 	 */
 	HttpStatus save(Medico newMedico);
 
-	HttpStatus editNome(String nome, Long id);
+	HttpStatus editNome(String nome, String id);
 	
 	
-	HttpStatus editEspecialidade(String especialidade, Long id);
+	HttpStatus editEspecialidade(String especialidade, String id);
 	
-	HttpStatus editEmail(String email, Long id);
+	HttpStatus editEmail(String email, String id);
 	
-	HttpStatus editSenha(String senha, Long id);
+	HttpStatus editSenha(String senha, String id);
 	
-	HttpStatus editTelefone(String telefone, Long id);
+	HttpStatus editTelefone(String telefone, String id);
 	
-	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
+	HttpStatus addPacientMed(String cpfPaciente,String idMed);
 	
-	Consulta addConsulta(String descricao,Long idMed,Long idPaciente);
+	Consulta addConsulta(String descricao,String idMed,String idPaciente);
 	
-	Set<Diagnostico> getDiagnosticos(Long idMed,Long idPaciente);
+	Set<Diagnostico> getDiagnosticos(String idMed,String idPaciente);
 
-	ResponseEntity<Set<Medicamento>> getMedicamentos(Long cpf, Long cpfPaciente);
+	ResponseEntity<Set<Medication>> getMedicamentos(String cpf, String cpfPaciente);
 
-	ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente);
+	ResponseEntity<Paciente> getPaciente(String cpf, String cpfPaciente);
 
-	ResponseEntity<Set<Medicamento>> addMedicamentos(Long cpf, Long cpfPaciente, Long cpfPaciente2, ArrayList<Medicamento> medicamentos);
+	ResponseEntity<Set<Medication>> addMedicamentos(String cpf, Long idConsulta, String cpfPaciente, ArrayList<Medication> medicamentos);
 }
