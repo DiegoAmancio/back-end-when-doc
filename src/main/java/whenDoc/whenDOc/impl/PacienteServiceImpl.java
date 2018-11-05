@@ -1,5 +1,6 @@
 package whenDoc.whenDOc.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class PacienteServiceImpl implements PacienteService {
 	private QueryRepository queryRepository;
 
 	@Override
-	public ResponseEntity<Paciente> findByCPF(Long cpf) {
+	public ResponseEntity<Paciente> findByCPF(String cpf) {
 
 		Optional<Paciente> paciente = patientRepository.findById(cpf);
 
@@ -75,7 +76,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editName(String nome, Long id) {
+	public HttpStatus editName(String nome, String id) {
 
 		Paciente paciente = patientRepository.findById(id).get();
 
@@ -89,7 +90,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editPassword(String senha, Long id) {
+	public HttpStatus editPassword(String senha, String id) {
 
 		Paciente paciente = patientRepository.findById(id).get();
 
@@ -104,7 +105,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editEmail(String email, Long id) {
+	public HttpStatus editEmail(String email, String id) {
 
 		Paciente paciente = patientRepository.findById(id).get();
 
@@ -119,7 +120,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editEmailSec(String emailSec, Long id) {
+	public HttpStatus editEmailSec(String emailSec, String id) {
 
 		Paciente paciente = patientRepository.findById(id).get();
 
@@ -134,7 +135,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editTelefone(String telefone, Long id) {
+	public HttpStatus editTelefone(String telefone, String id) {
 		Paciente paciente = patientRepository.findById(id).get();
 
 		if (paciente.getCpf() != null) {
@@ -148,7 +149,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editTelefoneSec(String telefoneSec, Long id) {
+	public HttpStatus editTelefoneSec(String telefoneSec, String id) {
 		Paciente paciente = patientRepository.findById(id).get();
 
 		if (paciente.getCpf() != null) {
@@ -162,7 +163,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus editTipoSanguineo(String tipoSanguineo, Long id) {
+	public HttpStatus editTipoSanguineo(String tipoSanguineo, String id) {
 
 		Paciente paciente = patientRepository.findById(id).get();
 
@@ -176,7 +177,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus addAllergy(String nomeAlergia, Long id) {
+	public HttpStatus addAllergy(String nomeAlergia, String id) {
 
 		Optional<Paciente> paciente = patientRepository.findById(id);
 
@@ -196,14 +197,9 @@ public class PacienteServiceImpl implements PacienteService {
 
 	}
 
-	@Override
-	public HttpStatus addEndereco(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public HttpStatus addMedication(Medication medicamento, Long id) {
+	public HttpStatus addMedication(Medication medicamento, String id) {
 
 		Optional<Paciente> paciente = patientRepository.findById(id);
 
@@ -221,7 +217,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Medication>> getMedicamentos(Long cpf) {
+	public ResponseEntity<Set<Medication>> getMedicamentos(String cpf) {
 
 		Optional<Paciente> paciente = patientRepository.findById(cpf);
 
@@ -235,7 +231,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Alergia>> getAlergias(Long cpf) {
+	public ResponseEntity<Set<Alergia>> getAlergias(String cpf) {
 		Optional<Paciente> paciente = patientRepository.findById(cpf);
 
 		if (paciente.isPresent()) {
@@ -247,7 +243,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public HttpStatus deleteMedicamento(Long id, Long idMedicamento) {
+	public HttpStatus deleteMedicamento(String id, Long idMedicamento) {
 
 		Optional<Medication> medicamento = medicationRepository.findById(idMedicamento);
 		Optional<Paciente> paciente = patientRepository.findById(id);
@@ -261,7 +257,7 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public Set<Diagnostico> getDiagnosticos(Long cpf) {
+	public Set<Diagnostico> getDiagnosticos(String cpf) {
 
 		Set<Diagnostico> diagnosticos = new HashSet<>();
 		Paciente paciente = patientRepository.findById(cpf).get();
@@ -273,6 +269,20 @@ public class PacienteServiceImpl implements PacienteService {
 			}
 		}
 		return diagnosticos;
+	}
+
+	@Override
+	public ResponseEntity<Paciente> loginPaciente(String email, String senha) {
+		List<Paciente> patients = patientRepository.findAll();
+//		for (Paciente patient : patients) {
+//			if(patient.getEmail().equals(email) && patient.getSenha().equals(senha)) {
+//				return new ResponseEntity<Paciente>(patient, HttpStatus.FOUND);
+//			}
+//		}
+		
+			
+		
+		return new ResponseEntity<Paciente>(new Paciente(), HttpStatus.NOT_FOUND);
 	}
 
 }

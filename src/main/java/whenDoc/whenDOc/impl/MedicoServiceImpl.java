@@ -19,7 +19,6 @@ import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.QueryRepository;
-import whenDoc.whenDOc.repository.DiagnosticoRepository;
 import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.MedicRepository;
 import whenDoc.whenDOc.repository.PatientRepository;
@@ -43,7 +42,7 @@ public class MedicoServiceImpl implements MedicoService {
 	
 	
 	@Override
-	public Medico findById(Long id) {
+	public Medico findById(String id) {
 		
 		Optional<Medico> medico = medicoRepository.findById(id);
 		
@@ -72,7 +71,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Medico findByCPF(Long cpf) {
+	public Medico findByCPF(String cpf) {
 		Optional<Medico> medico = medicoRepository.findById(cpf);
 		
 		if(medico.isPresent()) {
@@ -107,7 +106,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editNome(String nome, Long id) {
+	public HttpStatus editNome(String nome, String id) {
 		Medico medico = findById(id);
 
 		if (medico.getCpf() != null) {
@@ -124,7 +123,7 @@ public class MedicoServiceImpl implements MedicoService {
 	
 
 	@Override
-	public HttpStatus editEspecialidade(String especialidade, Long id) {
+	public HttpStatus editEspecialidade(String especialidade, String id) {
 		Medico medico = findById(id);
 
 		if (medico.getCpf() != null) {
@@ -138,7 +137,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editEmail(String email, Long id) {
+	public HttpStatus editEmail(String email, String id) {
 		Medico medico = findById(id);
 
 		if (medico.getCpf() != null) {
@@ -152,7 +151,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editSenha(String senha, Long id) {
+	public HttpStatus editSenha(String senha, String id) {
 		Medico medico = findById(id);
 
 		if (medico.getCpf() != null) {
@@ -166,7 +165,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editTelefone(String telefone, Long id) {
+	public HttpStatus editTelefone(String telefone, String id) {
 		Medico medico = findById(id);
 
 		if (medico.getCpf() != null) {
@@ -182,7 +181,7 @@ public class MedicoServiceImpl implements MedicoService {
 	
 
 	@Override
-	public HttpStatus addPacientMed(Long cpfPaciente, Long idMed) {
+	public HttpStatus addPacientMed(String cpfPaciente, String idMed) {
 		Optional<Medico> medico = medicoRepository.findById(idMed);
 		Optional<Paciente> pacient = pacienteRepository.findById(cpfPaciente);
 		if (medico.isPresent()) {
@@ -200,7 +199,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Consulta addConsulta(String descricao, Long idMed,Long idPaciente) {
+	public Consulta addConsulta(String descricao, String idMed,String idPaciente) {
 		Date d = new Date(System.currentTimeMillis());
 		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
 		Paciente paciente = pacienteRepository.findById(idPaciente).get();
@@ -218,7 +217,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Set<Diagnostico> getDiagnosticos(Long idMed, Long idPaciente) {
+	public Set<Diagnostico> getDiagnosticos(String idMed, String idPaciente) {
 		Set<Diagnostico> diagnosticos = new HashSet<>();
 		Medico medico = medicoRepository.findById(idMed).get();
 		Paciente paciente = pacienteRepository.findById(idPaciente).get();
@@ -229,7 +228,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Medication>> getMedicamentos(Long cpf, Long cpfPaciente) {
+	public ResponseEntity<Set<Medication>> getMedicamentos(String cpf, String cpfPaciente) {
 		
 		Medico medico = medicoRepository.findById(cpf).get();
 		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
@@ -243,7 +242,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente) {
+	public ResponseEntity<Paciente> getPaciente(String cpf, String cpfPaciente) {
 		Medico medico = medicoRepository.findById(cpf).get();
 		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
 		
@@ -255,13 +254,13 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Set<Medication>> addMedicamentos(Long cpf,Long idConsulta, Long cpfPaciente,
+	public ResponseEntity<Set<Medication>> addMedicamentos(String crm,Long idConsulta, String cpfPaciente,
 			ArrayList<Medication> medicamentos) {
-		Medico medico = medicoRepository.findById(cpf).get();
+		Medico medico = medicoRepository.findById(crm).get();
 		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
 		Consulta consulta  = consultaRepository.findById(idConsulta).get();
 		
-		if(medico.getPacientes().contains(paciente)) {
+		if(medico.getPacientes().contains(paciente	)) {
 			for (int i = 0; i < medicamentos.size(); i++) {
 				Medication medicamento = medicamentos.get(i);
 				medicamento.setConsulta(consulta);

@@ -18,7 +18,7 @@ public interface PacienteService {
 	 * @param cpf
 	 * @return
 	 */
-	ResponseEntity<Paciente> findByCPF(Long cpf);
+	ResponseEntity<Paciente> findByCPF(String cpf);
 	
 	/*
 	 * Find all Paciente 
@@ -35,84 +35,80 @@ public interface PacienteService {
 	 * Edit Paciente name.
 	 * @param nome, id
 	 */
-	HttpStatus editName(String nome, Long id);
+	HttpStatus editName(String nome, String id);
 	
 	
 	/*
 	 * Edit Paciente senha.
 	 * @param senha, id
 	 */
-	HttpStatus editPassword(String senha, Long id);
+	HttpStatus editPassword(String senha, String id);
 	/**
 	 * 
 	 * @param email
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editEmail(String email, Long id);
+	HttpStatus editEmail(String email, String id);
 	/**
 	 * 
 	 * @param emailSec
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editEmailSec(String emailSec, Long id);
+	HttpStatus editEmailSec(String emailSec, String id);
 	/**
 	 * 
 	 * @param telefone
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editTelefone(String telefone, Long id);
+	HttpStatus editTelefone(String telefone, String id);
 	/**
 	 * 
 	 * @param telefoneSec
 	 * @param id
 	 * @return
 	 */
-	HttpStatus editTelefoneSec(String telefoneSec, Long id);
+	HttpStatus editTelefoneSec(String telefoneSec, String id);
 	
 	/*
 	 * Edit Paciente tipoSanguineo.
 	 * @param tipoSanguineo, id
 	 */
-	HttpStatus editTipoSanguineo(String tipoSanguineo, Long id);
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-	HttpStatus addEndereco(Long id);
+	HttpStatus editTipoSanguineo(String tipoSanguineo, String id);
 	/**
 	 * add patient's allergy in system
 	 * @param allergysName
 	 * @param patientCpf
 	 * @return http status ACCEPTED or NOT_FOUND
 	 */
-	HttpStatus addAllergy(String allergysName,Long patientCpf);
+	HttpStatus addAllergy(String allergysName,String patientCpf);
 	/**
 	 * add patient's medication in system
 	 * @param medicamento
 	 * @param id
 	 * @return
 	 */
-	HttpStatus addMedication(Medication medicamento, Long id);
+	HttpStatus addMedication(Medication medicamento, String id);
 	/**
 	 * 
 	 * @param cpf
 	 * @return
 	 */
-	ResponseEntity<Set<Medication>> getMedicamentos(Long cpf);
+	ResponseEntity<Set<Medication>> getMedicamentos(String cpf);
 
-	ResponseEntity<Set<Alergia>> getAlergias(Long cpf);
+	ResponseEntity<Set<Alergia>> getAlergias(String cpf);
 	/**
 	 * 
 	 * @param id
 	 * @param idMedicamento
 	 * @return
 	 */
-	HttpStatus deleteMedicamento(Long id, Long idMedicamento);
+	HttpStatus deleteMedicamento(String id, Long idMedicamento);
 
-	Set<Diagnostico> getDiagnosticos(Long cpf);
+	Set<Diagnostico> getDiagnosticos(String cpf);
+	
+	ResponseEntity<Paciente> loginPaciente(String endereco,String senha);
 	
 }
