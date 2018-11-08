@@ -91,9 +91,15 @@ public class PacientController {
 	}
 
 	@RequestMapping(value = "/{cpf}/diagnosticos", method = RequestMethod.GET)
-	public Set<Diagnostico> getHistoricoDiagnosticos(@PathVariable("cpf") Long cpf) {
+	public ResponseEntity<Set<Diagnostico>> getHistoricoDiagnosticos(@PathVariable("cpf") Long cpf) {
 
 		return pacientService.getDiagnosticos(cpf);
+
+	}
+	@RequestMapping(value = "/login/{email}", method = RequestMethod.POST)
+	public ResponseEntity<Paciente> login(@PathVariable("email") String email,@RequestBody String senha) {
+
+		return pacientService.login(email, senha);
 
 	}
 

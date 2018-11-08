@@ -38,24 +38,14 @@ public class MedicoController {
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public 	ResponseEntity<Medico> getMedico(@PathVariable("id") Long id ) {
-		Medico medico = medicoService.findById(id);
-		HttpStatus status;
 		
-		if(medico.getCpf() != null) {
+		return medicoService.findById(id);
 		
-			status = HttpStatus.FOUND;
-		
-		}else {
-		
-			status = HttpStatus.NOT_FOUND;
-		
-		}
-		return new ResponseEntity<>(medico,status);
 	}
 	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
-	public 	Set<Paciente> getPacientes(@PathVariable("id") Long id ) {
+	public 	ResponseEntity<Set<Paciente>> getPacientes(@PathVariable("id") Long id ) {
 		
-		return medicoService.findByCPF(id).getPacientes();
+		return medicoService.getPacientes(id);
 		
 	}
 	
@@ -92,13 +82,13 @@ public class MedicoController {
 		
  	}
 	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
-	public Consulta addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
+	public ResponseEntity<Consulta> addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.addConsulta(descricao, cpf, idPaciente);
 		
  	}
 	@RequestMapping(value = "/{cpf}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)
-	public Set<Diagnostico> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+	public ResponseEntity<Set<Diagnostico>> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.getDiagnosticos(cpf,cpfPaciente);
 		
@@ -121,6 +111,12 @@ public class MedicoController {
 		return medicoService.getPaciente(cpf,cpfPaciente);
 		
  	}
+	@RequestMapping(value = "/login/{email}", method = RequestMethod.POST)
+	public ResponseEntity<Medico> login(@PathVariable("email") String email,@RequestBody String senha) {
+
+		return medicoService.login(email, senha);
+
+	}
 	
 	
 	

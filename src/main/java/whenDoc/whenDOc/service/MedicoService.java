@@ -20,7 +20,7 @@ public interface MedicoService {
 	 * @param id
 	 * @return
 	 */
-	Medico findById(Long id);
+	ResponseEntity<Medico> findById(Long id);
 	
 	/*
 	 * Find Medico by name.
@@ -59,13 +59,17 @@ public interface MedicoService {
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 	
-	Consulta addConsulta(String descricao,Long idMed,Long idPaciente);
+	ResponseEntity<Consulta> addConsulta(String descricao,Long idMed,Long idPaciente);
 	
-	Set<Diagnostico> getDiagnosticos(Long idMed,Long idPaciente);
+	ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long idMed,Long idPaciente);
 
 	ResponseEntity<Set<Medication>> getMedicamentos(Long cpf, Long cpfPaciente);
 
 	ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente);
 
 	ResponseEntity<Set<Medication>> addMedicamentos(Long cpf, Long cpfPaciente, Long cpfPaciente2, ArrayList<Medication> medicamentos);
+
+	ResponseEntity<Medico> login(String email, String senha);
+
+	ResponseEntity<Set<Paciente>> getPacientes(Long crm);
 }

@@ -18,11 +18,10 @@ import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
-import whenDoc.whenDOc.repository.QueryRepository;
-import whenDoc.whenDOc.repository.DiagnosticoRepository;
-import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.MedicRepository;
+import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.PatientRepository;
+import whenDoc.whenDOc.repository.QueryRepository;
 import whenDoc.whenDOc.service.MedicoService;
 import whenDoc.whenDOc.service.PacienteService;
 
@@ -43,18 +42,14 @@ public class MedicoServiceImpl implements MedicoService {
 	
 	
 	@Override
-	public Medico findById(Long id) {
+	public ResponseEntity<Medico> findById(Long id) {
 		
 		Optional<Medico> medico = medicoRepository.findById(id);
 		
-		if(medico.isPresent()) {
-			
-			return medico.get();
-		
-		}else {
-			
-			return new Medico();
-		
+		if (medico.isPresent()) {
+			return new ResponseEntity<>(medico.get(), HttpStatus.FOUND);
+		} else {
+			return new ResponseEntity<>(new Medico(), HttpStatus.NOT_FOUND);
 		}
 
 	}
@@ -108,7 +103,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public HttpStatus editNome(String nome, Long id) {
-		Medico medico = findById(id);
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setNome(nome);
@@ -125,7 +120,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public HttpStatus editEspecialidade(String especialidade, Long id) {
-		Medico medico = findById(id);
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setEspecialidade(especialidade);
@@ -139,7 +134,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public HttpStatus editEmail(String email, Long id) {
-		Medico medico = findById(id);
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setEmail(email);
@@ -153,7 +148,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public HttpStatus editSenha(String senha, Long id) {
-		Medico medico = findById(id);
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setSenha(senha);
@@ -167,7 +162,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	@Override
 	public HttpStatus editTelefone(String telefone, Long id) {
-		Medico medico = findById(id);
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setTelefone(telefone);
@@ -200,32 +195,51 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Consulta addConsulta(String descricao, Long idMed,Long idPaciente) {
+	public ResponseEntity<Consulta> addConsulta(String descricao, Long idMed,Long idPaciente) {
+		
 		Date d = new Date(System.currentTimeMillis());
 		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
-		Paciente paciente = pacienteRepository.findById(idPaciente).get();
+		
+		Optional<Paciente> paciente = pacienteRepository.findById(idPaciente);
+		
 		Diagnostico diagnostico = new Diagnostico("213123", descricao);
 		
-		Consulta consulta = new Consulta(data,diagnostico,paciente);
-		Medico medico = medicoRepository.findById(idMed).get();
-
-		consulta.setMedico(medico);
 		
-		Consulta consulta1 = consultaRepository.save(consulta);
+		Optional<Medico> medico = medicoRepository.findById(idMed);
+		
+		if(medico.isPresent() && paciente.isPresent()) {
+			
+			Consulta consulta = new Consulta(data,diagnostico,paciente.get());
+			consulta.setMedico(medico.get());
+			
+			Consulta consulta1 = consultaRepository.save(consulta);
+			return new ResponseEntity<>(consulta1,HttpStatus.ACCEPTED);
+		}
 		
 		
-		return consulta1;
+		
+		 return new ResponseEntity<>(new Consulta(),HttpStatus.NOT_FOUND);
 	}
 
 	@Override
-	public Set<Diagnostico> getDiagnosticos(Long idMed, Long idPaciente) {
+	public ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long idMed, Long idPaciente) {
 		Set<Diagnostico> diagnosticos = new HashSet<>();
-		Medico medico = medicoRepository.findById(idMed).get();
-		Paciente paciente = pacienteRepository.findById(idPaciente).get();
-		if(medico.getPacientes().contains(paciente)) {
-			diagnosticos = pacientService.getDiagnosticos(idPaciente);
+		
+		Optional<Medico> medico = medicoRepository.findById(idMed);
+		
+		Optional<Paciente> paciente = pacienteRepository.findById(idPaciente);
+		if(!medico.isPresent() || !paciente.isPresent()) {
+			
+			return new ResponseEntity<>(diagnosticos,HttpStatus.NOT_FOUND);
+		
 		}
-		return diagnosticos;
+		
+		if(medico.get().getPacientes().contains(paciente.get())) {
+			diagnosticos = pacientService.getDiagnosticos(idPaciente).getBody();
+		
+		}
+		
+		return new ResponseEntity<>(diagnosticos,HttpStatus.FOUND);
 	}
 
 	@Override
@@ -253,6 +267,17 @@ public class MedicoServiceImpl implements MedicoService {
 		
 		return new ResponseEntity<>(new Paciente(),HttpStatus.NOT_FOUND);
 	}
+	@Override
+	public ResponseEntity<Set<Paciente>> getPacientes(Long crm) {
+		Optional<Medico> medico = medicoRepository.findById(crm);
+		
+		
+		if(medico.isPresent()) {
+			return new ResponseEntity<>(medico.get().getPacientes(),HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(new HashSet<Paciente>(),HttpStatus.NOT_FOUND);
+	}
 
 	@Override
 	public ResponseEntity<Set<Medication>> addMedicamentos(Long cpf,Long idConsulta, Long cpfPaciente,
@@ -270,6 +295,17 @@ public class MedicoServiceImpl implements MedicoService {
 			}
 			return new ResponseEntity<>(paciente.getMedicamentos(),HttpStatus.OK);
 		}
-		return new ResponseEntity<>(new HashSet<>(),HttpStatus.BAD_REQUEST);	}
+		return new ResponseEntity<>(new HashSet<>(),HttpStatus.BAD_REQUEST);	
+		}
+	@Override
+	public ResponseEntity<Medico> login(String email,String senha) {
+		Optional<Medico> medic = medicoRepository.findOptionalByEmailAndSenha(email, senha);
+		
+		if(medic.isPresent()) {
+			return new ResponseEntity<Medico>(medic.get(),HttpStatus.ACCEPTED);
+		}else {
+			return new ResponseEntity<Medico>(new Medico(),HttpStatus.BAD_GATEWAY);
+		}
+	}
 	
 }

@@ -113,6 +113,8 @@ public interface PacienteService {
 	 */
 	HttpStatus deleteMedicamento(Long id, Long idMedicamento);
 
-	Set<Diagnostico> getDiagnosticos(Long cpf);
+	ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long cpf);
+
+	ResponseEntity<Paciente> login(String email, String senha);
 	
 }

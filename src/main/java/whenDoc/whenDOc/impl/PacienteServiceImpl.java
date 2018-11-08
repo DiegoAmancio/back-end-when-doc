@@ -261,10 +261,13 @@ public class PacienteServiceImpl implements PacienteService {
 	}
 
 	@Override
-	public Set<Diagnostico> getDiagnosticos(Long cpf) {
+	public ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long cpf) {
 
 		Set<Diagnostico> diagnosticos = new HashSet<>();
-		Paciente paciente = patientRepository.findById(cpf).get();
+		Optional<Paciente> paciente = patientRepository.findById(cpf);
+		if(paciente.isPresent()) {
+			return new ResponseEntity<>(diagnosticos,HttpStatus.NOT_FOUND);
+		}
 		List<Consulta> consultas = queryRepository.findAll();
 		for (int i = 0; i < consultas.size(); i++) {
 			Consulta consulta = consultas.get(i);
@@ -272,7 +275,16 @@ public class PacienteServiceImpl implements PacienteService {
 				diagnosticos.add(consulta.getDiagnostico());
 			}
 		}
-		return diagnosticos;
+		return new ResponseEntity<>(diagnosticos,HttpStatus.FOUND);
 	}
-
+	@Override
+	public ResponseEntity<Paciente> login(String email,String senha) {
+		Optional<Paciente> paciente = patientRepository.findOptionalByEmailAndSenha(email, senha);
+		
+		if(paciente.isPresent()) {
+			return new ResponseEntity<Paciente>(paciente.get(),HttpStatus.ACCEPTED);
+		}else {
+			return new ResponseEntity<Paciente>(new Paciente(),HttpStatus.BAD_GATEWAY);
+		}
+	}
 }
