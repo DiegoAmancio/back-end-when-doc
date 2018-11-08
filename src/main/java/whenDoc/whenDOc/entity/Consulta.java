@@ -87,7 +87,7 @@ public class Consulta implements Serializable {
 		this.medico = medico2;
 		
 	}
-	public String pacienteId() {
+	public Long pacienteId() {
 		return this.paciente.getCpf();
 	}
 	public Paciente getPaciente() {
