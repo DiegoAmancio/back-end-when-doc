@@ -30,7 +30,7 @@ public class Medico {
 	
 	@Id
 	@Column(name = "crm")
-	private String crm;
+	private Long crm;
 
 	@NotEmpty()
 	@Column(name = "especialidade")
@@ -38,7 +38,7 @@ public class Medico {
 
 	
 	@Column(name = "cpf")
-	private String cpf;
+	private Long cpf;
 
 	@NotEmpty()
 	@Column(name = "email")
@@ -54,7 +54,7 @@ public class Medico {
 	@Column(name = "telefone")
 	private String telefone;
 
-	public Medico(@NotEmpty String nome, @NotEmpty String crm, @NotEmpty String especialidade, @NotEmpty String cpf,
+	public Medico(@NotEmpty String nome, @NotEmpty Long crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
 			@NotEmpty String email, @NotEmpty String senha, @NotEmpty String telefone) {
 		super();
 
@@ -78,11 +78,11 @@ public class Medico {
 		this.nome = nome;
 	}
 
-	public String getCrm() {
+	public Long getCrm() {
 		return crm;
 	}
 
-	public void setCrm(String crm) {
+	public void setCrm(Long crm) {
 		this.crm = crm;
 	}
 
@@ -94,11 +94,11 @@ public class Medico {
 		this.especialidade = especialidade;
 	}
 
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(String cpf) {
+	public void setCpf(Long cpf) {
 		this.cpf = cpf;
 	}
 
