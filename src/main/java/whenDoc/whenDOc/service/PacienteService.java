@@ -78,12 +78,6 @@ public interface PacienteService {
 	 */
 	HttpStatus editTipoSanguineo(String tipoSanguineo, Long id);
 	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-	HttpStatus addEndereco(Long id);
-	/**
 	 * add patient's allergy in system
 	 * @param allergysName
 	 * @param patientCpf

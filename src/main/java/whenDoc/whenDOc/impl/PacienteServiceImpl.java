@@ -16,9 +16,9 @@ import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Paciente;
 import whenDoc.whenDOc.repository.AllergysRepository;
-import whenDoc.whenDOc.repository.QueryRepository;
 import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.PatientRepository;
+import whenDoc.whenDOc.repository.QueryRepository;
 import whenDoc.whenDOc.service.PacienteService;
 
 /**
@@ -196,11 +196,6 @@ public class PacienteServiceImpl implements PacienteService {
 
 	}
 
-	@Override
-	public HttpStatus addEndereco(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public HttpStatus addMedication(Medication medicamento, Long id) {
@@ -262,7 +257,7 @@ public class PacienteServiceImpl implements PacienteService {
 
 	@Override
 	public ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long cpf) {
-
+	
 		Set<Diagnostico> diagnosticos = new HashSet<>();
 		Optional<Paciente> paciente = patientRepository.findById(cpf);
 		if(paciente.isPresent()) {
@@ -277,7 +272,7 @@ public class PacienteServiceImpl implements PacienteService {
 		}
 		return new ResponseEntity<>(diagnosticos,HttpStatus.OK);
 	}
-	@Override
+	@Override	
 	public ResponseEntity<Paciente> login(String email,String senha) {
 		Optional<Paciente> paciente = patientRepository.findOptionalByEmailAndSenha(email, senha);
 		
