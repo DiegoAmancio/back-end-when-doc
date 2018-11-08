@@ -47,7 +47,7 @@ public class MedicoServiceImpl implements MedicoService {
 		Optional<Medico> medico = medicoRepository.findById(id);
 		
 		if (medico.isPresent()) {
-			return new ResponseEntity<>(medico.get(), HttpStatus.FOUND);
+			return new ResponseEntity<>(medico.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new Medico(), HttpStatus.NOT_FOUND);
 		}
@@ -239,7 +239,7 @@ public class MedicoServiceImpl implements MedicoService {
 		
 		}
 		
-		return new ResponseEntity<>(diagnosticos,HttpStatus.FOUND);
+		return new ResponseEntity<>(diagnosticos,HttpStatus.OK);
 	}
 
 	@Override

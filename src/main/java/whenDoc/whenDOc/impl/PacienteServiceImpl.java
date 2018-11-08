@@ -44,7 +44,7 @@ public class PacienteServiceImpl implements PacienteService {
 		Optional<Paciente> paciente = patientRepository.findById(cpf);
 
 		if (paciente.isPresent()) {
-			return new ResponseEntity<>(paciente.get(), HttpStatus.FOUND);
+			return new ResponseEntity<>(paciente.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new Paciente(), HttpStatus.NOT_FOUND);
 		}
@@ -227,7 +227,7 @@ public class PacienteServiceImpl implements PacienteService {
 
 		if (paciente.isPresent()) {
 
-			return new ResponseEntity<>(paciente.get().getMedicamentos(), HttpStatus.FOUND);
+			return new ResponseEntity<>(paciente.get().getMedicamentos(), HttpStatus.OK);
 
 		}
 
@@ -240,7 +240,7 @@ public class PacienteServiceImpl implements PacienteService {
 
 		if (paciente.isPresent()) {
 
-			return new ResponseEntity<>(paciente.get().getAlergias(), HttpStatus.FOUND);
+			return new ResponseEntity<>(paciente.get().getAlergias(), HttpStatus.OK);
 		}
 
 		return new ResponseEntity<>(new HashSet<Alergia>(), HttpStatus.NOT_FOUND);
@@ -275,7 +275,7 @@ public class PacienteServiceImpl implements PacienteService {
 				diagnosticos.add(consulta.getDiagnostico());
 			}
 		}
-		return new ResponseEntity<>(diagnosticos,HttpStatus.FOUND);
+		return new ResponseEntity<>(diagnosticos,HttpStatus.OK);
 	}
 	@Override
 	public ResponseEntity<Paciente> login(String email,String senha) {
