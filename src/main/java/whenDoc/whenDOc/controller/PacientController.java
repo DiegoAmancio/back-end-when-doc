@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import whenDoc.whenDOc.entity.Alergia;
@@ -29,7 +28,7 @@ public class PacientController {
 	PacienteService pacientService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Paciente> getPacient(@PathVariable("id") String id) {
+	public ResponseEntity<Paciente> getPacient(@PathVariable("id") Long id) {
 
 		ResponseEntity<Paciente> paciente = pacientService.findByCPF(id);
 
@@ -45,7 +44,7 @@ public class PacientController {
 	}
 
 	@RequestMapping(value = "{cpf}/medicamento", method = RequestMethod.GET)
-	public ResponseEntity<Set<Medication>> getMedicamentos(@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Set<Medication>> getMedicamentos(@PathVariable("cpf") Long cpf) {
 
 		ResponseEntity<Set<Medication>> medicamentos = pacientService.getMedicamentos(cpf);
 
@@ -53,7 +52,7 @@ public class PacientController {
 	}
 
 	@RequestMapping(value = "{cpf}/alergia", method = RequestMethod.GET)
-	public ResponseEntity<Set<Alergia>> getAlergias(@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Set<Alergia>> getAlergias(@PathVariable("cpf") Long cpf) {
 
 		ResponseEntity<Set<Alergia>> alergias = pacientService.getAlergias(cpf);
 
@@ -62,14 +61,14 @@ public class PacientController {
 	}
 
 	@RequestMapping(value = "/{id}/alergia", method = RequestMethod.POST)
-	public HttpStatus addAllergy(@RequestBody String alergia, @PathVariable String id) {
+	public HttpStatus addAllergy(@RequestBody String alergia, @PathVariable Long id) {
 
 		return pacientService.addAllergy(alergia, id);
 
 	}
 
 	@RequestMapping(value = "/{id}/medicamento", method = RequestMethod.POST)
-	public HttpStatus addMedication(@RequestBody Medication medicamento, @PathVariable String id) {
+	public HttpStatus addMedication(@RequestBody Medication medicamento, @PathVariable Long id) {
 
 		return pacientService.addMedication(medicamento, id);
 
@@ -85,14 +84,14 @@ public class PacientController {
 	}
 
 	@RequestMapping(value = "/{cpf}/medicamento", method = RequestMethod.DELETE)
-	public HttpStatus deleteMedicamento(@PathVariable("cpf") String cpf, @RequestBody Long idMedicamento) {
+	public HttpStatus deleteMedicamento(@PathVariable("cpf") Long cpf, @RequestBody Long idMedicamento) {
 
 		return pacientService.deleteMedicamento(cpf, idMedicamento);
 
 	}
 
 	@RequestMapping(value = "/{cpf}/diagnosticos", method = RequestMethod.GET)
-	public Set<Diagnostico> getHistoricoDiagnosticos(@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Set<Diagnostico>> getHistoricoDiagnosticos(@PathVariable("cpf") Long cpf) {
 
 		return pacientService.getDiagnosticos(cpf);
 
@@ -100,13 +99,13 @@ public class PacientController {
 	@RequestMapping(value = "/login/{email}", method = RequestMethod.POST)
 	public ResponseEntity<Paciente> login(@PathVariable("email") String email,@RequestBody String senha) {
 
-		return pacientService.loginPaciente(email, senha);
+		return pacientService.login(email, senha);
 
 	}
 
 	@RequestMapping(value = "/{id}/medicamento/edit{tipoDado}", method = RequestMethod.PUT)
 	public HttpStatus editInfosPaciente(@RequestBody String dado, @PathVariable("tipoDado") String tipoDado,
-			@PathVariable("id") String id) {
+			@PathVariable("id") Long id) {
 
 		HttpStatus operacao;
 

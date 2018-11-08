@@ -38,7 +38,7 @@ public class Paciente {
 	private String nome;
 
 	@Id
-	private String cpf;
+	private Long cpf;
 
 	@NotEmpty()
 	@Column(name = "email")
@@ -85,7 +85,7 @@ public class Paciente {
 		super();
 	}
 
-	public Paciente(@NotEmpty String nome, @NotEmpty String cpf, @NotEmpty String email, @NotEmpty String emailSec,
+	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email, @NotEmpty String emailSec,
 			@NotEmpty String senha, @NotEmpty String telefone, @NotEmpty String telefoneSec,
 			@NotEmpty String tipoSanguineo, boolean app) {
 		super();
@@ -109,7 +109,7 @@ public class Paciente {
 		this.nome = nome;
 	}
 
-	public String getCpf() {
+	public Long getCpf() {
 		return cpf;
 	}
 	

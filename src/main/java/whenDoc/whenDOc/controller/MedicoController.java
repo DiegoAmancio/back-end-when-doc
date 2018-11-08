@@ -37,30 +37,20 @@ public class MedicoController {
 		
 	}
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	ResponseEntity<Medico> getMedico(@PathVariable("id") String id ) {
-		Medico medico = medicoService.findById(id);
-		HttpStatus status;
+	public 	ResponseEntity<Medico> getMedico(@PathVariable("id") Long id ) {
 		
-		if(medico.getCpf() != null) {
+		return medicoService.findById(id);
 		
-			status = HttpStatus.FOUND;
-		
-		}else {
-		
-			status = HttpStatus.NOT_FOUND;
-		
-		}
-		return new ResponseEntity<>(medico,status);
 	}
 	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
-	public 	Set<Paciente> getPacientes(@PathVariable("id") String id ) {
+	public 	ResponseEntity<Set<Paciente>> getPacientes(@PathVariable("id") Long id ) {
 		
-		return medicoService.findByCPF(id).getPacientes();
+		return medicoService.getPacientes(id);
 		
 	}
 	
 	@RequestMapping(value = "/{id}/edit{tipoDado}", method = RequestMethod.PUT)
-	public HttpStatus editInfosMedico(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") String id) {
+	public HttpStatus editInfosMedico(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
 		HttpStatus operacao;
 		switch (tipoDado) {
 			case "Nome":
@@ -86,41 +76,47 @@ public class MedicoController {
 		return operacao;
 	}
 	@RequestMapping(value = "/{cpf}/addPacient/", method = RequestMethod.POST)
-	public HttpStatus addPacient(@RequestBody String cpfPaciente,@PathVariable("cpf") String cpf) {
+	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.addPacientMed(cpfPaciente, cpf);
 		
  	}
 	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
-	public Consulta addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") String idPaciente,@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Consulta> addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.addConsulta(descricao, cpf, idPaciente);
 		
  	}
 	@RequestMapping(value = "/{cpf}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)
-	public Set<Diagnostico> getDisgnosticosPaciente(@PathVariable("cpfPaciente") String cpfPaciente,@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Set<Diagnostico>> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.getDiagnosticos(cpf,cpfPaciente);
 		
  	}
 	@RequestMapping(value = "/{cpf}/medicamento/{cpfPaciente}", method = RequestMethod.GET)
-	public ResponseEntity<Set<Medication>> getMedicamentosPaciente(@PathVariable("cpfPaciente") String cpfPaciente,@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Set<Medication>> getMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.getMedicamentos(cpf,cpfPaciente);
 		
  	}
 	@RequestMapping(value = "/{cpf}/{idConsulta}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
-	public ResponseEntity<Set<Medication>> addMedicamentosPaciente(@PathVariable("cpfPaciente") String cpfPaciente,@PathVariable("idConsulta") Long idConsulta,@PathVariable("cpf") String cpf,@RequestBody ArrayList<Medication> medicamentos) {
+	public ResponseEntity<Set<Medication>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("idConsulta") Long idConsulta,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medication> medicamentos) {
 		
 		return medicoService.addMedicamentos(cpf,idConsulta,cpfPaciente,medicamentos);
 		
  	}
 	@RequestMapping(value = "/{cpf}/paciente/{cpfPaciente}", method = RequestMethod.GET)
-	public ResponseEntity<Paciente> getPaciente(@PathVariable("cpfPaciente") String cpfPaciente,@PathVariable("cpf") String cpf) {
+	public ResponseEntity<Paciente> getPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
 		
 		return medicoService.getPaciente(cpf,cpfPaciente);
 		
  	}
+	@RequestMapping(value = "/login/{email}", method = RequestMethod.POST)
+	public ResponseEntity<Medico> login(@PathVariable("email") String email,@RequestBody String senha) {
+
+		return medicoService.login(email, senha);
+
+	}
 	
 	
 	

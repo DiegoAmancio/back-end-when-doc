@@ -14,6 +14,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})	
+
 @Entity
 public class Medication implements Serializable{
 	

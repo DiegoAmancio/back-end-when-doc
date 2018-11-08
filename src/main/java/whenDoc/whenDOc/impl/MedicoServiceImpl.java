@@ -18,10 +18,10 @@ import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
-import whenDoc.whenDOc.repository.QueryRepository;
-import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.MedicRepository;
+import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.PatientRepository;
+import whenDoc.whenDOc.repository.QueryRepository;
 import whenDoc.whenDOc.service.MedicoService;
 import whenDoc.whenDOc.service.PacienteService;
 
@@ -42,18 +42,14 @@ public class MedicoServiceImpl implements MedicoService {
 	
 	
 	@Override
-	public Medico findById(String id) {
+	public ResponseEntity<Medico> findById(Long id) {
 		
 		Optional<Medico> medico = medicoRepository.findById(id);
 		
-		if(medico.isPresent()) {
-			
-			return medico.get();
-		
-		}else {
-			
-			return new Medico();
-		
+		if (medico.isPresent()) {
+			return new ResponseEntity<>(medico.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(new Medico(), HttpStatus.NOT_FOUND);
 		}
 
 	}
@@ -71,7 +67,7 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Medico findByCPF(String cpf) {
+	public Medico findByCPF(Long cpf) {
 		Optional<Medico> medico = medicoRepository.findById(cpf);
 		
 		if(medico.isPresent()) {
@@ -106,8 +102,8 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editNome(String nome, String id) {
-		Medico medico = findById(id);
+	public HttpStatus editNome(String nome, Long id) {
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setNome(nome);
@@ -123,8 +119,8 @@ public class MedicoServiceImpl implements MedicoService {
 	
 
 	@Override
-	public HttpStatus editEspecialidade(String especialidade, String id) {
-		Medico medico = findById(id);
+	public HttpStatus editEspecialidade(String especialidade, Long id) {
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setEspecialidade(especialidade);
@@ -137,8 +133,8 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editEmail(String email, String id) {
-		Medico medico = findById(id);
+	public HttpStatus editEmail(String email, Long id) {
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setEmail(email);
@@ -151,8 +147,8 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editSenha(String senha, String id) {
-		Medico medico = findById(id);
+	public HttpStatus editSenha(String senha, Long id) {
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setSenha(senha);
@@ -165,8 +161,8 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public HttpStatus editTelefone(String telefone, String id) {
-		Medico medico = findById(id);
+	public HttpStatus editTelefone(String telefone, Long id) {
+		Medico medico = findById(id).getBody();
 
 		if (medico.getCpf() != null) {
 			medico.setTelefone(telefone);
@@ -181,7 +177,7 @@ public class MedicoServiceImpl implements MedicoService {
 	
 
 	@Override
-	public HttpStatus addPacientMed(String cpfPaciente, String idMed) {
+	public HttpStatus addPacientMed(Long cpfPaciente, Long idMed) {
 		Optional<Medico> medico = medicoRepository.findById(idMed);
 		Optional<Paciente> pacient = pacienteRepository.findById(cpfPaciente);
 		if (medico.isPresent()) {
@@ -199,42 +195,61 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public Consulta addConsulta(String descricao, String idMed,String idPaciente) {
+	public ResponseEntity<Consulta> addConsulta(String descricao, Long idMed,Long idPaciente) {
+		
 		Date d = new Date(System.currentTimeMillis());
 		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
-		Paciente paciente = pacienteRepository.findById(idPaciente).get();
+		
+		Optional<Paciente> paciente = pacienteRepository.findById(idPaciente);
+		
 		Diagnostico diagnostico = new Diagnostico("213123", descricao);
 		
-		Consulta consulta = new Consulta(data,diagnostico,paciente);
-		Medico medico = medicoRepository.findById(idMed).get();
-
-		consulta.setMedico(medico);
 		
-		Consulta consulta1 = consultaRepository.save(consulta);
+		Optional<Medico> medico = medicoRepository.findById(idMed);
 		
-		
-		return consulta1;
-	}
-
-	@Override
-	public Set<Diagnostico> getDiagnosticos(String idMed, String idPaciente) {
-		Set<Diagnostico> diagnosticos = new HashSet<>();
-		Medico medico = medicoRepository.findById(idMed).get();
-		Paciente paciente = pacienteRepository.findById(idPaciente).get();
-		if(medico.getPacientes().contains(paciente)) {
-			diagnosticos = pacientService.getDiagnosticos(idPaciente);
+		if(medico.isPresent() && paciente.isPresent()) {
+			
+			Consulta consulta = new Consulta(data,diagnostico,paciente.get());
+			consulta.setMedico(medico.get());
+			
+			Consulta consulta1 = consultaRepository.save(consulta);
+			return new ResponseEntity<>(consulta1,HttpStatus.ACCEPTED);
 		}
-		return diagnosticos;
+		
+		
+		
+		 return new ResponseEntity<>(new Consulta(),HttpStatus.NOT_FOUND);
 	}
 
 	@Override
-	public ResponseEntity<Set<Medication>> getMedicamentos(String cpf, String cpfPaciente) {
+	public ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long idMed, Long idPaciente) {
+		Set<Diagnostico> diagnosticos = new HashSet<>();
 		
-		Medico medico = medicoRepository.findById(cpf).get();
-		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
+		Optional<Medico> medico = medicoRepository.findById(idMed);
 		
-		if(medico.getPacientes().contains(paciente)) {
-			return new ResponseEntity<>(paciente.getMedicamentos(),HttpStatus.OK);
+		Optional<Paciente> paciente = pacienteRepository.findById(idPaciente);
+		if(!medico.isPresent() || !paciente.isPresent()) {
+			
+			return new ResponseEntity<>(diagnosticos,HttpStatus.NOT_FOUND);
+		
+		}
+		
+		if(medico.get().getPacientes().contains(paciente.get())) {
+			diagnosticos = pacientService.getDiagnosticos(idPaciente).getBody();
+		
+		}
+		
+		return new ResponseEntity<>(diagnosticos,HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Set<Medication>> getMedicamentos(Long cpf, Long cpfPaciente) {
+		
+		Optional<Medico> medico = medicoRepository.findById(cpf);
+		Optional<Paciente> paciente = pacienteRepository.findById(cpfPaciente);
+		
+		if(medico.isPresent() && paciente.isPresent()) {
+			return new ResponseEntity<>(paciente.get().getMedicamentos(),HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(new HashSet<>(),HttpStatus.NOT_FOUND);
@@ -242,33 +257,70 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Paciente> getPaciente(String cpf, String cpfPaciente) {
-		Medico medico = medicoRepository.findById(cpf).get();
-		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
+	public ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente) {
 		
-		if(medico.getPacientes().contains(paciente)) {
-			return new ResponseEntity<>(paciente,HttpStatus.OK);
+		Optional<Medico> medico = medicoRepository.findById(cpf);
+		Optional<Paciente> paciente = pacienteRepository.findById(cpfPaciente);
+		
+		if(medico.isPresent() && paciente.isPresent()) {
+			
+			if(medico.get().getPacientes().contains(paciente.get())) {
+				
+				return new ResponseEntity<>(paciente.get(),HttpStatus.OK);
+			
+			}
+		}
+		return new ResponseEntity<>(new Paciente(),HttpStatus.NOT_FOUND);
+	}
+	@Override
+	public ResponseEntity<Set<Paciente>> getPacientes(Long crm) {
+		Optional<Medico> medico = medicoRepository.findById(crm);
+		
+		
+		if(medico.isPresent()) {
+			return new ResponseEntity<>(medico.get().getPacientes(),HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<>(new Paciente(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(new HashSet<Paciente>(),HttpStatus.NOT_FOUND);
 	}
 
 	@Override
-	public ResponseEntity<Set<Medication>> addMedicamentos(String crm,Long idConsulta, String cpfPaciente,
+	public ResponseEntity<Set<Medication>> addMedicamentos(Long cpf,Long idConsulta, Long cpfPaciente,
 			ArrayList<Medication> medicamentos) {
-		Medico medico = medicoRepository.findById(crm).get();
-		Paciente paciente = pacienteRepository.findById(cpfPaciente).get();
-		Consulta consulta  = consultaRepository.findById(idConsulta).get();
 		
-		if(medico.getPacientes().contains(paciente	)) {
-			for (int i = 0; i < medicamentos.size(); i++) {
-				Medication medicamento = medicamentos.get(i);
-				medicamento.setConsulta(consulta);
-				medicamento.setPaciente(paciente);
-				medicamentoRepository.save(medicamento);
+		Optional<Medico> medico = medicoRepository.findById(cpf);
+		Optional<Paciente> paciente = pacienteRepository.findById(cpfPaciente);
+		Optional<Consulta> consulta  = consultaRepository.findById(idConsulta);
+		
+		if(medico.isPresent() && paciente.isPresent() && consulta.isPresent()) {
+			
+			if(medico.get().getPacientes().contains(paciente.get())) {
+				
+				for (int i = 0; i < medicamentos.size(); i++) {
+					
+					Medication medicamento = medicamentos.get(i);
+					
+					medicamento.setConsulta(consulta.get());
+					medicamento.setPaciente(paciente.get());
+					
+					medicamentoRepository.save(medicamento);
+				}
+				
+				return new ResponseEntity<>(paciente.get().getMedicamentos(),HttpStatus.OK);
+			
 			}
-			return new ResponseEntity<>(paciente.getMedicamentos(),HttpStatus.OK);
 		}
-		return new ResponseEntity<>(new HashSet<>(),HttpStatus.BAD_REQUEST);	}
+		return new ResponseEntity<>(new HashSet<>(),HttpStatus.BAD_REQUEST);	
+		}
+	@Override
+	public ResponseEntity<Medico> login(String email,String senha) {
+		Optional<Medico> medic = medicoRepository.findOptionalByEmailAndSenha(email, senha);
+		
+		if(medic.isPresent()) {
+			return new ResponseEntity<Medico>(medic.get(),HttpStatus.ACCEPTED);
+		}else {
+			return new ResponseEntity<Medico>(new Medico(),HttpStatus.BAD_GATEWAY);
+		}
+	}
 	
 }

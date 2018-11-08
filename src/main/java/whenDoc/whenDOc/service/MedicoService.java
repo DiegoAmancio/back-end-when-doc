@@ -20,7 +20,7 @@ public interface MedicoService {
 	 * @param id
 	 * @return
 	 */
-	Medico findById(String id);
+	ResponseEntity<Medico> findById(Long id);
 	
 	/*
 	 * Find Medico by name.
@@ -34,7 +34,7 @@ public interface MedicoService {
 	 * @param cpf
 	 * @return
 	 */
-	Medico findByCPF(String cpf);
+	Medico findByCPF(Long cpf);
 	
 
 	List<Medico> findAll();
@@ -46,26 +46,30 @@ public interface MedicoService {
 	 */
 	HttpStatus save(Medico newMedico);
 
-	HttpStatus editNome(String nome, String id);
+	HttpStatus editNome(String nome, Long id);
 	
 	
-	HttpStatus editEspecialidade(String especialidade, String id);
+	HttpStatus editEspecialidade(String especialidade, Long id);
 	
-	HttpStatus editEmail(String email, String id);
+	HttpStatus editEmail(String email, Long id);
 	
-	HttpStatus editSenha(String senha, String id);
+	HttpStatus editSenha(String senha, Long id);
 	
-	HttpStatus editTelefone(String telefone, String id);
+	HttpStatus editTelefone(String telefone, Long id);
 	
-	HttpStatus addPacientMed(String cpfPaciente,String idMed);
+	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 	
-	Consulta addConsulta(String descricao,String idMed,String idPaciente);
+	ResponseEntity<Consulta> addConsulta(String descricao,Long idMed,Long idPaciente);
 	
-	Set<Diagnostico> getDiagnosticos(String idMed,String idPaciente);
+	ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long idMed,Long idPaciente);
 
-	ResponseEntity<Set<Medication>> getMedicamentos(String cpf, String cpfPaciente);
+	ResponseEntity<Set<Medication>> getMedicamentos(Long cpf, Long cpfPaciente);
 
-	ResponseEntity<Paciente> getPaciente(String cpf, String cpfPaciente);
+	ResponseEntity<Paciente> getPaciente(Long cpf, Long cpfPaciente);
 
-	ResponseEntity<Set<Medication>> addMedicamentos(String cpf, Long idConsulta, String cpfPaciente, ArrayList<Medication> medicamentos);
+	ResponseEntity<Set<Medication>> addMedicamentos(Long cpf, Long cpfPaciente, Long cpfPaciente2, ArrayList<Medication> medicamentos);
+
+	ResponseEntity<Medico> login(String email, String senha);
+
+	ResponseEntity<Set<Paciente>> getPacientes(Long crm);
 }
