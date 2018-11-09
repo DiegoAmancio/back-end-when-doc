@@ -46,11 +46,9 @@ public class Medication implements Serializable{
 	@Column()
 	private String intervalo;
 	
-	@NotEmpty()
 	@Column()
 	private String dataInicial;
 	
-	@NotEmpty()
 	@Column()
 	private String dataFinal;
 	

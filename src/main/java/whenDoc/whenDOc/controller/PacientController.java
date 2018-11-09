@@ -96,10 +96,10 @@ public class PacientController {
 		return pacientService.getDiagnosticos(cpf);
 
 	}
-	@RequestMapping(value = "/login/{email}", method = RequestMethod.POST)
-	public ResponseEntity<Paciente> login(@PathVariable("email") String email,@RequestBody String senha) {
+	@RequestMapping(value = "/login/", method = RequestMethod.POST)
+	public ResponseEntity<Paciente> login(@RequestBody Paciente paciente) {
 
-		return pacientService.login(email, senha);
+		return pacientService.login(paciente.getEmail(), paciente.getSenha());
 
 	}
 

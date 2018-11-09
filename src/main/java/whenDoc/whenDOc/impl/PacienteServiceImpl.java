@@ -64,14 +64,28 @@ public class PacienteServiceImpl implements PacienteService {
 					newPaciente.getTelefoneSec(), newPaciente.getTipoSanguineo(), newPaciente.isApp());
 
 			paciente.setEndereco(newPaciente.getEndereco());
+			if(!existeEmail(newPaciente.getEmail())) {
+				patientRepository.save(paciente);
+				return new ResponseEntity<>(paciente, HttpStatus.CREATED);
+			}else {
+				return new ResponseEntity<>(new Paciente(), HttpStatus.NOT_ACCEPTABLE);
 
-			patientRepository.save(paciente);
-			return new ResponseEntity<>(paciente, HttpStatus.CREATED);
+			}
+			
 		} catch (Exception e) {
 
 			return new ResponseEntity<>(new Paciente(), HttpStatus.NOT_ACCEPTABLE);
 
 		}
+	}
+	private boolean existeEmail(String email) {
+		List<Paciente> pacientes = patientRepository.findAll();
+		for (int i = 0; i < pacientes.size(); i++) {
+			if(pacientes.get(i).getEmail().equals(email)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
