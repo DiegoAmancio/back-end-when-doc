@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -38,6 +39,7 @@ public class Diagnostico implements Serializable{
 	
 	@OneToOne
 	@PrimaryKeyJoinColumn
+	@JsonBackReference()
 	private Consulta consulta;
 
 	

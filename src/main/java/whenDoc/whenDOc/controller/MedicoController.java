@@ -83,7 +83,6 @@ public class MedicoController {
  	}
 	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
 	public ResponseEntity<Consulta> addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
-		
 		return medicoService.addConsulta(descricao, cpf, idPaciente);
 		
  	}

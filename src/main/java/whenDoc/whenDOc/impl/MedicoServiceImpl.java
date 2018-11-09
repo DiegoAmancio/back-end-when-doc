@@ -204,16 +204,19 @@ public class MedicoServiceImpl implements MedicoService {
 		
 		Diagnostico diagnostico = new Diagnostico("213123", descricao);
 		
-		
-		Optional<Medico> medico = medicoRepository.findById(idMed);
+		Optional<Medico> medico = medicoRepository.findByCrm(idMed);
 		
 		if(medico.isPresent() && paciente.isPresent()) {
 			
 			Consulta consulta = new Consulta(data,diagnostico,paciente.get());
+			
 			consulta.setMedico(medico.get());
 			
-			Consulta consulta1 = consultaRepository.save(consulta);
-			return new ResponseEntity<>(consulta1,HttpStatus.ACCEPTED);
+			diagnostico.setConsulta(consulta);
+			
+			addPacientMed(idPaciente, idMed);
+			
+			return new ResponseEntity<>(consultaRepository.save(consulta),HttpStatus.ACCEPTED);
 		}
 		
 		
@@ -225,7 +228,7 @@ public class MedicoServiceImpl implements MedicoService {
 	public ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long idMed, Long idPaciente) {
 		Set<Diagnostico> diagnosticos = new HashSet<>();
 		
-		Optional<Medico> medico = medicoRepository.findById(idMed);
+		Optional<Medico> medico = medicoRepository.findByCrm(idMed);
 		
 		Optional<Paciente> paciente = pacienteRepository.findById(idPaciente);
 		if(!medico.isPresent() || !paciente.isPresent()) {
@@ -235,11 +238,11 @@ public class MedicoServiceImpl implements MedicoService {
 		}
 		
 		if(medico.get().getPacientes().contains(paciente.get())) {
-			diagnosticos = pacientService.getDiagnosticos(idPaciente).getBody();
+			return pacientService.getDiagnosticos(idPaciente);
 		
 		}
 		
-		return new ResponseEntity<>(diagnosticos,HttpStatus.OK);
+		return new ResponseEntity<>(diagnosticos,HttpStatus.NOT_ACCEPTABLE);
 	}
 
 	@Override

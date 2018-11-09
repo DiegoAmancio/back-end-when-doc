@@ -29,7 +29,6 @@ public class Medico {
 	private String nome;
 	
 	@Id
-	@Column(name = "crm")
 	private Long crm;
 
 	@NotEmpty()

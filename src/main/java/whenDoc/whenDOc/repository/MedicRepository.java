@@ -10,4 +10,5 @@ import whenDoc.whenDOc.entity.Medico;
 @Repository
 public interface MedicRepository extends JpaRepository<Medico, Long> {
 	Optional<Medico> findOptionalByEmailAndSenha(String email, String senha);
+	Optional<Medico> findByCrm(Long crm);
 }
