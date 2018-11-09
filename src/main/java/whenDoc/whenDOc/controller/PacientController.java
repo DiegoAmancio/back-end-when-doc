@@ -103,40 +103,10 @@ public class PacientController {
 
 	}
 
-	@RequestMapping(value = "/{id}/medicamento/edit{tipoDado}", method = RequestMethod.PUT)
-	public HttpStatus editInfosPaciente(@RequestBody String dado, @PathVariable("tipoDado") String tipoDado,
-			@PathVariable("id") Long id) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Paciente> editInfosPaciente(@RequestBody Paciente paciente) {
 
-		HttpStatus operacao;
-
-		switch (tipoDado) {
-		case "Nome":
-			operacao = pacientService.editName(dado, id);
-			break;
-		case "Senha":
-			operacao = pacientService.editPassword(dado, id);
-			break;
-		case "Email":
-			operacao = pacientService.editEmail(dado, id);
-			break;
-		case "Email secundario":
-			operacao = pacientService.editEmailSec(dado, id);
-			break;
-		case "Telefone":
-			operacao = pacientService.editTelefone(dado, id);
-			break;
-		case "Telefone secundario":
-			operacao = pacientService.editTelefoneSec(dado, id);
-			break;
-		case "Tipo sanguineo":
-			operacao = pacientService.editTipoSanguineo(dado, id);
-			break;
-
-		default:
-			operacao = HttpStatus.BAD_REQUEST;
-			break;
-		}
-		return operacao;
+		return pacientService.editsPaciente(paciente);
 	}
 
 }

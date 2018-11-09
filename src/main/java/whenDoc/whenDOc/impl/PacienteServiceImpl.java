@@ -88,106 +88,6 @@ public class PacienteServiceImpl implements PacienteService {
 		return false;
 	}
 
-	@Override
-	public HttpStatus editName(String nome, Long id) {
-
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-			paciente.setNome(nome);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public HttpStatus editPassword(String senha, Long id) {
-
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-
-			paciente.setSenha(senha);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public HttpStatus editEmail(String email, Long id) {
-
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-
-			paciente.setEmail(email);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public HttpStatus editEmailSec(String emailSec, Long id) {
-
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-
-			paciente.setEmail(emailSec);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public HttpStatus editTelefone(String telefone, Long id) {
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-
-			paciente.setEmail(telefone);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public HttpStatus editTelefoneSec(String telefoneSec, Long id) {
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-
-			paciente.setEmail(telefoneSec);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
-
-	@Override
-	public HttpStatus editTipoSanguineo(String tipoSanguineo, Long id) {
-
-		Paciente paciente = patientRepository.findById(id).get();
-
-		if (paciente.getCpf() != null) {
-			paciente.setTipoSanguineo(tipoSanguineo);
-			patientRepository.save(paciente);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
 
 	@Override
 	public HttpStatus addAllergy(String nomeAlergia, Long id) {
@@ -297,5 +197,29 @@ public class PacienteServiceImpl implements PacienteService {
 		}else {
 			return new ResponseEntity<Paciente>(new Paciente(),HttpStatus.BAD_GATEWAY);
 		}
+	}
+
+	@Override
+	public ResponseEntity<Paciente> editsPaciente(Paciente paciente) {
+		Optional<Paciente> pacienteBd = patientRepository.findById(paciente.getCpf());
+		
+		if(pacienteBd.isPresent()) {
+			
+			pacienteBd.get().setApp(paciente.isApp());
+			pacienteBd.get().setEmail(paciente.getEmail());
+			pacienteBd.get().setEmailSec(paciente.getEmailSec());
+			pacienteBd.get().setTipoSanguineo(paciente.getTipoSanguineo());
+			pacienteBd.get().setNome(paciente.getNome());
+			pacienteBd.get().setTelefone(paciente.getTelefone());
+			pacienteBd.get().setTelefoneSec(paciente.getTelefoneSec());
+			pacienteBd.get().setSenha(paciente.getSenha());
+			
+			patientRepository.save(pacienteBd.get());
+			
+			
+			return new ResponseEntity<Paciente>(pacienteBd.get(),HttpStatus.OK);
+
+		}
+		return new ResponseEntity<Paciente>(new Paciente(),HttpStatus.OK);
 	}
 }
