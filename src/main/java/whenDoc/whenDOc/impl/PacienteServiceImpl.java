@@ -260,9 +260,11 @@ public class PacienteServiceImpl implements PacienteService {
 	
 		Set<Diagnostico> diagnosticos = new HashSet<>();
 		Optional<Paciente> paciente = patientRepository.findById(cpf);
-		if(paciente.isPresent()) {
+		
+		if(!paciente.isPresent()) {
 			return new ResponseEntity<>(diagnosticos,HttpStatus.NOT_FOUND);
 		}
+		
 		List<Consulta> consultas = queryRepository.findAll();
 		for (int i = 0; i < consultas.size(); i++) {
 			Consulta consulta = consultas.get(i);
