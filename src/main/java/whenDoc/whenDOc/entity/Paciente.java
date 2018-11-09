@@ -130,6 +130,11 @@ public class Paciente {
 	public String getEmailSec() {
 		return emailSec;
 	}
+	
+
+	public void setCpf(Long cpf) {
+		this.cpf = cpf;
+	}
 
 	public void setEmailSec(String emailSec) {
 		this.emailSec = emailSec;

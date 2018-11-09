@@ -31,52 +31,7 @@ public interface PacienteService {
 	 */
 	ResponseEntity<Paciente> save(Paciente newPaciente);
 	
-	/*
-	 * Edit Paciente name.
-	 * @param nome, id
-	 */
-	HttpStatus editName(String nome, Long id);
 	
-	
-	/*
-	 * Edit Paciente senha.
-	 * @param senha, id
-	 */
-	HttpStatus editPassword(String senha, Long id);
-	/**
-	 * 
-	 * @param email
-	 * @param id
-	 * @return
-	 */
-	HttpStatus editEmail(String email, Long id);
-	/**
-	 * 
-	 * @param emailSec
-	 * @param id
-	 * @return
-	 */
-	HttpStatus editEmailSec(String emailSec, Long id);
-	/**
-	 * 
-	 * @param telefone
-	 * @param id
-	 * @return
-	 */
-	HttpStatus editTelefone(String telefone, Long id);
-	/**
-	 * 
-	 * @param telefoneSec
-	 * @param id
-	 * @return
-	 */
-	HttpStatus editTelefoneSec(String telefoneSec, Long id);
-	
-	/*
-	 * Edit Paciente tipoSanguineo.
-	 * @param tipoSanguineo, id
-	 */
-	HttpStatus editTipoSanguineo(String tipoSanguineo, Long id);
 	/**
 	 * add patient's allergy in system
 	 * @param allergysName
@@ -110,5 +65,5 @@ public interface PacienteService {
 	ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long cpf);
 
 	ResponseEntity<Paciente> login(String email, String senha);
-	
+	ResponseEntity<Paciente> editsPaciente(Paciente paciente);
 }
