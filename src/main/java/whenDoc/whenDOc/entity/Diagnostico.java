@@ -37,6 +37,10 @@ public class Diagnostico implements Serializable{
 	@Column()
 	private String descricao;
 	
+	@NotEmpty()
+	@Column()
+	private String data;
+	
 	@OneToOne
 	@PrimaryKeyJoinColumn
 	@JsonBackReference()
@@ -44,13 +48,26 @@ public class Diagnostico implements Serializable{
 
 	
 
-	public Diagnostico(@NotEmpty String nomeDiagnostico, @NotEmpty String descricao) {
+	public Diagnostico(Long id, @NotEmpty String nomeDiagnostico, @NotEmpty String descricao, @NotEmpty String data,
+			Consulta consulta) {
 		super();
+		this.id = id;
 		this.nomeDiagnostico = nomeDiagnostico;
 		this.descricao = descricao;
+		this.data = data;
+		this.consulta = consulta;
 	}
+
 	public Diagnostico() {
 		
+	}
+	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 
 	public String getNomeDiagnostico() {

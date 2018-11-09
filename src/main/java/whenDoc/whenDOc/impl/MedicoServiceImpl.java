@@ -211,9 +211,11 @@ public class MedicoServiceImpl implements MedicoService {
 		if(medico.isPresent() && paciente.isPresent()) {
 			
 			Consulta consulta = new Consulta(data,diagnostico,paciente.get());
-			
+			diagnostico.setData(data);
 			consulta.setMedico(medico.get());
+			
 			consultaRepository.save(consulta);
+			
 			diagnostico.setConsulta(consulta);
 			
 			Diagnostico dig = diagnosticoRepository.save(diagnostico);
