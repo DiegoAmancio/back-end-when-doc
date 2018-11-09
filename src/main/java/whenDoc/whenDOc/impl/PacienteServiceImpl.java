@@ -266,7 +266,7 @@ public class PacienteServiceImpl implements PacienteService {
 		List<Consulta> consultas = queryRepository.findAll();
 		for (int i = 0; i < consultas.size(); i++) {
 			Consulta consulta = consultas.get(i);
-			if (consulta.getPaciente().equals(paciente)) {
+			if (consulta.getPaciente().equals(paciente.get())) {
 				diagnosticos.add(consulta.getDiagnostico());
 			}
 		}
