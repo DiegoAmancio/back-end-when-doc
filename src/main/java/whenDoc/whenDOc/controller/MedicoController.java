@@ -49,31 +49,9 @@ public class MedicoController {
 		
 	}
 	
-	@RequestMapping(value = "/{id}/edit{tipoDado}", method = RequestMethod.PUT)
-	public HttpStatus editInfosMedico(@RequestBody String dado,@PathVariable("tipoDado") String tipoDado,@PathVariable("id") Long id) {
-		HttpStatus operacao;
-		switch (tipoDado) {
-			case "Nome":
-				operacao = medicoService.editNome(dado, id);
-				break;
-			
-			case "Especialidade":
-				operacao = medicoService.editEspecialidade(dado, id);
-				break;
-			case "Email":
-				operacao = medicoService.editEmail(dado, id);
-				break;
-			case "Senha":
-				operacao = medicoService.editSenha(dado, id);
-				break;
-			case "Telefone":
-				operacao = medicoService.editTelefone(dado, id);
-				break;
-			default:
-				operacao = HttpStatus.BAD_REQUEST;
-				break;
-		}
-		return operacao;
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Medico> editInfosMedico(@RequestBody Medico medico) {
+		return medicoService.editsMedico(medico);
 	}
 	@RequestMapping(value = "/{cpf}/addPacient/", method = RequestMethod.POST)
 	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("cpf") Long cpf) {
