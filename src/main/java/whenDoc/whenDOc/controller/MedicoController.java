@@ -82,8 +82,8 @@ public class MedicoController {
 		
  	}
 	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
-	public ResponseEntity<Consulta> addConsulta(@RequestBody String descricao,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
-		return medicoService.addConsulta(descricao, cpf, idPaciente);
+	public ResponseEntity<Consulta> addConsulta(@RequestBody Diagnostico diagnostico,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
+		return medicoService.addConsulta(diagnostico, cpf, idPaciente);
 		
  	}
 	@RequestMapping(value = "/{cpf}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)

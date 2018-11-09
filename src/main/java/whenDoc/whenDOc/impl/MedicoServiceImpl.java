@@ -18,6 +18,7 @@ import whenDoc.whenDOc.entity.Diagnostico;
 import whenDoc.whenDOc.entity.Medication;
 import whenDoc.whenDOc.entity.Medico;
 import whenDoc.whenDOc.entity.Paciente;
+import whenDoc.whenDOc.repository.DiagnosticoRepository;
 import whenDoc.whenDOc.repository.MedicRepository;
 import whenDoc.whenDOc.repository.MedicationRepository;
 import whenDoc.whenDOc.repository.PatientRepository;
@@ -38,7 +39,10 @@ public class MedicoServiceImpl implements MedicoService {
 	@Autowired
 	private QueryRepository consultaRepository;
 	@Autowired
-	PacienteService pacientService;
+	private PacienteService pacientService;
+	
+	@Autowired
+	private DiagnosticoRepository diagnosticoRepository;
 	
 	
 	@Override
@@ -195,14 +199,12 @@ public class MedicoServiceImpl implements MedicoService {
 	}
 
 	@Override
-	public ResponseEntity<Consulta> addConsulta(String descricao, Long idMed,Long idPaciente) {
+	public ResponseEntity<Consulta> addConsulta(Diagnostico diagnostico, Long idMed,Long idPaciente) {
 		
 		Date d = new Date(System.currentTimeMillis());
 		String data = java.text.DateFormat.getDateInstance(DateFormat.MEDIUM).format(d);
-		
 		Optional<Paciente> paciente = pacienteRepository.findById(idPaciente);
 		
-		Diagnostico diagnostico = new Diagnostico("213123", descricao);
 		
 		Optional<Medico> medico = medicoRepository.findByCrm(idMed);
 		
@@ -211,8 +213,12 @@ public class MedicoServiceImpl implements MedicoService {
 			Consulta consulta = new Consulta(data,diagnostico,paciente.get());
 			
 			consulta.setMedico(medico.get());
-			
+			consultaRepository.save(consulta);
 			diagnostico.setConsulta(consulta);
+			
+			Diagnostico dig = diagnosticoRepository.save(diagnostico);
+			
+			consulta.setDiagnostico(dig);
 			
 			addPacientMed(idPaciente, idMed);
 			

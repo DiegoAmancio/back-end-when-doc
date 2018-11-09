@@ -59,7 +59,7 @@ public interface MedicoService {
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 	
-	ResponseEntity<Consulta> addConsulta(String descricao,Long idMed,Long idPaciente);
+	ResponseEntity<Consulta> addConsulta(Diagnostico diagnostico,Long idMed,Long idPaciente);
 	
 	ResponseEntity<Set<Diagnostico>> getDiagnosticos(Long idMed,Long idPaciente);
 
