@@ -97,8 +97,14 @@ public class MedicoServiceImpl implements MedicoService {
 		try {
 			Medico medico = new Medico(newMedico.getNome(), newMedico.getCrm(), newMedico.getEspecialidade(),
 					newMedico.getCpf(), newMedico.getEmail(), newMedico.getSenha(), newMedico.getTelefone());
-			medicoRepository.save(medico);
-			return HttpStatus.CREATED;
+			if(!existeEmail(newMedico.getEmail())) {
+				medicoRepository.save(medico);
+				return HttpStatus.CREATED;
+			}else {
+				return HttpStatus.NOT_ACCEPTABLE;
+			
+			}
+			
 		} catch (Exception e) {
 			return HttpStatus.NOT_ACCEPTABLE;
 		}
@@ -117,7 +123,15 @@ public class MedicoServiceImpl implements MedicoService {
 			return HttpStatus.NOT_FOUND;
 		}
 	}
-
+	private boolean existeEmail(String email) {
+		List<Medico> medicos = medicoRepository.findAll();
+		for (int i = 0; i < medicos.size(); i++) {
+			if(medicos.get(i).getEmail().equals(email)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 	

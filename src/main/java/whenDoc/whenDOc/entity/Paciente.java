@@ -44,7 +44,6 @@ public class Paciente {
 	@Column(name = "email")
 	private String email;
 
-	@NotEmpty()
 	@Column(name = "email_Secundario")
 	private String emailSec;
 	@NotEmpty()
@@ -55,7 +54,6 @@ public class Paciente {
 	@Column(name = "telefone")
 	private String telefone;
 
-	@NotEmpty()
 	@Column(name = "telefone_Secundario")
 	private String telefoneSec;
 
@@ -85,8 +83,8 @@ public class Paciente {
 		super();
 	}
 
-	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email, @NotEmpty String emailSec,
-			@NotEmpty String senha, @NotEmpty String telefone, @NotEmpty String telefoneSec,
+	public Paciente(@NotEmpty String nome, @NotEmpty Long cpf, @NotEmpty String email,  String emailSec,
+			@NotEmpty String senha, @NotEmpty String telefone,  String telefoneSec,
 			@NotEmpty String tipoSanguineo, boolean app) {
 		super();
 		this.alergias = new HashSet<>();
