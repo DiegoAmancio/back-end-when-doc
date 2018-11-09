@@ -220,6 +220,6 @@ public class PacienteServiceImpl implements PacienteService {
 			return new ResponseEntity<Paciente>(pacienteBd.get(),HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Paciente>(new Paciente(),HttpStatus.OK);
+		return new ResponseEntity<Paciente>(new Paciente(),HttpStatus.NOT_FOUND);
 	}
 }

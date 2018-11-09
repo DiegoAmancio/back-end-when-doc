@@ -347,5 +347,26 @@ public class MedicoServiceImpl implements MedicoService {
 			return new ResponseEntity<Medico>(new Medico(),HttpStatus.BAD_GATEWAY);
 		}
 	}
+
+	@Override
+	public ResponseEntity<Medico> editsMedico(Medico medico) {
+		Optional<Medico> medicoBd = medicoRepository.findById(medico.getCrm());
+		
+		if(medicoBd.isPresent()) {
+			
+			medicoBd.get().setEspecialidade(medico.getEspecialidade());
+			medicoBd.get().setEmail(medico.getEmail());
+			medicoBd.get().setNome(medico.getNome());
+			medicoBd.get().setTelefone(medico.getTelefone());
+			medicoBd.get().setSenha(medico.getSenha());
+			
+			medicoRepository.save(medicoBd.get());
+			
+			
+			return new ResponseEntity<Medico>(medicoBd.get(),HttpStatus.OK);
+
+		}
+		return new ResponseEntity<Medico>(new Medico(),HttpStatus.NOT_FOUND);
+	}
 	
 }
