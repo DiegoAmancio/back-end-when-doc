@@ -72,4 +72,6 @@ public interface MedicoService {
 	ResponseEntity<Medico> login(String email, String senha);
 
 	ResponseEntity<Set<Paciente>> getPacientes(Long crm);
+	ResponseEntity<Medico> editsMedico(Medico medico);
+
 }
