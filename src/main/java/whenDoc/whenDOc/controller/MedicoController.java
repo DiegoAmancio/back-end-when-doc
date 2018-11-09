@@ -110,10 +110,10 @@ public class MedicoController {
 		return medicoService.getPaciente(cpf,cpfPaciente);
 		
  	}
-	@RequestMapping(value = "/login/{email}", method = RequestMethod.POST)
-	public ResponseEntity<Medico> login(@PathVariable("email") String email,@RequestBody String senha) {
+	@RequestMapping(value = "/login/", method = RequestMethod.POST)
+	public ResponseEntity<Medico> login(@RequestBody Medico medico) {
 
-		return medicoService.login(email, senha);
+		return medicoService.login(medico.getEmail(), medico.getSenha());
 
 	}
 	
