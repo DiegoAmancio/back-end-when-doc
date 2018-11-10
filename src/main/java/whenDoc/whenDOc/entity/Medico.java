@@ -1,5 +1,6 @@
 package whenDoc.whenDOc.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -17,8 +18,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "medico")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})	
+	
+public class Medico implements Serializable{
 
-public class Medico {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "medicos")
 	@JsonBackReference(value = "cpf")

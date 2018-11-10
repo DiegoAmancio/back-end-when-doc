@@ -111,18 +111,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	}
 
-	@Override
-	public HttpStatus editNome(String nome, Long id) {
-		Medico medico = findById(id).getBody();
-
-		if (medico.getCpf() != null) {
-			medico.setNome(nome);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-	}
+	
 	private boolean existeEmail(String email) {
 		List<Medico> medicos = medicoRepository.findAll();
 		for (int i = 0; i < medicos.size(); i++) {
@@ -136,62 +125,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	
 
-	@Override
-	public HttpStatus editEspecialidade(String especialidade, Long id) {
-		Medico medico = findById(id).getBody();
-
-		if (medico.getCpf() != null) {
-			medico.setEspecialidade(especialidade);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-
-	}
-
-	@Override
-	public HttpStatus editEmail(String email, Long id) {
-		Medico medico = findById(id).getBody();
-
-		if (medico.getCpf() != null) {
-			medico.setEmail(email);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-
-	}
-
-	@Override
-	public HttpStatus editSenha(String senha, Long id) {
-		Medico medico = findById(id).getBody();
-
-		if (medico.getCpf() != null) {
-			medico.setSenha(senha);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-
-	}
-
-	@Override
-	public HttpStatus editTelefone(String telefone, Long id) {
-		Medico medico = findById(id).getBody();
-
-		if (medico.getCpf() != null) {
-			medico.setTelefone(telefone);
-			medicoRepository.save(medico);
-			return HttpStatus.OK;
-		} else {
-			return HttpStatus.NOT_FOUND;
-		}
-
-	}
-
+	
 	
 
 	@Override

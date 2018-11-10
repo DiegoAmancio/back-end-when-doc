@@ -46,16 +46,6 @@ public interface MedicoService {
 	 */
 	HttpStatus save(Medico newMedico);
 
-	HttpStatus editNome(String nome, Long id);
-	
-	
-	HttpStatus editEspecialidade(String especialidade, Long id);
-	
-	HttpStatus editEmail(String email, Long id);
-	
-	HttpStatus editSenha(String senha, Long id);
-	
-	HttpStatus editTelefone(String telefone, Long id);
 	
 	HttpStatus addPacientMed(Long cpfPaciente,Long idMed);
 	
