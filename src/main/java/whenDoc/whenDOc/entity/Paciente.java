@@ -1,5 +1,6 @@
 package whenDoc.whenDOc.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +23,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
 @Table(name = "paciente")
-public class Paciente {
+public class Paciente implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4136372247830513030L;
 
 	@ManyToMany(fetch = FetchType.LAZY,
 

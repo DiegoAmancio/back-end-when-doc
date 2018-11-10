@@ -1,5 +1,7 @@
 package whenDoc.whenDOc.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Alergia {
+public class Alergia implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3426504371498240433L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

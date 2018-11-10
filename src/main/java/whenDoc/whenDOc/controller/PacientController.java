@@ -83,10 +83,11 @@ public class PacientController {
 
 	}
 
-	@RequestMapping(value = "/{cpf}/medicamento", method = RequestMethod.DELETE)
-	public HttpStatus deleteMedicamento(@PathVariable("cpf") Long cpf, @RequestBody Medication medicamento) {
+	@RequestMapping(value = "/{cpf}/medicamento/{idMed}", method = RequestMethod.DELETE)
+	public HttpStatus deleteMedicamento(@PathVariable("cpf") Long cpf, @PathVariable("idMed") Long medicamento) {
 
-		return pacientService.deleteMedicamento(cpf, medicamento.getId());
+		return pacientService.deleteMedicamento(cpf, medicamento);
+		
 
 	}
 
