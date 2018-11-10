@@ -213,7 +213,8 @@ public class PacienteServiceImpl implements PacienteService {
 			pacienteBd.get().setTelefone(paciente.getTelefone());
 			pacienteBd.get().setTelefoneSec(paciente.getTelefoneSec());
 			pacienteBd.get().setSenha(paciente.getSenha());
-			
+			pacienteBd.get().setEndereco(paciente.getEndereco());
+
 			patientRepository.save(pacienteBd.get());
 			
 			
