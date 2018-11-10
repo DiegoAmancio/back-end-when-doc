@@ -38,7 +38,6 @@ public class Medication implements Serializable{
 	@Column()
 	private String quantidade;
 	
-	@NotEmpty()
 	@Column()
 	private String horario;
 	
