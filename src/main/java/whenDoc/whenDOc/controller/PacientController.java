@@ -27,10 +27,10 @@ public class PacientController {
 	@Autowired
 	PacienteService pacientService;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Paciente> getPacient(@PathVariable("id") Long id) {
+	@RequestMapping(value = "/{cpf}", method = RequestMethod.GET)
+	public ResponseEntity<Paciente> getPacient(@PathVariable("cpf") Long cpf) {
 
-		ResponseEntity<Paciente> paciente = pacientService.findByCPF(id);
+		ResponseEntity<Paciente> paciente = pacientService.findByCPF(cpf);
 
 		return paciente;
 
@@ -60,17 +60,17 @@ public class PacientController {
 
 	}
 
-	@RequestMapping(value = "/{id}/alergia", method = RequestMethod.POST)
-	public HttpStatus addAllergy(@RequestBody String alergia, @PathVariable Long id) {
+	@RequestMapping(value = "/{cpf}/alergia", method = RequestMethod.POST)
+	public HttpStatus addAllergy(@RequestBody String alergia, @PathVariable("cpf") Long cpf) {
 
-		return pacientService.addAllergy(alergia, id);
+		return pacientService.addAllergy(alergia, cpf);
 
 	}
 
-	@RequestMapping(value = "/{id}/medicamento", method = RequestMethod.POST)
-	public HttpStatus addMedication(@RequestBody Medication medicamento, @PathVariable Long id) {
+	@RequestMapping(value = "/{cpf}/medicamento", method = RequestMethod.POST)
+	public HttpStatus addMedication(@RequestBody Medication medicamento, @PathVariable("cpf") Long cpf) {
 
-		return pacientService.addMedication(medicamento, id);
+		return pacientService.addMedication(medicamento, cpf);
 
 	}
 
@@ -84,9 +84,9 @@ public class PacientController {
 	}
 
 	@RequestMapping(value = "/{cpf}/medicamento/{idMed}", method = RequestMethod.DELETE)
-	public HttpStatus deleteMedicamento(@PathVariable("cpf") Long cpf, @PathVariable("idMed") Long medicamento) {
+	public HttpStatus deleteMedicamento(@PathVariable("cpf") Long cpf, @PathVariable("idMed") Long idMedicamento) {
 
-		return pacientService.deleteMedicamento(cpf, medicamento);
+		return pacientService.deleteMedicamento(cpf, idMedicamento);
 		
 
 	}
@@ -104,7 +104,7 @@ public class PacientController {
 
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{cpf}", method = RequestMethod.PUT)
 	public ResponseEntity<Paciente> editInfosPaciente(@RequestBody Paciente paciente) {
 
 		return pacientService.editsPaciente(paciente);

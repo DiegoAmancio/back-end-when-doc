@@ -36,56 +36,57 @@ public class MedicoController {
 		return new ResponseEntity<>(medico, status);
 		
 	}
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public 	ResponseEntity<Medico> getMedico(@PathVariable("id") Long id ) {
+	@RequestMapping(value = "/{crm}", method = RequestMethod.GET)
+	public 	ResponseEntity<Medico> getMedico(@PathVariable("crm") Long crm ) {
 		
-		return medicoService.findById(id);
+		return medicoService.findById(crm);
 		
 	}
-	@RequestMapping(value = "/{id}/pacientes", method = RequestMethod.GET)
-	public 	ResponseEntity<Set<Paciente>> getPacientes(@PathVariable("id") Long id ) {
+	@RequestMapping(value = "/{crm}/pacientes", method = RequestMethod.GET)
+	public 	ResponseEntity<Set<Paciente>> getPacientes(@PathVariable("crm") Long crm ) {
 		
-		return medicoService.getPacientes(id);
+		return medicoService.getPacientes(crm);
 		
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{crm}", method = RequestMethod.PUT)
 	public ResponseEntity<Medico> editInfosMedico(@RequestBody Medico medico) {
 		return medicoService.editsMedico(medico);
 	}
-	@RequestMapping(value = "/{cpf}/addPacient/", method = RequestMethod.POST)
-	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+	@RequestMapping(value = "/{crm}/addPacient/", method = RequestMethod.POST)
+	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("crm") Long crm) {
 		
-		return medicoService.addPacientMed(cpfPaciente, cpf);
-		
- 	}
-	@RequestMapping(value = "/{cpf}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
-	public ResponseEntity<Consulta> addConsulta(@RequestBody Diagnostico diagnostico,@PathVariable("cpfPaciente") Long idPaciente,@PathVariable("cpf") Long cpf) {
-		return medicoService.addConsulta(diagnostico, cpf, idPaciente);
+		return medicoService.addPacientMed(cpfPaciente, crm);
 		
  	}
-	@RequestMapping(value = "/{cpf}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)
-	public ResponseEntity<Set<Diagnostico>> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
-		
-		return medicoService.getDiagnosticos(cpf,cpfPaciente);
-		
- 	}
-	@RequestMapping(value = "/{cpf}/medicamento/{cpfPaciente}", method = RequestMethod.GET)
-	public ResponseEntity<Set<Medication>> getMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
-		
-		return medicoService.getMedicamentos(cpf,cpfPaciente);
+	@RequestMapping(value = "/{crm}/addConsulta/{cpfPaciente}", method = RequestMethod.POST)
+	public ResponseEntity<Consulta> addConsulta(@RequestBody Diagnostico diagnostico,@PathVariable("cpfPaciente") Long CpfPaciente,@PathVariable("crm") Long crm) {
+		return medicoService.addConsulta(diagnostico, crm, CpfPaciente);
 		
  	}
-	@RequestMapping(value = "/{cpf}/{idConsulta}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
-	public ResponseEntity<Set<Medication>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("idConsulta") Long idConsulta,@PathVariable("cpf") Long cpf,@RequestBody ArrayList<Medication> medicamentos) {
+	@RequestMapping(value = "/{crm}/diagnosticos/{cpfPaciente}", method = RequestMethod.GET)
+	public ResponseEntity<Set<Diagnostico>> getDisgnosticosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("crm") Long crm) {
 		
-		return medicoService.addMedicamentos(cpf,idConsulta,cpfPaciente,medicamentos);
+		return medicoService.getDiagnosticos(crm,cpfPaciente);
 		
  	}
-	@RequestMapping(value = "/{cpf}/paciente/{cpfPaciente}", method = RequestMethod.GET)
-	public ResponseEntity<Paciente> getPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("cpf") Long cpf) {
+	@RequestMapping(value = "/{crm}/medicamento/{cpfPaciente}", method = RequestMethod.GET)
+	public ResponseEntity<Set<Medication>> getMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("crm") Long crm) {
 		
-		return medicoService.getPaciente(cpf,cpfPaciente);
+		return medicoService.getMedicamentos(crm,cpfPaciente);
+		
+ 	}
+	@RequestMapping(value = "/{crm}/{idConsulta}/medicamento/{cpfPaciente}", method = RequestMethod.POST)
+	public ResponseEntity<Set<Medication>> addMedicamentosPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("idConsulta") Long idConsulta,
+			@PathVariable("crm") Long crm,@RequestBody ArrayList<Medication> medicamentos) {
+		
+		return medicoService.addMedicamentos(crm,idConsulta,cpfPaciente,medicamentos);
+		
+ 	}
+	@RequestMapping(value = "/{crm}/paciente/{cpfPaciente}", method = RequestMethod.GET)
+	public ResponseEntity<Paciente> getPaciente(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("crm") Long crm) {
+		
+		return medicoService.getPaciente(crm,cpfPaciente);
 		
  	}
 	@RequestMapping(value = "/login/", method = RequestMethod.POST)
