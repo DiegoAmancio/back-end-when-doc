@@ -53,8 +53,8 @@ public class MedicoController {
 	public ResponseEntity<Medico> editInfosMedico(@RequestBody Medico medico) {
 		return medicoService.editsMedico(medico);
 	}
-	@RequestMapping(value = "/{crm}/addPacient/", method = RequestMethod.POST)
-	public HttpStatus addPacient(@RequestBody Long cpfPaciente,@PathVariable("crm") Long crm) {
+	@RequestMapping(value = "/{crm}/addPaciente/{cpfPaciente}", method = RequestMethod.POST)
+	public HttpStatus addPacient(@PathVariable("cpfPaciente") Long cpfPaciente,@PathVariable("crm") Long crm) {
 		
 		return medicoService.addPacientMed(cpfPaciente, crm);
 		
