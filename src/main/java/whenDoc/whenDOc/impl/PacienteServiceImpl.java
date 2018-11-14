@@ -74,7 +74,7 @@ public class PacienteServiceImpl implements PacienteService {
 			
 		} catch (Exception e) {
 
-			return new ResponseEntity<>(new Paciente(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new Paciente(), HttpStatus.NOT_ACCEPTABLE);
 
 		}
 	}

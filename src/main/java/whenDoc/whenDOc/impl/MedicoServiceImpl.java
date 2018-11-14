@@ -106,7 +106,7 @@ public class MedicoServiceImpl implements MedicoService {
 			}
 			
 		} catch (Exception e) {
-			return HttpStatus.BAD_REQUEST;
+			return HttpStatus.NOT_ACCEPTABLE;
 		}
 
 	}
