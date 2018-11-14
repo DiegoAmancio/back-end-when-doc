@@ -52,6 +52,7 @@ public class Paciente implements Serializable {
 
 	@Column(name = "email_Secundario")
 	private String emailSec;
+	
 	@NotEmpty()
 	@Column(name = "Senha")
 	private String senha;
