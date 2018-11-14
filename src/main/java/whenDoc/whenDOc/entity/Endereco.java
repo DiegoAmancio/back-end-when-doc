@@ -38,7 +38,6 @@ public class Endereco implements Serializable {
 	@Column(name = "numero")
 	private String numero;
 	
-	@NotEmpty()
 	@Column(name = "complemento")
 	private String complemento;
 	
@@ -70,11 +69,12 @@ public class Endereco implements Serializable {
 	}
 	
 	
-	public Endereco( @NotEmpty String rua, @NotEmpty String bairro, @NotEmpty String numero,
-			@NotEmpty String complemento, @NotEmpty String cidade, @NotEmpty String estado, @NotEmpty String pais,
-			@NotEmpty String cep) {
+
+
+	public Endereco(@NotEmpty String rua, @NotEmpty String bairro, @NotEmpty String numero, String complemento,
+			@NotEmpty String cidade, @NotEmpty String estado, @NotEmpty String pais, @NotEmpty String cep
+			) {
 		super();
-		
 		this.rua = rua;
 		this.bairro = bairro;
 		this.numero = numero;
@@ -84,6 +84,8 @@ public class Endereco implements Serializable {
 		this.pais = pais;
 		this.cep = cep;
 	}
+
+
 
 
 	public String getRua() {
