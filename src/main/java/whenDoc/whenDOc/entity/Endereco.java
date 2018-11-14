@@ -71,11 +71,10 @@ public class Endereco implements Serializable {
 	
 
 
-	public Endereco(Long id, @NotEmpty String rua, @NotEmpty String bairro, @NotEmpty String numero, String complemento,
+	public Endereco(@NotEmpty String rua, @NotEmpty String bairro, @NotEmpty String numero, String complemento,
 			@NotEmpty String cidade, @NotEmpty String estado, @NotEmpty String pais, @NotEmpty String cep,
 			Paciente paciente) {
 		super();
-		this.id = id;
 		this.rua = rua;
 		this.bairro = bairro;
 		this.numero = numero;
