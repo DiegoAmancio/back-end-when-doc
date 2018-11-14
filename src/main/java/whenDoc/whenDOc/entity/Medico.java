@@ -41,7 +41,7 @@ public class Medico implements Serializable{
 	@Column(name = "especialidade")
 	private String especialidade;
 
-	
+	@NotEmpty()
 	@Column(name = "cpf")
 	private Long cpf;
 
@@ -59,10 +59,10 @@ public class Medico implements Serializable{
 	@Column(name = "telefone")
 	private String telefone;
 
-	public Medico(@NotEmpty String nome, @NotEmpty Long crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
+	
+	public Medico(@NotEmpty String nome, Long crm, @NotEmpty String especialidade, @NotEmpty Long cpf,
 			@NotEmpty String email, @NotEmpty String senha, @NotEmpty String telefone) {
 		super();
-
 		this.nome = nome;
 		this.crm = crm;
 		this.especialidade = especialidade;
