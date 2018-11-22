@@ -58,39 +58,7 @@ public class MedicoServiceImpl implements MedicoService {
 
 	}
 
-	@Override
-	public Medico findByName(String nome) {
-		for (Medico medico : medicoRepository.findAll()) {
-			String nomeMedico = medico.getNome();
 
-			if (nomeMedico.equals(nome)) {
-				return medico;
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public Medico findByCPF(Long cpf) {
-		Optional<Medico> medico = medicoRepository.findById(cpf);
-		
-		if(medico.isPresent()) {
-		
-			return medico.get();
-		
-		}else {
-		
-			return new Medico();
-		
-		}
-	}
-
-	
-
-	@Override
-	public List<Medico> findAll() {
-		return medicoRepository.findAll();
-	}
 
 	@Override
 	public HttpStatus save(Medico newMedico) {
@@ -274,7 +242,7 @@ public class MedicoServiceImpl implements MedicoService {
 	@Override
 	public ResponseEntity<Medico> login(String email,String senha) {
 		Optional<Medico> medic = medicoRepository.findOptionalByEmailAndSenha(email, senha);
-		
+		System.out.println(email  +" " + senha);
 		if(medic.isPresent()) {
 			return new ResponseEntity<Medico>(medic.get(),HttpStatus.ACCEPTED);
 		}else {

@@ -22,23 +22,8 @@ public interface MedicoService {
 	 */
 	ResponseEntity<Medico> findById(Long id);
 	
-	/*
-	 * Find Medico by name.
-	 * @param nome
-	 * @return
-	 */
-	Medico findByName(String nome);
-	
-	/*
-	 * Find Medico by cpf.
-	 * @param cpf
-	 * @return
-	 */
-	Medico findByCPF(Long cpf);
 	
 
-	List<Medico> findAll();
-	
 	/*
 	 * Save Medico into database.
 	 * @param medico
