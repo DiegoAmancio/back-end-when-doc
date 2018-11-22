@@ -27,23 +27,24 @@ public class WhemDocBackEndApplicationTests {
 	MedicoController medicoController;
 	@Autowired
 	PacientController pacienteController;
+	
 
 	@org.junit.Before
 	public void setUp() throws Exception {
-		
+
 		this.mockMvcMedico = MockMvcBuilders.standaloneSetup(medicoController).build();
 		this.mockMvcPaciente = MockMvcBuilders.standaloneSetup(pacienteController).build();
-		
+
 		this.mockMvcMedico.perform(MockMvcRequestBuilders.post("/medico/cadastrar")
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createUserInJson("ferreira99", "7653", "Taxista", "3", "email1", "123d", "213")));
-		
+
 		this.mockMvcPaciente.perform(MockMvcRequestBuilders.post("/paciente/cadastrar")
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "f", "dsaa", "1", "123", "321321", "esdewq", "2213",
 
 						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2")));
-
+		
 	}
 
 	@Test
@@ -58,7 +59,7 @@ public class WhemDocBackEndApplicationTests {
 	}
 
 	@Test
-	public void testEditInfosFalha() throws Exception {
+	public void testEditInfosMedico() throws Exception {
 
 		this.mockMvcMedico.perform(MockMvcRequestBuilders.put("/medico/7653")
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -69,7 +70,7 @@ public class WhemDocBackEndApplicationTests {
 	}
 
 	@Test
-	public void testEditInfos() throws Exception {
+	public void testEditInfosMedicoFalha() throws Exception {
 
 		this.mockMvcMedico.perform(MockMvcRequestBuilders.put("/medico/7653")
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
@@ -78,6 +79,66 @@ public class WhemDocBackEndApplicationTests {
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
 
 	}
+
+	@Test
+	public void testEditInfosPaciente() throws Exception {
+
+		this.mockMvcPaciente.perform(MockMvcRequestBuilders.put("/paciente/1")
+				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+				.content(createPacienteInJson("nome", "f", "dsaa", "1", "123", "321321", "esdewq", "2213",
+
+						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
+
+		).andExpect(MockMvcResultMatchers.status().isOk());
+
+	}
+	@Test
+	public void testMedicamento() throws Exception {
+
+		this.mockMvcPaciente.perform(MockMvcRequestBuilders.post("/paciente/1/medicamento")
+				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+				.content(createJsonMedicamento("nome", "f", "dsaa", "1", "123", "321321", "esdewq", false))
+
+		).andExpect(MockMvcResultMatchers.status().isOk());
+
+	}
+	
+
+	@Test
+	public void testAddAlergia() throws Exception {
+
+		this.mockMvcPaciente.perform(MockMvcRequestBuilders.post("/paciente/1/alergia")
+				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+				.content("{ \"alergia\": \"" + 1234 + "\"}")
+
+		).andExpect(MockMvcResultMatchers.status().isOk());
+
+	}
+
+	@Test
+	public void testAddAlergiaFalha() throws Exception {
+
+		this.mockMvcPaciente.perform(MockMvcRequestBuilders.post("/paciente/2/alergia")
+				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+				.content("{ \"alergia\": \"" + 1234 + "\"}")
+
+		).andExpect(MockMvcResultMatchers.status().isOk());
+
+	}
+
+	@Test
+	public void testEditInfosPacienteFalha() throws Exception {
+
+		this.mockMvcPaciente.perform(MockMvcRequestBuilders.put("/paciente/1")
+				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+				.content(createPacienteInJson("nome", "f", "dsaa", "2", "123", "321321", "esdewq", "2213",
+
+						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
+
+		).andExpect(MockMvcResultMatchers.status().isNotFound());
+
+	}
+
 	@Test
 	public void testGetPacienteNotFound() throws Exception {
 
@@ -85,6 +146,7 @@ public class WhemDocBackEndApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().isNotFound());
 
 	}
+
 	@Test
 	public void testGetPacientes() throws Exception {
 
@@ -92,8 +154,15 @@ public class WhemDocBackEndApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().isOk());
 
 	}
-	
-	
+
+	@Test
+	public void testaGetDiagnosticoFalha() throws Exception {
+
+		this.mockMvcMedico.perform(MockMvcRequestBuilders.get("/paciente/1/diagnosticos"))
+				.andExpect(MockMvcResultMatchers.status().isNotFound());
+
+	}
+
 	@Test
 	public void testGetPaciente() throws Exception {
 
@@ -101,6 +170,7 @@ public class WhemDocBackEndApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().isOk());
 
 	}
+
 	@Test
 	public void testGetPacienteAlergias() throws Exception {
 
@@ -108,6 +178,7 @@ public class WhemDocBackEndApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().is5xxServerError());
 
 	}
+
 	@Test
 	public void testGetPacienteMedicamento() throws Exception {
 
@@ -115,6 +186,7 @@ public class WhemDocBackEndApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().is5xxServerError());
 
 	}
+
 	@Test
 	public void testGetPacientesFalha() throws Exception {
 
@@ -131,6 +203,8 @@ public class WhemDocBackEndApplicationTests {
 
 		).andExpect(MockMvcResultMatchers.status().isBadGateway());
 	}
+
+
 	@Test
 	public void testLoginPaciente() throws Exception {
 		this.mockMvcPaciente.perform(MockMvcRequestBuilders.post("/paciente/login/")
@@ -141,8 +215,10 @@ public class WhemDocBackEndApplicationTests {
 
 		).andExpect(MockMvcResultMatchers.status().isAccepted());
 	}
+
 	@Test
 	public void testLoginFalhaPaciente() throws Exception {
+
 		this.mockMvcPaciente.perform(MockMvcRequestBuilders.post("/paciente/login/")
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "333ws", "dsaa", "1", "1233", "3213221", "esdewq", "2213",
@@ -150,7 +226,9 @@ public class WhemDocBackEndApplicationTests {
 						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
 
 		).andExpect(MockMvcResultMatchers.status().isBadGateway());
+
 	}
+
 	@Test
 	public void testPostMedicoIncompleto() throws Exception {
 		this.mockMvcMedico.perform(MockMvcRequestBuilders.post("/medico/cadastrar")
@@ -167,6 +245,18 @@ public class WhemDocBackEndApplicationTests {
 	}
 
 	@Test
+	public void testGetAddPacienteFalha() throws Exception {
+		this.mockMvcMedico.perform(MockMvcRequestBuilders.post("/medico/7653/1"))
+				.andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+	@Test
+	public void testGetPacienteMedico() throws Exception {
+		this.mockMvcMedico.perform(MockMvcRequestBuilders.get("/medico/7653"))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+
+	@Test
 	public void testGetMedicoNotFound() throws Exception {
 		this.mockMvcMedico.perform(MockMvcRequestBuilders.get("/medico/9999"))
 				.andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -174,7 +264,7 @@ public class WhemDocBackEndApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		
+
 	}
 
 	private static String createUserInJson(String nome, String crm, String especialidade, String cpf, String email,
@@ -187,8 +277,8 @@ public class WhemDocBackEndApplicationTests {
 	private static String createPacienteInJson(String nome, String emailSec, String telefoneSec, String cpf,
 			String email, String senha, String telefone, String tipoSanguineo, boolean app, String rua, String bairro,
 			String numero, String complemento, String cidade, String estado, String pais, String cep) {
-		
-		String json =  "{ \"nome\": \"" + nome + "\", " + "\"telefoneSec\":\"" + telefoneSec + "\"," + "\"cpf\":\"" + cpf
+
+		String json = "{ \"nome\": \"" + nome + "\", " + "\"telefoneSec\":\"" + telefoneSec + "\"," + "\"cpf\":\"" + cpf
 				+ "\"," + "\"email\":\"" + email + "\"," + "\"emailSec\":\"" + emailSec + "\"," + "\"senha\":\"" + senha
 				+ "\"," + "\"tipoSanguineo\":\"" + tipoSanguineo + "\"," + "\"app\":\"" + app + "\","
 				+ "\"Endereco\": { \"nome\": \"" + nome + "\", " + "\"rua\":\"" + rua + "\"," + "\"bairro\":\"" + bairro
@@ -196,6 +286,18 @@ public class WhemDocBackEndApplicationTests {
 				+ "\"cidade\":\"" + cidade + "\"," + "\"estado\":\"" + estado + "\"," + "\"pais\":\"" + pais + "\"," +
 
 				"\"cep\":\"" + cep + "\"}," + "\"telefone\":\"" + telefone + "\"}";
+		return json;
+	}
+
+	
+
+	private static String createJsonMedicamento(String nome, String quantidade, String horario, String intervalo,
+			String dataInicial, String dataFinal, String dosagem, boolean active) {
+		String json = "{ \"nome\": \"" + nome + "\", " + "\"quantidade\":\"" + quantidade + "\"," + "\"horario\":\""
+				+ horario + "\"," + "\"intervalo\":\"" + intervalo + "\"," + "\"dataInicial\":\"" + dataInicial + "\","
+				+ "\"dataFinal\":\"" + dataFinal + "\","  + "\"active\":\"" + active + "\","+ "\"dosagem\":\"" + dosagem
+				+ "\"}";
+		System.out.println(json);
 		return json;
 	}
 
