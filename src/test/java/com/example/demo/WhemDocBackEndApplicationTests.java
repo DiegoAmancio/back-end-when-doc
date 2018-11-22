@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import whenDoc.whenDOc.WhenDOcApplication;
 import whenDoc.whenDOc.controller.MedicoController;
 import whenDoc.whenDOc.controller.PacientController;
+import whenDoc.whenDOc.entity.Endereco;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WhenDOcApplication.class)
@@ -43,7 +44,7 @@ public class WhemDocBackEndApplicationTests {
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "f", "dsaa", "1", "123", "321321", "esdewq", "2213",
 
-						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2")));
+						false,new Endereco( "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))));
 		
 	}
 
@@ -57,6 +58,7 @@ public class WhemDocBackEndApplicationTests {
 		).andExpect(MockMvcResultMatchers.status().isCreated());
 
 	}
+	
 
 	@Test
 	public void testEditInfosMedico() throws Exception {
@@ -87,7 +89,7 @@ public class WhemDocBackEndApplicationTests {
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "f", "dsaa", "1", "123", "321321", "esdewq", "2213",
 
-						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
+						false,new Endereco( "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2")))
 
 		).andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -133,7 +135,7 @@ public class WhemDocBackEndApplicationTests {
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "f", "dsaa", "2", "123", "321321", "esdewq", "2213",
 
-						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
+						false,new Endereco( "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2")))
 
 		).andExpect(MockMvcResultMatchers.status().isNotFound());
 
@@ -211,7 +213,7 @@ public class WhemDocBackEndApplicationTests {
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "f", "dsaa", "1", "123", "321321", "esdewq", "2213",
 
-						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
+						false,new Endereco( "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2")))
 
 		).andExpect(MockMvcResultMatchers.status().isAccepted());
 	}
@@ -223,7 +225,7 @@ public class WhemDocBackEndApplicationTests {
 				.contentType(org.springframework.http.MediaType.APPLICATION_JSON)
 				.content(createPacienteInJson("nome", "333ws", "dsaa", "1", "1233", "3213221", "esdewq", "2213",
 
-						false, "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2"))
+						false,new Endereco( "oq te importa", "2134", "se fode", "cmapi", "seewf", "3213", "213", "2")))
 
 		).andExpect(MockMvcResultMatchers.status().isBadGateway());
 
@@ -275,20 +277,20 @@ public class WhemDocBackEndApplicationTests {
 	}
 
 	private static String createPacienteInJson(String nome, String emailSec, String telefoneSec, String cpf,
-			String email, String senha, String telefone, String tipoSanguineo, boolean app, String rua, String bairro,
-			String numero, String complemento, String cidade, String estado, String pais, String cep) {
+			String email, String senha, String telefone, String tipoSanguineo, boolean app,Endereco endereco) {
 
 		String json = "{ \"nome\": \"" + nome + "\", " + "\"telefoneSec\":\"" + telefoneSec + "\"," + "\"cpf\":\"" + cpf
 				+ "\"," + "\"email\":\"" + email + "\"," + "\"emailSec\":\"" + emailSec + "\"," + "\"senha\":\"" + senha
 				+ "\"," + "\"tipoSanguineo\":\"" + tipoSanguineo + "\"," + "\"app\":\"" + app + "\","
-				+ "\"Endereco\": { \"nome\": \"" + nome + "\", " + "\"rua\":\"" + rua + "\"," + "\"bairro\":\"" + bairro
-				+ "\"," + "\"numero\":\"" + numero + "\"," + "\"complemento\":\"" + complemento + "\","
-				+ "\"cidade\":\"" + cidade + "\"," + "\"estado\":\"" + estado + "\"," + "\"pais\":\"" + pais + "\"," +
+				+ "\"Endereco\": { \"nome\": \"" + nome + "\", " + "\"rua\":\"" + endereco.getRua() + "\"," + "\"bairro\":\"" + endereco.getBairro()
+				+ "\"," + "\"numero\":\"" + endereco.getNumero() + "\"," + "\"complemento\":\"" + endereco.getComplemento() + "\","
+				+ "\"cidade\":\"" + endereco.getCidade() + "\"," + "\"estado\":\"" + endereco.getEstado() + "\"," + "\"pais\":\"" + endereco.getPais() + "\"," +
 
-				"\"cep\":\"" + cep + "\"}," + "\"telefone\":\"" + telefone + "\"}";
+				"\"cep\":\"" + endereco.getCep() + "\"}," + "\"telefone\":\"" + telefone + "\"}";
 		return json;
 	}
 
+	
 	
 
 	private static String createJsonMedicamento(String nome, String quantidade, String horario, String intervalo,
